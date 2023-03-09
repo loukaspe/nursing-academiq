@@ -31,9 +31,12 @@ services:
 
   app:
     container_name: app
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
     ports:
       - 8080:8080
+      - 40000:40000
     restart: always
     volumes:
       - ./:/usr/src/app/

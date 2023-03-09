@@ -32,7 +32,7 @@ func VerifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
-func (u *User) BeforeSave() error {
+func (u *User) BeforeSave(*gorm.DB) error {
 	hashedPassword, err := Hash(u.Password)
 	if err != nil {
 		return err
@@ -154,7 +154,7 @@ func (u *User) FindUserByID(db *gorm.DB, uid uint32) (*User, error) {
 func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 
 	// To hash the password
-	err := u.BeforeSave()
+	err := u.BeforeSave(db)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -183,7 +183,6 @@ func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 }
 
 func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
-
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).Delete(&User{})
 
 	if db.Error != nil {

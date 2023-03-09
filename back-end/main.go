@@ -14,16 +14,16 @@ import (
 )
 
 func main() {
+
+	loadEnv()
 	router := mux.NewRouter()
+	db := getDB()
+	server := server.NewServer(db, router)
 
-	var err error
-	err = godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error getting env, not comming through %v", err)
-	} else {
-		fmt.Println("We are getting the env values")
-	}
+	server.Run(":8080")
+}
 
+func getDB() *gorm.DB {
 	dbDsn := fmt.Sprintf(
 		"host=%s port=%s user=%s dbname=%s sslmode=disable password=%s TimeZone=Europe/Athens",
 		os.Getenv("DB_HOST"),
@@ -41,9 +41,15 @@ func main() {
 	if err != nil {
 		log.Fatal("database migration error", err)
 	}
+
 	helper.LoadFakeData(db)
 
-	server := server.NewServer(db, router)
+	return db
+}
 
-	server.Run(":8080")
+func loadEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error getting env, not comming through %v", err)
+	}
 }

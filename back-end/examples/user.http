@@ -1,0 +1,20 @@
+POST http://localhost:8080/user
+Content-Type: application/json
+
+{
+  "username": "usertest10",
+  "password": "password1",
+  "first_name": "firstName10",
+  "last_name": "lastName10",
+  "email": "email10@email.com",
+  "birth_date": "11-04-1998",
+  "phone_number": "6986888141",
+  "photo": "phototest"
+}
+
+###
+
+DELETE http://localhost:8080/user/6
+Content-Type: application/json
+
+###
