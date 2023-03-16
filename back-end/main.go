@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/loukaspe/nursing-academiq/models"
+	"github.com/loukaspe/nursing-academiq/internal/repositories"
 	"github.com/loukaspe/nursing-academiq/pkg/helper"
 	"github.com/loukaspe/nursing-academiq/pkg/server"
 	"gorm.io/driver/postgres"
@@ -37,7 +37,7 @@ func getDB() *gorm.DB {
 		log.Fatal("Cannot connect to database: ", err)
 	}
 
-	err = db.Debug().AutoMigrate(&models.User{})
+	err = db.Debug().AutoMigrate(&repositories.User{})
 	if err != nil {
 		log.Fatal("database migration error", err)
 	}
