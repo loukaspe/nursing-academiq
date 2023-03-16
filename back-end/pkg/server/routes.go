@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
+	"github.com/loukaspe/nursing-academiq/internal/handlers/user"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
 )
 
@@ -16,10 +17,10 @@ func (s *Server) initializeRoutes() {
 	userRepository := repositories.NewUserRepository(s.DB)
 	userService := services.NewUserService(userRepository)
 
-	getUserHandler := handlers.NewGetUserHandler(userService)
-	createUserHandler := handlers.NewCreateUserHandler(userService)
-	deleteUserHandler := handlers.NewDeleteUserHandler(userService)
-	updateUserHandler := handlers.NewUpdateUserHandler(userService)
+	getUserHandler := user.NewGetUserHandler(userService)
+	createUserHandler := user.NewCreateUserHandler(userService)
+	deleteUserHandler := user.NewDeleteUserHandler(userService)
+	updateUserHandler := user.NewUpdateUserHandler(userService)
 
 	s.Router.HandleFunc("/user", createUserHandler.CreateUserController).Methods("POST")
 	s.Router.HandleFunc("/user/{id:[0-9]+}", getUserHandler.GetUserController).Methods("GET")
