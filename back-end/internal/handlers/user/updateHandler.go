@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
@@ -88,6 +89,15 @@ func (handler *UpdateUserHandler) UpdateUserController(w http.ResponseWriter, r 
 	}
 
 	err = handler.UserService.UpdateUser(uint32(uid), domainUser)
+	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
+		}).Debug("Error in updating solar panel data")
+
+		w.WriteHeader(dataNotFoundErrorWrapper.ReturnedStatusCode)
+
+		return
+	}
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response.ErrorMessage = err.Error()

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
@@ -49,6 +50,15 @@ func (handler *DeleteUserHandler) DeleteUserController(w http.ResponseWriter, r 
 	}
 
 	err = handler.UserService.DeleteUser(uint32(uid))
+	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
+		}).Debug("Error in updating solar panel data")
+
+		w.WriteHeader(dataNotFoundErrorWrapper.ReturnedStatusCode)
+
+		return
+	}
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response.ErrorMessage = err.Error()
