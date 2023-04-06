@@ -20,7 +20,7 @@ services:
     container_name: app_test
     build:
       context: .
-      dockerfile: ./Dockerfile.test
+      dockerfile: Dockerfile.utilities
     volumes:
       - api_test:/app/src/app/
     depends_on:
