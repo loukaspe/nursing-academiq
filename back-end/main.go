@@ -7,20 +7,28 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
 	"github.com/loukaspe/nursing-academiq/pkg/helper"
 	"github.com/loukaspe/nursing-academiq/pkg/server"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
+	"net/http"
 	"os"
 )
 
 func main() {
 
 	loadEnv()
+
+	logger := log.New()
 	router := mux.NewRouter()
 	db := getDB()
-	server := server.NewServer(db, router)
+	httpServer := &http.Server{
+		Addr:    os.Getenv("SERVER_ADDR"),
+		Handler: router,
+	}
 
-	server.Run(":8080")
+	server := server.NewServer(db, router, httpServer, logger)
+
+	server.Run()
 }
 
 func getDB() *gorm.DB {
@@ -48,7 +56,7 @@ func getDB() *gorm.DB {
 }
 
 func loadEnv() {
-	err := godotenv.Load()
+	err := godotenv.Load("./config/.env")
 	if err != nil {
 		log.Fatalf("Error getting env, not comming through %v", err)
 	}
