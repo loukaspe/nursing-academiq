@@ -3,7 +3,10 @@ package repositories
 import (
 	"errors"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
+	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -57,7 +60,10 @@ func (repo *UserRepository) GetUser(uid uint32) (*domain.User, error) {
 		return &domain.User{}, err
 	}
 	if err == gorm.ErrRecordNotFound {
-		return &domain.User{}, errors.New("User Not Found")
+		return &domain.User{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
 	}
 
 	return &domain.User{
@@ -114,6 +120,12 @@ func (repo *UserRepository) UpdateUser(uid uint32, user *domain.User) error {
 			},
 		)
 
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
 	if db.Error != nil {
 		return db.Error
 	}
@@ -126,6 +138,13 @@ func (repo *UserRepository) DeleteUser(uid uint32) error {
 		Where("id = ?", uid).
 		Take(&User{}).
 		Delete(&User{})
+
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
 
 	if db.Error != nil {
 		return db.Error
