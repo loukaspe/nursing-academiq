@@ -3,7 +3,10 @@ package repositories
 import (
 	"errors"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
+	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -57,7 +60,10 @@ func (repo *TutorRepository) GetTutor(uid uint32) (*domain.Tutor, error) {
 		return &domain.Tutor{}, err
 	}
 	if err == gorm.ErrRecordNotFound {
-		return &domain.Tutor{}, errors.New("Tutor Not Found")
+		return &domain.Tutor{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
 	}
 
 	domainUser := domain.User{
@@ -91,7 +97,12 @@ func (repo *TutorRepository) UpdateTutor(uid uint32, tutor *domain.Tutor) error 
 				"updated_at":    time.Now(),
 			},
 		)
-
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
 	if db.Error != nil {
 		return db.Error
 	}
@@ -104,6 +115,13 @@ func (repo *TutorRepository) DeleteTutor(uid uint32) error {
 		Where("id = ?", uid).
 		Take(&Tutor{}).
 		Delete(&Tutor{})
+
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
 
 	if db.Error != nil {
 		return db.Error
