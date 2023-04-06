@@ -4,17 +4,23 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
 
 type GetUserHandler struct {
 	UserService *services.UserService
+	logger      *log.Logger
 }
 
-func NewGetUserHandler(service *services.UserService) *GetUserHandler {
+func NewGetUserHandler(
+	service *services.UserService,
+	logger *log.Logger,
+) *GetUserHandler {
 	return &GetUserHandler{
 		UserService: service,
+		logger:      logger,
 	}
 }
 

@@ -4,17 +4,23 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
 
 type DeleteUserHandler struct {
 	UserService *services.UserService
+	logger      *log.Logger
 }
 
-func NewDeleteUserHandler(service *services.UserService) *DeleteUserHandler {
+func NewDeleteUserHandler(
+	service *services.UserService,
+	logger *log.Logger,
+) *DeleteUserHandler {
 	return &DeleteUserHandler{
 		UserService: service,
+		logger:      logger,
 	}
 }
 

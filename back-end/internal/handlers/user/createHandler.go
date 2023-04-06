@@ -4,17 +4,23 @@ import (
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
 
 type CreateUserHandler struct {
 	UserService *services.UserService
+	logger      *log.Logger
 }
 
-func NewCreateUserHandler(service *services.UserService) *CreateUserHandler {
+func NewCreateUserHandler(
+	service *services.UserService,
+	logger *log.Logger,
+) *CreateUserHandler {
 	return &CreateUserHandler{
 		UserService: service,
+		logger:      logger,
 	}
 }
 
@@ -41,16 +47,24 @@ func (handler *CreateUserHandler) CreateUserController(w http.ResponseWriter, r 
 
 	err := json.NewDecoder(r.Body).Decode(userRequest)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		response.ErrorMessage = err.Error()
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": err.Error(),
+		}).Error("Error in creating user")
+
+		w.WriteHeader(http.StatusBadRequest)
+		response.ErrorMessage = "malformed user data"
 		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	birthDate, err := time.Parse("01-02-2006", userRequest.BirthDate)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		response.ErrorMessage = err.Error()
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": err.Error(),
+		}).Error("Error in creating user birth date")
+
+		w.WriteHeader(http.StatusBadRequest)
+		response.ErrorMessage = "malformed user data: birth date"
 		json.NewEncoder(w).Encode(response)
 		return
 	}
@@ -68,8 +82,12 @@ func (handler *CreateUserHandler) CreateUserController(w http.ResponseWriter, r 
 
 	err = handler.UserService.CreateUser(domainUser)
 	if err != nil {
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": err.Error(),
+		}).Error("Error in creating user in service")
+
 		w.WriteHeader(http.StatusInternalServerError)
-		response.ErrorMessage = err.Error()
+		response.ErrorMessage = "error creating user"
 		json.NewEncoder(w).Encode(response)
 		return
 	}
