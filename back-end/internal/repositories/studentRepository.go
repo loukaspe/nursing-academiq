@@ -3,7 +3,10 @@ package repositories
 import (
 	"errors"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
+	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -57,7 +60,10 @@ func (repo *StudentRepository) GetStudent(uid uint32) (*domain.Student, error) {
 		return &domain.Student{}, err
 	}
 	if err == gorm.ErrRecordNotFound {
-		return &domain.Student{}, errors.New("Student Not Found")
+		return &domain.Student{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
 	}
 
 	domainUser := domain.User{
@@ -104,6 +110,13 @@ func (repo *StudentRepository) DeleteStudent(uid uint32) error {
 		Where("id = ?", uid).
 		Take(&Student{}).
 		Delete(&Student{})
+
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
 
 	if db.Error != nil {
 		return db.Error
