@@ -5,29 +5,13 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
-	"github.com/loukaspe/nursing-academiq/internal/handlers/user"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
 )
 
 func (s *Server) initializeRoutes() {
-
 	// health check
 	healthCheckHandler := handlers.NewHealthCheckHandler(s.DB)
 	s.router.HandleFunc("/health-check", healthCheckHandler.HealthCheckController).Methods("GET")
-
-	// user
-	userRepository := repositories.NewUserRepository(s.DB)
-	userService := services.NewUserService(userRepository)
-
-	getUserHandler := user.NewGetUserHandler(userService, s.logger)
-	createUserHandler := user.NewCreateUserHandler(userService, s.logger)
-	deleteUserHandler := user.NewDeleteUserHandler(userService, s.logger)
-	updateUserHandler := user.NewUpdateUserHandler(userService, s.logger)
-
-	s.router.HandleFunc("/user", createUserHandler.CreateUserController).Methods("POST")
-	s.router.HandleFunc("/user/{id:[0-9]+}", getUserHandler.GetUserController).Methods("GET")
-	s.router.HandleFunc("/user/{id:[0-9]+}", deleteUserHandler.DeleteUserController).Methods("DELETE")
-	s.router.HandleFunc("/user/{id:[0-9]+}", updateUserHandler.UpdateUserController).Methods("PUT")
 
 	// student
 	studentRepository := repositories.NewStudentRepository(s.DB)
