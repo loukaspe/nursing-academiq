@@ -1,0 +1,74 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "the purpose of this application is to provide the back-end for the Nursing\nAcademiq app, which provides the Nursinq School of Uniwa with a Platform where\nTutors can provide quizzes and Students answer them",
+    "title": "Nursing Academiq OpenAPI",
+    "termsOfService": "there are no TOS at this moment, use at your own risk we take no responsibility",
+    "contact": {
+      "name": "Loukas Peteinaris",
+      "url": "https://github.com/loukaspe",
+      "email": "loukas.peteinaris@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    },
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "basePath": "/",
+  "paths": {
+    "/health-check": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "Check for the health of the app",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "api is ok",
+            "schema": {
+              "$ref": "#/definitions/HealthCheckResponse"
+            }
+          },
+          "500": {
+            "description": "api got problem",
+            "schema": {
+              "$ref": "#/definitions/HealthCheckResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "HealthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers"
+    }
+  }
+}
