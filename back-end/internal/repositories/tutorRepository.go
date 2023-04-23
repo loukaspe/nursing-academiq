@@ -1,13 +1,13 @@
 package repositories
 
 import (
+	"context"
 	"errors"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 type TutorRepository struct {
@@ -18,8 +18,13 @@ func NewTutorRepository(db *gorm.DB) *TutorRepository {
 	return &TutorRepository{db: db}
 }
 
-func (repo *TutorRepository) CreateTutor(tutor *domain.Tutor) error {
+func (repo *TutorRepository) CreateTutor(
+	ctx context.Context,
+	tutor *domain.Tutor,
+) (uint, error) {
 	var err error
+
+	modelTutor := Tutor{}
 
 	modelUser := User{
 		Username:    tutor.User.Username,
@@ -34,36 +39,42 @@ func (repo *TutorRepository) CreateTutor(tutor *domain.Tutor) error {
 
 	modelUser.prepare()
 	err = modelUser.validate()
-	// create custom error checking like Akis
 	if err != nil {
-		return err
+		return modelTutor.ID, apierrors.UserValidationError{
+			ReturnedStatusCode: http.StatusBadRequest,
+			OriginalError:      err,
+		}
 	}
 
-	modelTutor := Tutor{
-		AcademicRank: tutor.AcademicRank,
-		User:         modelUser,
-	}
+	modelTutor.AcademicRank = tutor.AcademicRank
+	modelTutor.User = modelUser
 
-	err = repo.db.Debug().Create(&modelTutor).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	err = repo.db.WithContext(ctx).Create(&modelTutor).Error
+
+	return modelTutor.ID, err
 }
 
-func (repo *TutorRepository) GetTutor(uid uint32) (*domain.Tutor, error) {
+func (repo *TutorRepository) GetTutor(
+	ctx context.Context,
+	uid uint32,
+) (*domain.Tutor, error) {
 	var err error
 	var modelTutor *Tutor
 
-	err = repo.db.Debug().Model(Tutor{}).Where("id = ?", uid).Take(&modelTutor).Error
-	if err != nil {
-		return &domain.Tutor{}, err
-	}
+	err = repo.db.WithContext(ctx).
+		Preload("User").
+		Model(Tutor{}).
+		Where("id = ?", uid).
+		Take(&modelTutor).Error
+
 	if err == gorm.ErrRecordNotFound {
 		return &domain.Tutor{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
 			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
 		}
+	}
+	if err != nil {
+		return &domain.Tutor{}, err
 	}
 
 	domainUser := domain.User{
@@ -83,35 +94,56 @@ func (repo *TutorRepository) GetTutor(uid uint32) (*domain.Tutor, error) {
 	}, err
 }
 
-func (repo *TutorRepository) UpdateTutor(uid uint32, tutor *domain.Tutor) error {
-	modelTutor := Tutor{
-		AcademicRank: tutor.AcademicRank,
-	}
+func (repo *TutorRepository) UpdateTutor(
+	ctx context.Context,
+	uid uint32,
+	tutor *domain.Tutor,
+) error {
+	modelUser := &User{}
+	modelTutor := &Tutor{}
 
-	db := repo.db.Debug().Model(&Tutor{}).
-		Where("id = ?", uid).
-		Take(&Tutor{}).
-		UpdateColumns(
-			map[string]interface{}{
-				"academic_rank": modelTutor.AcademicRank,
-				"updated_at":    time.Now(),
-			},
-		)
-	if db.Error == gorm.ErrRecordNotFound {
+	err := repo.db.WithContext(ctx).Preload("User").First(modelTutor).Error
+	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
 			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
-	if db.Error != nil {
-		return db.Error
+	if err != nil {
+		return err
 	}
 
-	return nil
+	modelUser.Username = tutor.User.Username
+	modelUser.Password = tutor.User.Password
+	modelUser.FirstName = tutor.User.FirstName
+	modelUser.LastName = tutor.User.LastName
+	modelUser.Email = tutor.User.Email
+	modelUser.BirthDate = tutor.User.BirthDate
+	modelUser.PhoneNumber = tutor.User.PhoneNumber
+	modelUser.Photo = tutor.User.Photo
+
+	modelUser.prepare()
+	err = modelUser.validate()
+	if err != nil {
+		return apierrors.UserValidationError{
+			ReturnedStatusCode: http.StatusBadRequest,
+			OriginalError:      err,
+		}
+	}
+
+	modelTutor.AcademicRank = tutor.AcademicRank
+	modelTutor.User = *modelUser
+
+	err = repo.db.WithContext(ctx).Save(&modelTutor).Error
+
+	return err
 }
 
-func (repo *TutorRepository) DeleteTutor(uid uint32) error {
-	db := repo.db.Debug().Model(&Tutor{}).
+func (repo *TutorRepository) DeleteTutor(
+	ctx context.Context,
+	uid uint32,
+) error {
+	db := repo.db.WithContext(ctx).Model(&Tutor{}).
 		Where("id = ?", uid).
 		Take(&Tutor{}).
 		Delete(&Tutor{})
@@ -123,8 +155,5 @@ func (repo *TutorRepository) DeleteTutor(uid uint32) error {
 		}
 	}
 
-	if db.Error != nil {
-		return db.Error
-	}
-	return nil
+	return db.Error
 }

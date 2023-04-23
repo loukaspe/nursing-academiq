@@ -7,8 +7,8 @@ import (
 
 type Student struct {
 	gorm.Model
-	StudentId          string
 	RegistrationNumber string `gorm:"not null;"`
+	UserId             uint   `gorm:"not null"`
 	User               User   `gorm:"foreignKey:UserId"`
 }
 

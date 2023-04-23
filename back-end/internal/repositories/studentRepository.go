@@ -1,13 +1,13 @@
 package repositories
 
 import (
+	"context"
 	"errors"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 type StudentRepository struct {
@@ -18,8 +18,13 @@ func NewStudentRepository(db *gorm.DB) *StudentRepository {
 	return &StudentRepository{db: db}
 }
 
-func (repo *StudentRepository) CreateStudent(student *domain.Student) error {
+func (repo *StudentRepository) CreateStudent(
+	ctx context.Context,
+	student *domain.Student,
+) (uint, error) {
 	var err error
+
+	modelStudent := Student{}
 
 	modelUser := User{
 		Username:    student.User.Username,
@@ -34,36 +39,42 @@ func (repo *StudentRepository) CreateStudent(student *domain.Student) error {
 
 	modelUser.prepare()
 	err = modelUser.validate()
-	// create custom error checking like Akis
 	if err != nil {
-		return err
+		return modelStudent.ID, apierrors.UserValidationError{
+			ReturnedStatusCode: http.StatusBadRequest,
+			OriginalError:      err,
+		}
 	}
 
-	modelStudent := Student{
-		RegistrationNumber: student.RegistrationNumber,
-		User:               modelUser,
-	}
+	modelStudent.RegistrationNumber = student.RegistrationNumber
+	modelStudent.User = modelUser
 
-	err = repo.db.Debug().Create(&modelStudent).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	err = repo.db.WithContext(ctx).Create(&modelStudent).Error
+
+	return modelStudent.ID, err
 }
 
-func (repo *StudentRepository) GetStudent(uid uint32) (*domain.Student, error) {
+func (repo *StudentRepository) GetStudent(
+	ctx context.Context,
+	uid uint32,
+) (*domain.Student, error) {
 	var err error
 	var modelStudent *Student
 
-	err = repo.db.Debug().Model(Student{}).Where("id = ?", uid).Take(&modelStudent).Error
-	if err != nil {
-		return &domain.Student{}, err
-	}
+	err = repo.db.WithContext(ctx).
+		Preload("User").
+		Model(Student{}).
+		Where("id = ?", uid).
+		Take(&modelStudent).Error
+
 	if err == gorm.ErrRecordNotFound {
 		return &domain.Student{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
 			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
 		}
+	}
+	if err != nil {
+		return &domain.Student{}, err
 	}
 
 	domainUser := domain.User{
@@ -83,30 +94,56 @@ func (repo *StudentRepository) GetStudent(uid uint32) (*domain.Student, error) {
 	}, err
 }
 
-func (repo *StudentRepository) UpdateStudent(uid uint32, student *domain.Student) error {
-	modelStudent := Student{
-		RegistrationNumber: student.RegistrationNumber,
+func (repo *StudentRepository) UpdateStudent(
+	ctx context.Context,
+	uid uint32,
+	student *domain.Student,
+) error {
+	modelUser := &User{}
+	modelStudent := &Student{}
+
+	err := repo.db.WithContext(ctx).Preload("User").First(modelStudent).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return err
 	}
 
-	db := repo.db.Debug().Model(&Student{}).
-		Where("id = ?", uid).
-		Take(&Student{}).
-		UpdateColumns(
-			map[string]interface{}{
-				"registration_number": modelStudent.RegistrationNumber,
-				"updated_at":          time.Now(),
-			},
-		)
+	modelUser.Username = student.User.Username
+	modelUser.Password = student.User.Password
+	modelUser.FirstName = student.User.FirstName
+	modelUser.LastName = student.User.LastName
+	modelUser.Email = student.User.Email
+	modelUser.BirthDate = student.User.BirthDate
+	modelUser.PhoneNumber = student.User.PhoneNumber
+	modelUser.Photo = student.User.Photo
 
-	if db.Error != nil {
-		return db.Error
+	modelUser.prepare()
+	err = modelUser.validate()
+	if err != nil {
+		return apierrors.UserValidationError{
+			ReturnedStatusCode: http.StatusBadRequest,
+			OriginalError:      err,
+		}
 	}
 
-	return nil
+	modelStudent.RegistrationNumber = student.RegistrationNumber
+	modelStudent.User = *modelUser
+
+	err = repo.db.WithContext(ctx).Save(&modelStudent).Error
+
+	return err
 }
 
-func (repo *StudentRepository) DeleteStudent(uid uint32) error {
-	db := repo.db.Debug().Model(&Student{}).
+func (repo *StudentRepository) DeleteStudent(
+	ctx context.Context,
+	uid uint32,
+) error {
+	db := repo.db.WithContext(ctx).Model(&Student{}).
 		Where("id = ?", uid).
 		Take(&Student{}).
 		Delete(&Student{})
@@ -118,8 +155,5 @@ func (repo *StudentRepository) DeleteStudent(uid uint32) error {
 		}
 	}
 
-	if db.Error != nil {
-		return db.Error
-	}
-	return nil
+	return db.Error
 }

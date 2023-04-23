@@ -14,3 +14,16 @@ func (err DataNotFoundErrorWrapper) Error() string {
 func (err DataNotFoundErrorWrapper) Unwrap() error {
 	return err.OriginalError
 }
+
+type UserValidationError struct {
+	ReturnedStatusCode int
+	OriginalError      error
+}
+
+func (err UserValidationError) Error() string {
+	return "error validating user"
+}
+
+func (err UserValidationError) Unwrap() error {
+	return err.OriginalError
+}
