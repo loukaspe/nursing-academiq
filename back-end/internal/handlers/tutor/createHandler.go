@@ -1,6 +1,7 @@
 package tutor
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -86,7 +87,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		AcademicRank: tutorRequest.AcademicRank,
 	}
 
-	err = handler.TutorService.CreateTutor(domainTutor)
+	uid, err := handler.TutorService.CreateTutor(context.TODO(), domainTutor)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -97,6 +98,8 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	response.CreatedTutorUid = uid
 
 	w.WriteHeader(http.StatusCreated)
 	return

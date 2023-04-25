@@ -1,10 +1,13 @@
 package ports
 
-import "github.com/loukaspe/nursing-academiq/internal/core/domain"
+import (
+	"context"
+	"github.com/loukaspe/nursing-academiq/internal/core/domain"
+)
 
 type StudentRepositoryInterface interface {
-	GetStudent(uid uint32) (*domain.Student, error)
-	CreateStudent(*domain.Student) error
-	UpdateStudent(uint32, *domain.Student) error
-	DeleteStudent(uid uint32) error
+	GetStudent(ctx context.Context, uid uint32) (*domain.Student, error)
+	CreateStudent(context.Context, *domain.Student) (uint, error)
+	UpdateStudent(context.Context, uint32, *domain.Student) error
+	DeleteStudent(ctx context.Context, uid uint32) error
 }

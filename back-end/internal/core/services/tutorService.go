@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/ports"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
@@ -14,18 +15,18 @@ type TutorService struct {
 	repository ports.TutorRepositoryInterface
 }
 
-func (service TutorService) GetTutor(uid uint32) (*domain.Tutor, error) {
-	return service.repository.GetTutor(uid)
+func (service TutorService) GetTutor(ctx context.Context, uid uint32) (*domain.Tutor, error) {
+	return service.repository.GetTutor(ctx, uid)
 }
 
-func (service TutorService) CreateTutor(tutor *domain.Tutor) error {
-	return service.repository.CreateTutor(tutor)
+func (service TutorService) CreateTutor(ctx context.Context, tutor *domain.Tutor) (uint, error) {
+	return service.repository.CreateTutor(ctx, tutor)
 }
 
-func (service TutorService) UpdateTutor(uid uint32, tutor *domain.Tutor) error {
-	return service.repository.UpdateTutor(uid, tutor)
+func (service TutorService) UpdateTutor(ctx context.Context, uid uint32, tutor *domain.Tutor) error {
+	return service.repository.UpdateTutor(ctx, uid, tutor)
 }
 
-func (service TutorService) DeleteTutor(uid uint32) error {
-	return service.repository.DeleteTutor(uid)
+func (service TutorService) DeleteTutor(ctx context.Context, uid uint32) error {
+	return service.repository.DeleteTutor(ctx, uid)
 }

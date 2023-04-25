@@ -1,6 +1,7 @@
 package student
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -42,7 +43,7 @@ type CreateStudentResponse struct {
 
 func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//var err error
+
 	response := &CreateStudentResponse{}
 	studentRequest := &Student{}
 
@@ -86,7 +87,7 @@ func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWrit
 		RegistrationNumber: studentRequest.RegistrationNumber,
 	}
 
-	err = handler.StudentService.CreateStudent(domainStudent)
+	uid, err := handler.StudentService.CreateStudent(context.TODO(), domainStudent)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -97,6 +98,8 @@ func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWrit
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	response.CreatedStudentUid = uid
 
 	w.WriteHeader(http.StatusCreated)
 	return
