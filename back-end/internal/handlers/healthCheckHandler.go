@@ -16,8 +16,12 @@ func NewHealthCheckHandler(db *gorm.DB) *HealthCheckHandler {
 	}
 }
 
+// Response when we do health check
 // swagger:model HealthCheckResponse
 type HealthCheckResponse struct {
+	// message that all is OK or what is wrong
+	//
+	// Required: true
 	Message string `json:"message"`
 }
 
@@ -37,16 +41,15 @@ type HealthCheckResponse struct {
 //	- http
 //	- https
 //
-// responses:
-//   '200':
-//     description: api is ok
-//     schema:
-//       "$ref": "#/definitions/HealthCheckResponse"
-//   '500':
-//     description: api got problem
-//     schema:
-//       "$ref": "#/definitions/HealthCheckResponse"
-
+//	responses:
+//		"200":
+//			description: OK
+//			schema:
+//				$ref: "#/definitions/HealthCheckResponse"
+//		"500":
+//			description: Error
+//			schema:
+//				$ref: "#/definitions/HealthCheckResponse"
 func (handler *HealthCheckHandler) HealthCheckController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

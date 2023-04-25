@@ -25,29 +25,83 @@ func NewCreateTutorHandler(
 	}
 }
 
-type Tutor struct {
-	Username     string `json:"username"`
-	Password     string `json:"password"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Email        string `json:"email"`
-	BirthDate    string `json:"birth_date"`
-	PhoneNumber  string `json:"phone_number"`
-	Photo        string `json:"photo"`
-	AcademicRank string `json:"academic_rank"`
+// the tutor model needed to create a new tutor
+// it also creates a new user
+//
+// swagger:parameters createTutor
+type CreateTutorRequest struct {
+	// in:body
+	Tutor struct {
+		// Required: true
+		Username string `json:"username"`
+		// Required: true
+		Password string `json:"password"`
+		// Required: true
+		FirstName string `json:"first_name"`
+		// Required: true
+		LastName string `json:"last_name"`
+		// Required: true
+		Email string `json:"email"`
+		// Required: true
+		BirthDate string `json:"birth_date"`
+		// Required: true
+		PhoneNumber string `json:"phone_number"`
+		// Required: true
+		Photo string `json:"photo"`
+		// Required: true
+		AcademicRank string `json:"academic_rank"`
+	} `json:""`
 }
 
+// Response when we insert a new Tutor
+// swagger:model CreateTutorResponse
 type CreateTutorResponse struct {
+	// inserted tutor uid
+	//
+	// Required: true
+	CreatedTutorUid uint `json:"insertedUid"`
+	// possible error message
+	//
+	// Required: false
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
+// swagger:operation POST /tutor createTutor
+//
+// # It creates a new tutor along with a new user
+//
+// ---
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes:
+//	- http
+//	- https
+//
+//	responses:
+//		"200":
+//			description: Tutor created successfully
+//			schema:
+//				$ref: "#/definitions/CreateTutorResponse"
+//		"400":
+//			description: Bad request - request parameters are missing or invalid
+//			schema:
+//				$ref: "#/definitions/CreateTutorResponse"
+//		"500":
+//			description: Internal server error - check logs for details
+//			schema:
+//				$ref: "#/definitions/CreateTutorResponse"
 func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//var err error
-	response := &CreateTutorResponse{}
-	tutorRequest := &Tutor{}
 
-	err := json.NewDecoder(r.Body).Decode(tutorRequest)
+	response := &CreateTutorResponse{}
+	request := &CreateTutorRequest{}
+
+	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -58,6 +112,8 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	tutorRequest := request.Tutor
 
 	birthDate, err := time.Parse("01-02-2006", tutorRequest.BirthDate)
 	if err != nil {

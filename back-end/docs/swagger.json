@@ -11,7 +11,7 @@
   ],
   "swagger": "2.0",
   "info": {
-    "description": "the purpose of this application is to provide the back-end for the Nursing\nAcademiq app, which provides the Nursinq School of Uniwa with a Platform where\nTutors can provide quizzes and Students answer them",
+    "description": "The purpose of this application is to provide the back-end for the Nursing\nAcademiq app, which provides the Nursinq School of Uniwa with a Platform where\nTutors can provide quizzes and Students answer them",
     "title": "Nursing Academiq OpenAPI",
     "termsOfService": "there are no TOS at this moment, use at your own risk we take no responsibility",
     "contact": {
@@ -44,15 +44,203 @@
         "operationId": "healthCheck",
         "responses": {
           "200": {
-            "description": "api is ok",
+            "description": "OK",
             "schema": {
               "$ref": "#/definitions/HealthCheckResponse"
             }
           },
           "500": {
-            "description": "api got problem",
+            "description": "Error",
             "schema": {
               "$ref": "#/definitions/HealthCheckResponse"
+            }
+          }
+        }
+      }
+    },
+    "/student": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "It creates a new student along with a new user",
+        "operationId": "createStudent",
+        "parameters": [
+          {
+            "name": "Student",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password",
+                "first_name",
+                "last_name",
+                "email",
+                "birth_date",
+                "phone_number",
+                "photo",
+                "registration_number"
+              ],
+              "properties": {
+                "birth_date": {
+                  "type": "string",
+                  "x-go-name": "BirthDate"
+                },
+                "email": {
+                  "type": "string",
+                  "x-go-name": "Email"
+                },
+                "first_name": {
+                  "type": "string",
+                  "x-go-name": "FirstName"
+                },
+                "last_name": {
+                  "type": "string",
+                  "x-go-name": "LastName"
+                },
+                "password": {
+                  "type": "string",
+                  "x-go-name": "Password"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "x-go-name": "PhoneNumber"
+                },
+                "photo": {
+                  "type": "string",
+                  "x-go-name": "Photo"
+                },
+                "registration_number": {
+                  "type": "string",
+                  "x-go-name": "RegistrationNumber"
+                },
+                "username": {
+                  "type": "string",
+                  "x-go-name": "Username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student created successfully",
+            "schema": {
+              "$ref": "#/definitions/CreateStudentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request - request parameters are missing or invalid",
+            "schema": {
+              "$ref": "#/definitions/CreateStudentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error - check logs for details",
+            "schema": {
+              "$ref": "#/definitions/CreateStudentResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tutor": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "It creates a new tutor along with a new user",
+        "operationId": "createTutor",
+        "parameters": [
+          {
+            "name": "Tutor",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password",
+                "first_name",
+                "last_name",
+                "email",
+                "birth_date",
+                "phone_number",
+                "photo",
+                "academic_rank"
+              ],
+              "properties": {
+                "academic_rank": {
+                  "type": "string",
+                  "x-go-name": "AcademicRank"
+                },
+                "birth_date": {
+                  "type": "string",
+                  "x-go-name": "BirthDate"
+                },
+                "email": {
+                  "type": "string",
+                  "x-go-name": "Email"
+                },
+                "first_name": {
+                  "type": "string",
+                  "x-go-name": "FirstName"
+                },
+                "last_name": {
+                  "type": "string",
+                  "x-go-name": "LastName"
+                },
+                "password": {
+                  "type": "string",
+                  "x-go-name": "Password"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "x-go-name": "PhoneNumber"
+                },
+                "photo": {
+                  "type": "string",
+                  "x-go-name": "Photo"
+                },
+                "username": {
+                  "type": "string",
+                  "x-go-name": "Username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tutor created successfully",
+            "schema": {
+              "$ref": "#/definitions/CreateTutorResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request - request parameters are missing or invalid",
+            "schema": {
+              "$ref": "#/definitions/CreateTutorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error - check logs for details",
+            "schema": {
+              "$ref": "#/definitions/CreateTutorResponse"
             }
           }
         }
@@ -60,10 +248,57 @@
     }
   },
   "definitions": {
-    "HealthCheckResponse": {
+    "CreateStudentResponse": {
+      "description": "Response when we insert a new Student",
       "type": "object",
+      "required": [
+        "insertedUid"
+      ],
+      "properties": {
+        "errorMessage": {
+          "description": "possible error message",
+          "type": "string",
+          "x-go-name": "ErrorMessage"
+        },
+        "insertedUid": {
+          "description": "inserted student uid",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "CreatedStudentUid"
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/student"
+    },
+    "CreateTutorResponse": {
+      "description": "Response when we insert a new Tutor",
+      "type": "object",
+      "required": [
+        "insertedUid"
+      ],
+      "properties": {
+        "errorMessage": {
+          "description": "possible error message",
+          "type": "string",
+          "x-go-name": "ErrorMessage"
+        },
+        "insertedUid": {
+          "description": "inserted tutor uid",
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "CreatedTutorUid"
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
+    },
+    "HealthCheckResponse": {
+      "description": "Response when we do health check",
+      "type": "object",
+      "required": [
+        "message"
+      ],
       "properties": {
         "message": {
+          "description": "message that all is OK or what is wrong",
           "type": "string",
           "x-go-name": "Message"
         }

@@ -25,29 +25,83 @@ func NewCreateStudentHandler(
 	}
 }
 
-type Student struct {
-	Username           string `json:"username"`
-	Password           string `json:"password"`
-	FirstName          string `json:"first_name"`
-	LastName           string `json:"last_name"`
-	Email              string `json:"email"`
-	BirthDate          string `json:"birth_date"`
-	PhoneNumber        string `json:"phone_number"`
-	Photo              string `json:"photo"`
-	RegistrationNumber string `json:"registration_number"`
+// the student model needed to create a new student
+// it also creates a new user
+//
+// swagger:parameters createStudent
+type CreateStudentRequest struct {
+	// in:body
+	Student struct {
+		// Required: true
+		Username string `json:"username"`
+		// Required: true
+		Password string `json:"password"`
+		// Required: true
+		FirstName string `json:"first_name"`
+		// Required: true
+		LastName string `json:"last_name"`
+		// Required: true
+		Email string `json:"email"`
+		// Required: true
+		BirthDate string `json:"birth_date"`
+		// Required: true
+		PhoneNumber string `json:"phone_number"`
+		// Required: true
+		Photo string `json:"photo"`
+		// Required: true
+		RegistrationNumber string `json:"registration_number"`
+	} `json:""`
 }
 
+// Response when we insert a new Student
+// swagger:model CreateStudentResponse
 type CreateStudentResponse struct {
+	// inserted student uid
+	//
+	// Required: true
+	CreatedStudentUid uint `json:"insertedUid"`
+	// possible error message
+	//
+	// Required: false
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
+// swagger:operation POST /student createStudent
+//
+// # It creates a new student along with a new user
+//
+// ---
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes:
+//	- http
+//	- https
+//
+//	responses:
+//		"200":
+//			description: Student created successfully
+//			schema:
+//				$ref: "#/definitions/CreateStudentResponse"
+//		"400":
+//			description: Bad request - request parameters are missing or invalid
+//			schema:
+//				$ref: "#/definitions/CreateStudentResponse"
+//		"500":
+//			description: Internal server error - check logs for details
+//			schema:
+//				$ref: "#/definitions/CreateStudentResponse"
 func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	response := &CreateStudentResponse{}
-	studentRequest := &Student{}
+	request := &CreateStudentRequest{}
 
-	err := json.NewDecoder(r.Body).Decode(studentRequest)
+	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -58,6 +112,8 @@ func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWrit
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	studentRequest := request.Student
 
 	birthDate, err := time.Parse("01-02-2006", studentRequest.BirthDate)
 	if err != nil {
