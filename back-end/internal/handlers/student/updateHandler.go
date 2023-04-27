@@ -1,6 +1,7 @@
 package student
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
@@ -27,18 +28,57 @@ func NewUpdateStudentHandler(
 	}
 }
 
+// Response when we update Student
+// swagger:model UpdateStudentResponse
 type UpdateStudentResponse struct {
+	// possible error message
+	//
+	// Required: false
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
+// swagger:operation PUT /student/{studentId} updateStudent
+//
+// # It updates a User
+//
+// ---
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes:
+//	- http
+//	- https
+//
+// responses:
+//
+//	"200":
+//		description: Student updates successfully
+//		schema:
+//			$ref: "#/definitions/UpdateStudentResponse"
+//	"400":
+//		description: Bad request - request parameters are missing or invalid
+//		schema:
+//			$ref: "#/definitions/UpdateStudentResponse"
+//	"404":
+//		description: Requested student not found
+//		schema:
+//			$ref: "#/definitions/UpdateStudentResponse"
+//	"500":
+//		description: Internal server error - check logs for details
+//		schema:
+//			$ref: "#/definitions/UpdateStudentResponse"
 func (handler *UpdateStudentHandler) UpdateStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	response := &UpdateStudentResponse{}
 
-	studentRequest := &Student{}
+	request := &StudentRequest{}
 
-	err := json.NewDecoder(r.Body).Decode(studentRequest)
+	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -49,6 +89,8 @@ func (handler *UpdateStudentHandler) UpdateStudentController(w http.ResponseWrit
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
+	studentRequest := request.Student
 
 	id := mux.Vars(r)["id"]
 	if id == "" {
@@ -93,7 +135,7 @@ func (handler *UpdateStudentHandler) UpdateStudentController(w http.ResponseWrit
 		RegistrationNumber: studentRequest.RegistrationNumber,
 	}
 
-	err = handler.StudentService.UpdateStudent(uint32(uid), domainStudent)
+	err = handler.StudentService.UpdateStudent(context.TODO(), uint32(uid), domainStudent)
 	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

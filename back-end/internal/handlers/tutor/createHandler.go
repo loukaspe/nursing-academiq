@@ -25,11 +25,11 @@ func NewCreateTutorHandler(
 	}
 }
 
-// the tutor model needed to create a new tutor
+// the tutor model needed to create and update a tutor
 // it also creates a new user
 //
-// swagger:parameters createTutor
-type CreateTutorRequest struct {
+// swagger:parameters createTutor updateTutor
+type TutorRequest struct {
 	// in:body
 	Tutor struct {
 		// Required: true
@@ -99,7 +99,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 	w.Header().Set("Content-Type", "application/json")
 
 	response := &CreateTutorResponse{}
-	request := &CreateTutorRequest{}
+	request := &TutorRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {

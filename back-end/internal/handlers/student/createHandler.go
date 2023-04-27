@@ -25,11 +25,11 @@ func NewCreateStudentHandler(
 	}
 }
 
-// the student model needed to create a new student
+// the student model needed to create and update a student
 // it also creates a new user
 //
-// swagger:parameters createStudent
-type CreateStudentRequest struct {
+// swagger:parameters createStudent updateStudent
+type StudentRequest struct {
 	// in:body
 	Student struct {
 		// Required: true
@@ -99,7 +99,7 @@ func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWrit
 	w.Header().Set("Content-Type", "application/json")
 
 	response := &CreateStudentResponse{}
-	request := &CreateStudentRequest{}
+	request := &StudentRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {
