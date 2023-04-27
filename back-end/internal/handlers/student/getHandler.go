@@ -1,6 +1,7 @@
 package student
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -25,11 +26,49 @@ func NewGetStudentHandler(
 	}
 }
 
+// Response when we get a Student
+// swagger:model GetStudentResponse
 type GetStudentResponse struct {
-	ErrorMessage string   `json:"errorMessage,omitempty"`
-	Student      *Student `json:"student,omitempty"`
+	// possible error message
+	//
+	// Required: false
+	ErrorMessage string `json:"errorMessage,omitempty"`
+	// retrieved student
+	//
+	// Required: true
+	Student *StudentRequest `json:"student,omitempty"`
 }
 
+// swagger:operation GET /student/{studentId} getStudent
+//
+// # It updates a User
+//
+// ---
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+//	Schemes:
+//	- http
+//	- https
+//
+// responses:
+//
+//	"200":
+//		description: Student retrieved successfully
+//		schema:
+//			$ref: "#/definitions/GetStudentResponse"
+//	"404":
+//		description: Requested student not found
+//		schema:
+//			$ref: "#/definitions/GetStudentResponse"
+//	"500":
+//		description: Internal server error - check logs for details
+//		schema:
+//			$ref: "#/definitions/UpdateStudentResponse"
 func (handler *GetStudentHandler) GetStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//var err error
@@ -50,7 +89,7 @@ func (handler *GetStudentHandler) GetStudentController(w http.ResponseWriter, r 
 		return
 	}
 
-	student, err := handler.StudentService.GetStudent(uint32(uid))
+	student, err := handler.StudentService.GetStudent(context.TODO(), uint32(uid))
 	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
@@ -67,16 +106,28 @@ func (handler *GetStudentHandler) GetStudentController(w http.ResponseWriter, r 
 		return
 	}
 
-	response.Student = &Student{
-		Username:           student.Username,
-		Password:           student.Password,
-		FirstName:          student.FirstName,
-		LastName:           student.LastName,
-		Email:              student.Email,
-		BirthDate:          student.BirthDate.String(),
-		PhoneNumber:        student.PhoneNumber,
-		Photo:              student.Photo,
-		RegistrationNumber: student.RegistrationNumber,
+	response.Student = &StudentRequest{
+		Student: struct {
+			Username           string `json:"username"`
+			Password           string `json:"password"`
+			FirstName          string `json:"first_name"`
+			LastName           string `json:"last_name"`
+			Email              string `json:"email"`
+			BirthDate          string `json:"birth_date"`
+			PhoneNumber        string `json:"phone_number"`
+			Photo              string `json:"photo"`
+			RegistrationNumber string `json:"registration_number"`
+		}{
+			Username:           student.Username,
+			Password:           student.Password,
+			FirstName:          student.FirstName,
+			LastName:           student.LastName,
+			Email:              student.Email,
+			BirthDate:          student.BirthDate.String(),
+			PhoneNumber:        student.PhoneNumber,
+			Photo:              student.Photo,
+			RegistrationNumber: student.RegistrationNumber,
+		},
 	}
 
 	json.NewEncoder(w).Encode(response)

@@ -153,6 +153,20 @@
       }
     },
     "/student/{studentId}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "It updates a User",
+        "operationId": "getStudent"
+      },
       "put": {
         "consumes": [
           "application/json"
@@ -321,6 +335,20 @@
       }
     },
     "/tutor/{tutorId}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "It updates a User",
+        "operationId": "getTutor"
+      },
       "put": {
         "consumes": [
           "application/json"
@@ -438,6 +466,42 @@
       },
       "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
     },
+    "GetStudentResponse": {
+      "description": "Response when we get a Student",
+      "type": "object",
+      "required": [
+        "student"
+      ],
+      "properties": {
+        "errorMessage": {
+          "description": "possible error message",
+          "type": "string",
+          "x-go-name": "ErrorMessage"
+        },
+        "student": {
+          "$ref": "#/definitions/StudentRequest"
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/student"
+    },
+    "GetTutorResponse": {
+      "description": "Response when we get a Tutor",
+      "type": "object",
+      "required": [
+        "tutor"
+      ],
+      "properties": {
+        "errorMessage": {
+          "description": "possible error message",
+          "type": "string",
+          "x-go-name": "ErrorMessage"
+        },
+        "tutor": {
+          "$ref": "#/definitions/TutorRequest"
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
+    },
     "HealthCheckResponse": {
       "description": "Response when we do health check",
       "type": "object",
@@ -452,6 +516,126 @@
         }
       },
       "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers"
+    },
+    "StudentRequest": {
+      "description": "the student model needed to create and update a student\nit also creates a new user",
+      "type": "object",
+      "properties": {
+        "Student": {
+          "description": "in:body",
+          "type": "object",
+          "required": [
+            "username",
+            "password",
+            "first_name",
+            "last_name",
+            "email",
+            "birth_date",
+            "phone_number",
+            "photo",
+            "registration_number"
+          ],
+          "properties": {
+            "birth_date": {
+              "type": "string",
+              "x-go-name": "BirthDate"
+            },
+            "email": {
+              "type": "string",
+              "x-go-name": "Email"
+            },
+            "first_name": {
+              "type": "string",
+              "x-go-name": "FirstName"
+            },
+            "last_name": {
+              "type": "string",
+              "x-go-name": "LastName"
+            },
+            "password": {
+              "type": "string",
+              "x-go-name": "Password"
+            },
+            "phone_number": {
+              "type": "string",
+              "x-go-name": "PhoneNumber"
+            },
+            "photo": {
+              "type": "string",
+              "x-go-name": "Photo"
+            },
+            "registration_number": {
+              "type": "string",
+              "x-go-name": "RegistrationNumber"
+            },
+            "username": {
+              "type": "string",
+              "x-go-name": "Username"
+            }
+          }
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/student"
+    },
+    "TutorRequest": {
+      "description": "the tutor model needed to create and update a tutor\nit also creates a new user",
+      "type": "object",
+      "properties": {
+        "Tutor": {
+          "description": "in:body",
+          "type": "object",
+          "required": [
+            "username",
+            "password",
+            "first_name",
+            "last_name",
+            "email",
+            "birth_date",
+            "phone_number",
+            "photo",
+            "academic_rank"
+          ],
+          "properties": {
+            "academic_rank": {
+              "type": "string",
+              "x-go-name": "AcademicRank"
+            },
+            "birth_date": {
+              "type": "string",
+              "x-go-name": "BirthDate"
+            },
+            "email": {
+              "type": "string",
+              "x-go-name": "Email"
+            },
+            "first_name": {
+              "type": "string",
+              "x-go-name": "FirstName"
+            },
+            "last_name": {
+              "type": "string",
+              "x-go-name": "LastName"
+            },
+            "password": {
+              "type": "string",
+              "x-go-name": "Password"
+            },
+            "phone_number": {
+              "type": "string",
+              "x-go-name": "PhoneNumber"
+            },
+            "photo": {
+              "type": "string",
+              "x-go-name": "Photo"
+            },
+            "username": {
+              "type": "string",
+              "x-go-name": "Username"
+            }
+          }
+        }
+      },
+      "x-go-package": "github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
     },
     "UpdateStudentResponse": {
       "description": "Response when we update Student",
