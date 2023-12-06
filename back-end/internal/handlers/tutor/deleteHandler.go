@@ -1,6 +1,7 @@
 package tutor
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -49,7 +50,7 @@ func (handler *DeleteTutorHandler) DeleteTutorController(w http.ResponseWriter, 
 		return
 	}
 
-	err = handler.TutorService.DeleteTutor(uint32(uid))
+	err = handler.TutorService.DeleteTutor(context.Background(), uint32(uid))
 	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
