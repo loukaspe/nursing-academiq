@@ -45,6 +45,10 @@ func (repo *TutorRepository) CreateTutor(
 			OriginalError:      err,
 		}
 	}
+	err = modelUser.BeforeSave()
+	if err != nil {
+		return 0, err
+	}
 
 	modelTutor.AcademicRank = tutor.AcademicRank
 	modelTutor.User = modelUser

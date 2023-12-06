@@ -27,3 +27,16 @@ func (err UserValidationError) Error() string {
 func (err UserValidationError) Unwrap() error {
 	return err.OriginalError
 }
+
+type LoginError struct {
+	ReturnedStatusCode int
+	OriginalError      error
+}
+
+func (err LoginError) Error() string {
+	return "error login user"
+}
+
+func (err LoginError) Unwrap() error {
+	return err.OriginalError
+}

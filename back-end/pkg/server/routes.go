@@ -6,12 +6,33 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
+	"github.com/loukaspe/nursing-academiq/pkg/auth"
+	"net/http"
+	"os"
 )
 
 func (s *Server) initializeRoutes() {
 	// health check
 	healthCheckHandler := handlers.NewHealthCheckHandler(s.DB)
 	s.router.HandleFunc("/health-check", healthCheckHandler.HealthCheckController).Methods("GET")
+
+	// auth
+	jwtMechanism := auth.NewAuthMechanism(
+		os.Getenv("JWT_SECRET_KEY"),
+		os.Getenv("JWT_SIGNING_METHOD"),
+	)
+	jwtService := services.NewJwtService(jwtMechanism)
+	jwtMiddleware := handlers.NewAuthenticationMw(jwtMechanism)
+
+	userRepository := repositories.NewUserRepository(s.DB)
+	loginService := services.NewLoginService(userRepository)
+
+	jwtHandler := handlers.NewJwtClaimsHandler(jwtService, loginService, s.logger)
+
+	s.router.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
+
+	protected := s.router.PathPrefix("/").Subrouter()
+	protected.Use(jwtMiddleware.AuthenticationMW)
 
 	// student
 	studentRepository := repositories.NewStudentRepository(s.DB)
@@ -22,10 +43,10 @@ func (s *Server) initializeRoutes() {
 	deleteStudentHandler := student.NewDeleteStudentHandler(studentService, s.logger)
 	updateStudentHandler := student.NewUpdateStudentHandler(studentService, s.logger)
 
-	s.router.HandleFunc("/student", createStudentHandler.CreateStudentController).Methods("POST")
-	s.router.HandleFunc("/student/{id:[0-9]+}", getStudentHandler.GetStudentController).Methods("GET")
-	s.router.HandleFunc("/student/{id:[0-9]+}", deleteStudentHandler.DeleteStudentController).Methods("DELETE")
-	s.router.HandleFunc("/student/{id:[0-9]+}", updateStudentHandler.UpdateStudentController).Methods("PUT")
+	protected.HandleFunc("/student", createStudentHandler.CreateStudentController).Methods("POST")
+	protected.HandleFunc("/student/{id:[0-9]+}", getStudentHandler.GetStudentController).Methods("GET")
+	protected.HandleFunc("/student/{id:[0-9]+}", deleteStudentHandler.DeleteStudentController).Methods("DELETE")
+	protected.HandleFunc("/student/{id:[0-9]+}", updateStudentHandler.UpdateStudentController).Methods("PUT")
 
 	// tutor
 	tutorRepository := repositories.NewTutorRepository(s.DB)
@@ -36,8 +57,8 @@ func (s *Server) initializeRoutes() {
 	deleteTutorHandler := tutor.NewDeleteTutorHandler(tutorService, s.logger)
 	updateTutorHandler := tutor.NewUpdateTutorHandler(tutorService, s.logger)
 
-	s.router.HandleFunc("/tutor", createTutorHandler.CreateTutorController).Methods("POST")
-	s.router.HandleFunc("/tutor/{id:[0-9]+}", getTutorHandler.GetTutorController).Methods("GET")
-	s.router.HandleFunc("/tutor/{id:[0-9]+}", deleteTutorHandler.DeleteTutorController).Methods("DELETE")
-	s.router.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
+	protected.HandleFunc("/tutor", createTutorHandler.CreateTutorController).Methods("POST")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", getTutorHandler.GetTutorController).Methods("GET")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", deleteTutorHandler.DeleteTutorController).Methods("DELETE")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
 }

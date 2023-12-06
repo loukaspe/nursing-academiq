@@ -92,6 +92,10 @@ func CreateUsers(db *gorm.DB) {
 	}
 
 	for i, _ := range users {
+		err = users[i].BeforeSave()
+		if err != nil {
+			log.Fatalf("cannot hash in seed users table: %v", err)
+		}
 		err = db.Debug().Model(&repositories.User{}).Create(&users[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)

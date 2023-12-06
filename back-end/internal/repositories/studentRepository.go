@@ -45,6 +45,10 @@ func (repo *StudentRepository) CreateStudent(
 			OriginalError:      err,
 		}
 	}
+	err = modelUser.BeforeSave()
+	if err != nil {
+		return 0, err
+	}
 
 	modelStudent.RegistrationNumber = student.RegistrationNumber
 	modelStudent.User = modelUser
