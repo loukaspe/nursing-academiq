@@ -5,10 +5,10 @@ services:
     image: postgres:latest
     container_name: postgres-db
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - DATABASE_HOST=${DB_HOST}
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydb
+      - DATABASE_HOST=postgres-db
     ports:
       - '5432:5432'
     volumes:
@@ -20,8 +20,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin_container
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: username
+      PGADMIN_DEFAULT_PASSWORD: password
     depends_on:
       - postgres-db
     ports:
@@ -33,7 +33,7 @@ services:
     container_name: app
     build:
       context: .
-      dockerfile: ./Dockerfile.dev
+      dockerfile: dev.Dockerfile
     ports:
       - 8080:8080
       - 40000:40000

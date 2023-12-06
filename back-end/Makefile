@@ -91,4 +91,4 @@ rebuild-app:
 build-dev:
 	@docker build \
 			--tag dev-build \
-			-f Dockerfile.utilities .
+			-f utilities.Dockerfile .

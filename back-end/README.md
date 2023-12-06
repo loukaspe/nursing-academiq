@@ -43,5 +43,5 @@ Service that provides a REST API offering CRUD operations for User, Student, Tut
 1. There are three Dockerfile files.
     1. Dockerfile is the normal, production one
     2. Dockerfile.dev is for setting up a remote debugger Delve
-    3. Dockerfile.utilities is for building a docker for "utilities" like running tests,  
+    3. utilities.Dockerfile is for building a docker for "utilities" like running tests,  
        linting etc
