@@ -86,7 +86,7 @@ reset-app:
 rebuild-app:
 	docker-compose stop app
 	docker-compose build app
-	docker-compose up -d app
+	docker-compose up app
 
 build-dev:
 	@docker build \
