@@ -1,6 +1,7 @@
 package server
 
 import (
+	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
@@ -30,6 +31,10 @@ func (s *Server) initializeRoutes() {
 	jwtHandler := handlers.NewJwtClaimsHandler(jwtService, loginService, s.logger)
 
 	s.router.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
+	s.router.HandleFunc(
+		"/login",
+		optionsHandlerForCors,
+	).Methods(http.MethodOptions)
 
 	protected := s.router.PathPrefix("/").Subrouter()
 	protected.Use(jwtMiddleware.AuthenticationMW)
@@ -44,9 +49,13 @@ func (s *Server) initializeRoutes() {
 	updateStudentHandler := student.NewUpdateStudentHandler(studentService, s.logger)
 
 	protected.HandleFunc("/student", createStudentHandler.CreateStudentController).Methods("POST")
+	protected.HandleFunc("/student", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", getStudentHandler.GetStudentController).Methods("GET")
+	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", deleteStudentHandler.DeleteStudentController).Methods("DELETE")
+	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", updateStudentHandler.UpdateStudentController).Methods("PUT")
+	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// tutor
 	tutorRepository := repositories.NewTutorRepository(s.DB)
@@ -58,7 +67,24 @@ func (s *Server) initializeRoutes() {
 	updateTutorHandler := tutor.NewUpdateTutorHandler(tutorService, s.logger)
 
 	protected.HandleFunc("/tutor", createTutorHandler.CreateTutorController).Methods("POST")
+	protected.HandleFunc("/tutor", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}", getTutorHandler.GetTutorController).Methods("GET")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}", deleteTutorHandler.DeleteTutorController).Methods("DELETE")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
+	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	// TODO fix allowed origns
+	corsOrigins := gorillaHandlers.AllowedOrigins([]string{"*"})
+	corsMethods := gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
+	corsHandler := gorillaHandlers.CORS(corsOrigins, corsMethods)
+	s.router.Use(corsHandler)
+}
+
+func optionsHandlerForCors(w http.ResponseWriter, r *http.Request) {
+	// TODO fix allowed origns
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Max-Age", "86400")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 }
