@@ -2,6 +2,7 @@ package server
 
 import (
 	gorillaHandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
@@ -75,16 +76,22 @@ func (s *Server) initializeRoutes() {
 	protected.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
 	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	// TODO fix allowed origns
-	corsOrigins := gorillaHandlers.AllowedOrigins([]string{"*"})
+	s.router.Use(mux.CORSMethodMiddleware(s.router))
+
+	//// TODO fix allowed origns
+	corsOrigins := gorillaHandlers.AllowedOrigins([]string{"http://localhost:3000"})
 	corsMethods := gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
-	corsHandler := gorillaHandlers.CORS(corsOrigins, corsMethods)
+	corsHeaders := gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
+	corsCredentials := gorillaHandlers.AllowCredentials()
+	corsHandler := gorillaHandlers.CORS(corsOrigins, corsMethods, corsHeaders, corsCredentials)
 	s.router.Use(corsHandler)
 }
 
 func optionsHandlerForCors(w http.ResponseWriter, r *http.Request) {
-	// TODO fix allowed origns
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	w.Header().Set("Access-Control-Max-Age", "86400")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
 }
