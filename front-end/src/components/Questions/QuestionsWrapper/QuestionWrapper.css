@@ -1,0 +1,33 @@
+@import "../../../styles/variables.css";
+
+.questions{
+    box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
+    max-width: 80%;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.timer {
+    background-color: var(--grey-color);
+    padding: 1rem;
+    max-width: 10%;
+    margin: auto auto 2rem;
+    border-radius: 5px;
+}
+
+.timerIcon {
+    color: var(--brand-color);
+    margin-bottom: 0.5rem;
+}
+
+.timerText {
+    color: var(--brand-color);
+    margin-left: 0.5rem;
+    font-weight: bold;
+    font-size: 2rem;
+}

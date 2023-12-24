@@ -1,0 +1,20 @@
+@import "../../styles/variables.css";
+
+.coursesList {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    list-style-type: none;
+    justify-content: center;
+}
+
+.singleCourse {}
+
+.singleCourseTitle {
+    color: var(--dark-color);
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 2rem;
+}
+
+.singleCourseDetails {
+    font-size: 1rem;
+}

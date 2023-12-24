@@ -1,0 +1,44 @@
+@import "../../styles/variables.css";
+
+.appHeader {
+    background-color: var(--brand-color);
+    display: flex;
+}
+
+.appTitle {
+    color: var(--mid-white-color);
+    padding: 0.5em;
+    float: left;
+    width: 20%;
+}
+
+.ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.nav {
+    float: right;
+    width: 80%;
+    display: flex;
+}
+
+.menu {
+    width: 70%;
+}
+
+.myAccountMenu {
+    border-left: 0.1em solid var(--mid-white-color);
+    width: 30%;
+}
+
+.link {
+    color: var(--mid-white-color);
+    text-decoration: none;
+    padding: 0.5em;
+    float: left;
+    display: block;
+}
+

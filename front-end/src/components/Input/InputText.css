@@ -1,0 +1,16 @@
+@import "../../styles/variables.css";
+
+.appInput {
+    width: 40%;
+    padding: 1em 2em;
+    margin: 1em 2em;
+    text-align: center;
+    font-size: 1.2rem;
+    border:1px solid var(--brand-color);
+    background-color: var(--light-white-color);
+    border-radius: 15px;
+}
+
+label {
+    color: var(--dark-color);
+}

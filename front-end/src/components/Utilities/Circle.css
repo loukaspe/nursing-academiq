@@ -1,0 +1,13 @@
+@import "../../styles/variables.css";
+
+.circle {
+    padding: 1rem;
+    margin: 1rem 1rem 2rem;
+    display: inline-block;
+    background-color: var(--brand-color);
+    color: var(--light-white-color);
+    border-radius: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+
+}

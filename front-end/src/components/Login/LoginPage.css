@@ -1,0 +1,27 @@
+@import "../../styles/variables.css";
+
+.loginPageContainer {
+    width: 100%;
+    display: flex;
+    padding-top: 5em;
+}
+
+.formContainer {
+    /*float: left;*/
+    /*width: 50%;*/
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 0.1em solid var(--grey-color);
+}
+
+.logoContainer {
+    /*float: right;*/
+    /*width: 50%;*/
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 0.1em solid var(--grey-color);
+}
