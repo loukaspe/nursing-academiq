@@ -26,49 +26,11 @@ func NewGetTutorHandler(
 	}
 }
 
-// Response when we get a Tutor
-// swagger:model GetTutorResponse
 type GetTutorResponse struct {
-	// possible error message
-	//
-	// Required: false
-	ErrorMessage string `json:"errorMessage,omitempty"`
-	// retrieved tutor
-	//
-	// Required: true
-	Tutor *TutorRequest `json:"tutor,omitempty"`
+	ErrorMessage string        `json:"errorMessage,omitempty"`
+	Tutor        *TutorRequest `json:"tutor,omitempty"`
 }
 
-// swagger:operation GET /tutor/{tutorId} getTutor
-//
-// # It updates a User
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-// responses:
-//
-//	"200":
-//		description: Tutor retrieved successfully
-//		schema:
-//			$ref: "#/definitions/GetTutorResponse"
-//	"404":
-//		description: Requested tutor not found
-//		schema:
-//			$ref: "#/definitions/GetTutorResponse"
-//	"500":
-//		description: Internal server error - check logs for details
-//		schema:
-//			$ref: "#/definitions/UpdateTutorResponse"
 func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//var err error

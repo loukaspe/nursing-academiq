@@ -25,10 +25,6 @@ func NewCreateTutorHandler(
 	}
 }
 
-// the tutor model needed to create and update a tutor
-// it also creates a new user
-//
-// swagger:parameters createTutor updateTutor
 type TutorRequest struct {
 	// in:body
 	Tutor struct {
@@ -53,48 +49,11 @@ type TutorRequest struct {
 	} `json:""`
 }
 
-// Response when we insert a new Tutor
-// swagger:model CreateTutorResponse
 type CreateTutorResponse struct {
-	// inserted tutor uid
-	//
-	// Required: true
-	CreatedTutorUid uint `json:"insertedUid"`
-	// possible error message
-	//
-	// Required: false
-	ErrorMessage string `json:"errorMessage,omitempty"`
+	CreatedTutorUid uint   `json:"insertedUid"`
+	ErrorMessage    string `json:"errorMessage,omitempty"`
 }
 
-// swagger:operation POST /tutor createTutor
-//
-// # It creates a new tutor along with a new user
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-//	responses:
-//		"200":
-//			description: Tutor created successfully
-//			schema:
-//				$ref: "#/definitions/CreateTutorResponse"
-//		"400":
-//			description: Bad request - request parameters are missing or invalid
-//			schema:
-//				$ref: "#/definitions/CreateTutorResponse"
-//		"500":
-//			description: Internal server error - check logs for details
-//			schema:
-//				$ref: "#/definitions/CreateTutorResponse"
 func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

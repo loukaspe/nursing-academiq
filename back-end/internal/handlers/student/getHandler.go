@@ -26,49 +26,11 @@ func NewGetStudentHandler(
 	}
 }
 
-// Response when we get a Student
-// swagger:model GetStudentResponse
 type GetStudentResponse struct {
-	// possible error message
-	//
-	// Required: false
-	ErrorMessage string `json:"errorMessage,omitempty"`
-	// retrieved student
-	//
-	// Required: true
-	Student *StudentRequest `json:"student,omitempty"`
+	ErrorMessage string          `json:"errorMessage,omitempty"`
+	Student      *StudentRequest `json:"student,omitempty"`
 }
 
-// swagger:operation GET /student/{studentId} getStudent
-//
-// # It updates a User
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-// responses:
-//
-//	"200":
-//		description: Student retrieved successfully
-//		schema:
-//			$ref: "#/definitions/GetStudentResponse"
-//	"404":
-//		description: Requested student not found
-//		schema:
-//			$ref: "#/definitions/GetStudentResponse"
-//	"500":
-//		description: Internal server error - check logs for details
-//		schema:
-//			$ref: "#/definitions/UpdateStudentResponse"
 func (handler *GetStudentHandler) GetStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//var err error

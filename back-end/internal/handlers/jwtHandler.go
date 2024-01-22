@@ -27,56 +27,16 @@ func NewJwtClaimsHandler(
 	}
 }
 
-// request for generating jwt token
-//
-// swagger:parameters jwtToken
 type JwtRequest struct {
-	// in:body
-	// Required: true
 	Username string `json:"username"`
-	// in:body
-	// Required: true
 	Password string `json:"password"`
 }
 
-// Response with jwtToken
-// swagger:model JwtResponse
 type JwtResponse struct {
-	// jwt token
-	//
-	// Required: false
-	Token string `json:"token"`
-	// possible error message
-	//
-	// Required: false
+	Token        string `json:"token"`
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
-// swagger:operation POST /login jwtToken
-//
-// # Generates JWT token for authentication and authorization
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-//	responses:
-//		"200":
-//			description: OK
-//			schema:
-//				$ref: "#/definitions/JwtResponse"
-//		"500":
-//			description: Error
-//			schema:
-//				$ref: "#/definitions/JwtResponse"
 func (handler *JwtClaimsHandler) JwtTokenController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

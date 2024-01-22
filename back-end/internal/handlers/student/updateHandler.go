@@ -28,49 +28,10 @@ func NewUpdateStudentHandler(
 	}
 }
 
-// Response when we update Student
-// swagger:model UpdateStudentResponse
 type UpdateStudentResponse struct {
-	// possible error message
-	//
-	// Required: false
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
-// swagger:operation PUT /student/{studentId} updateStudent
-//
-// # It updates a User
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-// responses:
-//
-//	"200":
-//		description: Student updates successfully
-//		schema:
-//			$ref: "#/definitions/UpdateStudentResponse"
-//	"400":
-//		description: Bad request - request parameters are missing or invalid
-//		schema:
-//			$ref: "#/definitions/UpdateStudentResponse"
-//	"404":
-//		description: Requested student not found
-//		schema:
-//			$ref: "#/definitions/UpdateStudentResponse"
-//	"500":
-//		description: Internal server error - check logs for details
-//		schema:
-//			$ref: "#/definitions/UpdateStudentResponse"
 func (handler *UpdateStudentHandler) UpdateStudentController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 

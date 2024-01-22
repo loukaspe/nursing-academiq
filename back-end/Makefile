@@ -64,14 +64,6 @@ run-linter:
 			--workdir /app \
 			dev-build golangci-lint run ./...
 
-generate-swagger-files:
-	make build-dev
-	@docker run \
-			--rm \
-			--volume "$(PWD)":/app \
-			--workdir /app \
-			dev-build swagger generate spec -o ./docs/swagger.json --scan-models
-
 start-app:
 	docker-compose down
 	docker-compose up

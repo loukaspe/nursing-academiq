@@ -30,46 +30,10 @@ func NewUpdateTutorHandler(
 	}
 }
 
-// Response when we update Tutor
-// swagger:model UpdateTutorResponse
 type UpdateTutorResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
-// swagger:operation PUT /tutor/{tutorId} updateTutor
-//
-// # It updates a User
-//
-// ---
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-//	Schemes:
-//	- http
-//	- https
-//
-// responses:
-//
-//	"200":
-//		description: Tutor updates successfully
-//		schema:
-//			$ref: "#/definitions/UpdateTutorResponse"
-//	"400":
-//		description: Bad request - request parameters are missing or invalid
-//		schema:
-//			$ref: "#/definitions/UpdateTutorResponse"
-//	"404":
-//		description: Requested Tutor not found
-//		schema:
-//			$ref: "#/definitions/UpdateTutorResponse"
-//	"500":
-//		description: Internal server error - check logs for details
-//		schema:
-//			$ref: "#/definitions/UpdateTutorResponse"
 func (handler *UpdateTutorHandler) UpdateTutorController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
