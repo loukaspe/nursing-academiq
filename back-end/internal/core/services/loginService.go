@@ -14,6 +14,6 @@ func NewLoginService(repository ports.UserRepositoryInterface) *LoginService {
 	return &LoginService{repository: repository}
 }
 
-func (j *LoginService) Login(ctx context.Context, username, password string) (*domain.User, error) {
+func (j *LoginService) Login(ctx context.Context, username, password string) (*domain.User, uint, error) {
 	return j.repository.Login(ctx, username, password)
 }

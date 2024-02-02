@@ -9,6 +9,12 @@ type JwtClaims struct {
 	*jwt.RegisteredClaims
 	UserInfo interface{}
 }
+
+type JwtSubject struct {
+	User   *User
+	UserID uint
+}
+
 type JwtClaimsInterface interface {
 	CreateToken(sub string, userInfo interface{}) (string, error)
 	GetClaimsFromToken(tokenString string) (jwt.MapClaims, error)

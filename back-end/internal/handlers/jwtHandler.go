@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
@@ -65,7 +66,7 @@ func (handler *JwtClaimsHandler) JwtTokenController(w http.ResponseWriter, r *ht
 		return
 	}
 
-	loginUserResponse, err := handler.loginService.Login(context.Background(), request.Username, request.Password)
+	loginUserResponse, userID, err := handler.loginService.Login(context.Background(), request.Username, request.Password)
 	if loginErrorWrapper, ok := err.(*apierrors.LoginError); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": loginErrorWrapper.Unwrap().Error(),
@@ -85,7 +86,12 @@ func (handler *JwtClaimsHandler) JwtTokenController(w http.ResponseWriter, r *ht
 		return
 	}
 
-	result, err := handler.jwtService.CreateJwtTokenService(loginUserResponse)
+	jwtSubject := &domain.JwtSubject{
+		User:   loginUserResponse,
+		UserID: userID,
+	}
+
+	result, err := handler.jwtService.CreateJwtTokenService(jwtSubject)
 	if err != nil {
 		response.ErrorMessage = "error during creation of the token"
 

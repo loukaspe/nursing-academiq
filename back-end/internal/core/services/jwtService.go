@@ -13,8 +13,8 @@ func NewJwtService(domain domain.JwtClaimsInterface) *JwtService {
 	return &JwtService{jwtDomain: domain}
 }
 
-func (j *JwtService) CreateJwtTokenService(user *domain.User) (string, error) {
-	tokenValue, err := j.jwtDomain.CreateToken(user.Username, user)
+func (j *JwtService) CreateJwtTokenService(user *domain.JwtSubject) (string, error) {
+	tokenValue, err := j.jwtDomain.CreateToken(user.User.Username, user)
 	if err != nil {
 		return "", err
 	}
