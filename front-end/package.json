@@ -1,5 +1,5 @@
 {
-  "name": "untitled",
+  "name": "nursing-academiq",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +15,8 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "universal-cookie": "^6.1.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "jwt-decode": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

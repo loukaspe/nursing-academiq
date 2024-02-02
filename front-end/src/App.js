@@ -1,10 +1,8 @@
 import React from 'react';
 import {Routes, Route, Link} from "react-router-dom";
-import LoginForm from "./components/Login/LoginForm";
 import CoursesList from "./components/CoursesList/CoursesList";
 import Homepage from "./components/Homepage/Homepage";
 import Layout from "./components/Layout/Layout";
-import {courses} from "./courses";
 import QuestionsWrapper from "./components/Questions/QuestionsWrapper/QuestionsWrapper";
 import {questions} from "./questions";
 import ProtectedRoutes from "./routes/ProtectedRoute";
@@ -19,7 +17,14 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <Route index element={<Homepage/>}/>
+                    <Route
+                        index
+                        element={
+                            <ProtectedRoutes>
+                                <Homepage/>
+                            </ProtectedRoutes>
+                        }
+                    />
                     <Route
                         path="questions"
                         element={
@@ -34,14 +39,12 @@ const App = () => {
                         path="courses"
                         element={
                             <ProtectedRoutes>
-                                <CoursesList
-                                    courses={courses}
-                                />
+                                <CoursesList/>
                             </ProtectedRoutes>
                         }
                     />
                     <Route path="login" element={<LoginPage/>}/>
-                    <Route path="loginForm" element={<LoginForm/>}/>
+                    {/*<Route path="loginForm" element={<LoginForm/>}/>*/}
                     <Route path="logout" element={<Logout/>}/>
 
                     <Route path="*" element={<NotFound/>}/>
@@ -77,6 +80,7 @@ function NotFound() {
 
 function Logout() {
     cookies.remove("token", {path: "/"});
+    cookies.remove("user", {path: "/"});
     window.location.href = "/";
 }
 

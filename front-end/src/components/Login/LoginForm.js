@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import "./LoginForm.css";
 import InputText from "../Input/InputText";
 import Cookies from "universal-cookie";
+import {jwtDecode} from 'jwt-decode'
 
 const cookies = new Cookies();
 
@@ -39,11 +40,31 @@ const LoginForm = (props) => {
             }
 
 
-            // setJwtToken(result)
-            console.log(result)
+            cookies.set(
+                "resutl",
+                result,
+                {
+                    path: "/",
+                }
+            );
             cookies.set("token", result.token, {
                 path: "/",
             });
+
+            const userInfo = jwtDecode(result.token).UserInfo;
+            console.log(userInfo)
+            cookies.set(
+                "user",
+                {
+                    id: userInfo.UserID,
+                    type: userInfo.User.UserType,
+                    specificID: userInfo.User.SpecificID
+                },
+                {
+                    path: "/",
+                }
+            );
+
             window.location.href = "/";
         }
 
