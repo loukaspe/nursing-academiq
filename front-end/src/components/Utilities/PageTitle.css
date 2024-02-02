@@ -1,0 +1,16 @@
+@import "../../styles/variables.css";
+
+.pageTitle {
+    /*padding: 1rem;*/
+    /*margin: 1rem 1rem 2rem;*/
+    /*display: inline-block;*/
+    /*background-color: var(--dark-color);*/
+    color: var(--dark-color);
+    border-bottom: 1px solid var(--dark-color);
+    font-size: 1.5rem;
+    padding: 0.5em;
+    font-weight: bold;
+    width: 30%;
+    /*border-radius: 50%;*/
+    /*height: 0.5rem;*/
+}
