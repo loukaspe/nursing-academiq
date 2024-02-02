@@ -8,8 +8,9 @@ import (
 type Student struct {
 	gorm.Model
 	RegistrationNumber string `gorm:"not null;"`
-	UserId             uint   `gorm:"not null"`
-	User               User   `gorm:"foreignKey:UserId"`
+	UserID             uint   `gorm:"not null"`
+	User               User
+	Courses            []Course `gorm:"many2many:student_takes_course;"`
 }
 
 func (s *Student) validate() error {

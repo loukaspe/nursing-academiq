@@ -21,7 +21,7 @@ func (repo *UserRepository) Login(
 	ctx context.Context,
 	username,
 	password string,
-) (*domain.User, error) {
+) (*domain.User, uint, error) {
 	var err error
 	var modelUser *User
 
@@ -31,21 +31,43 @@ func (repo *UserRepository) Login(
 		Take(&modelUser).Error
 
 	if err == gorm.ErrRecordNotFound {
-		return &domain.User{}, &apierrors.LoginError{
+		return &domain.User{}, 0, &apierrors.LoginError{
 			ReturnedStatusCode: http.StatusUnauthorized,
 			OriginalError:      errors.New("user with name " + username + " not found"),
 		}
 	}
 	if err != nil {
-		return &domain.User{}, err
+		return &domain.User{}, 0, err
+	}
+
+	// Get either the Tutor or Student Information
+	var modelStudent Student
+	var modelTutor Tutor
+	repo.db.WithContext(ctx).
+		Where("user_id = ?", modelUser.ID).
+		First(&modelStudent)
+	if modelStudent.ID == 0 {
+		repo.db.WithContext(ctx).
+			Where("user_id = ?", modelUser.ID).
+			First(&modelTutor)
 	}
 
 	err = VerifyPassword(modelUser.Password, password)
 	if err != nil {
-		return &domain.User{}, &apierrors.LoginError{
+		return &domain.User{}, 0, &apierrors.LoginError{
 			ReturnedStatusCode: http.StatusUnauthorized,
 			OriginalError:      err,
 		}
+	}
+
+	var userType string
+	var specificID uint
+	if modelStudent.ID != 0 {
+		userType = "student"
+		specificID = modelStudent.ID
+	} else if modelTutor.ID != 0 {
+		userType = "tutor"
+		specificID = modelTutor.ID
 	}
 
 	return &domain.User{
@@ -57,5 +79,7 @@ func (repo *UserRepository) Login(
 		BirthDate:   modelUser.BirthDate,
 		PhoneNumber: modelUser.PhoneNumber,
 		Photo:       modelUser.Photo,
-	}, err
+		UserType:    userType,
+		SpecificID:  specificID,
+	}, modelUser.ID, err
 }

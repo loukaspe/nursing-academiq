@@ -74,7 +74,7 @@ func (repo *StudentRepository) GetStudent(
 	if err == gorm.ErrRecordNotFound {
 		return &domain.Student{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -106,11 +106,11 @@ func (repo *StudentRepository) UpdateStudent(
 	modelUser := &User{}
 	modelStudent := &Student{}
 
-	err := repo.db.WithContext(ctx).Preload("User").First(modelStudent).Error
+	err := repo.db.WithContext(ctx).Preload("User").Model(modelStudent).Where("id = ?", uid).Error
 	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -155,7 +155,7 @@ func (repo *StudentRepository) DeleteStudent(
 	if db.Error == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 
