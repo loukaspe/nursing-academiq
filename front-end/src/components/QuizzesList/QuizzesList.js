@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import "./CoursesList.css";
+import "./QuizzesList.css";
 import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
@@ -7,21 +7,21 @@ import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 
-const CoursesList = () => {
-    const [courses, setCourses] = useState([]);
+const QuizzesList = () => {
+    const [quizzes, setQuizzes] = useState([]);
     const [visibleCourses, setVisibleCourses] = useState(1);
 
     useEffect(() => {
-        const fetchUserCourses = async () => {
+        const fetchUserQuizzes = async () => {
             let userCookie = cookies.get("user");
             let userType = userCookie.type;
             let specificID = userCookie.specificID;
 
             let apiUrl = "";
             if (userType === "student") {
-                apiUrl = process.env.REACT_APP_API_URL + `/student/${specificID}/courses`;
+                apiUrl = process.env.REACT_APP_API_URL + `/student/${specificID}/quizzes`;
             } else if (userType === "tutor") {
-                apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/courses`;
+                apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/quizzes`;
             }
 
 
@@ -45,37 +45,35 @@ const CoursesList = () => {
                     throw Error("unauthorized: 401");
                 }
 
-                if (result.courses === undefined) {
-                    throw Error("error getting courses for student");
+                if (result.quizzes === undefined) {
+                    throw Error("error getting quizzes for student");
                 }
-                setCourses(result.courses);
+                setQuizzes(result.quizzes);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchUserCourses();
+        fetchUserQuizzes();
     }, []);
 
     return (
         <React.Fragment>
-            <ul className="coursesList">
-                <div className="coursesListTitle">Τα μαθήματά μου</div>
-                {courses.slice(0, visibleCourses).map((item) => {
+            <ul className="quizzesList">
+                <div className="quizzesListTitle">Διαθέσιμα Quiz</div>
+                {quizzes.slice(0, visibleCourses).map((item) => {
                     return (
-                        <div className="singleCourseContainer">
-                            <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
-                            <div className="singleCourseTextContainer">
-                                <span className="singleCourseTitle">{item.title}</span>
-                                <div className="singleCourseDetails">{item.description}</div>
-                            </div>
+                        <div className="singleQuizTextContainer">
+                            <div className="singleQuizTitle">{item.Title}</div>
+                            <div className="singleQuizDetails">{item.CourseName}</div>
+                            <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
                         </div>
                     );
                 })}
                 {
-                    courses.length > visibleCourses &&
+                    quizzes.length > visibleCourses &&
                     (
-                        <Link className="moreButton" to="/courses">+ Περισσότερα Μαθήματα</Link>
+                        <Link className="moreButton" to="/quizzes">+ Περισσότερα Quiz</Link>
                     )
                 }
             </ul>
@@ -83,4 +81,4 @@ const CoursesList = () => {
     );
 };
 
-export default CoursesList;
+export default QuizzesList;

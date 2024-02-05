@@ -1,12 +1,12 @@
 @import "../../styles/variables.css";
 
-.coursesList {
+.quizzesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
 }
 
-.coursesListTitle {
+.quizzesListTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 1em;
@@ -15,26 +15,14 @@
     font-weight: bold;
 }
 
-.singleCourseContainer {
-    /*margin: auto auto 2rem;*/
-    /*padding: 1rem;*/
-    display: flex;
-    align-items: center;
-}
 
-.bookmarkIcon {
-    color: #F8A16E;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.singleCourseTextContainer {
+.singleQuizTextContainer {
     display: flex;
     flex-direction: column;
     margin-left: 0.5rem;
 }
 
-.singleCourseTitle {
+.singleQuizTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 0.5em;
@@ -43,7 +31,7 @@
     font-weight: bold;
 }
 
-.singleCourseDetails {
+.singleQuizDetails {
     color: var(--dark-grey-color);
     font-size: 1rem;
     font-weight: bold;
