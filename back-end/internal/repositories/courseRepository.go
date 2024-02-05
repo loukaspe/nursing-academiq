@@ -116,6 +116,39 @@ func (repo *CourseRepository) GetCourseByStudentID(
 	return domainCourses, err
 }
 
+func (repo *CourseRepository) GetCourseByTutorID(
+	ctx context.Context,
+	tutorID uint32,
+) ([]domain.Course, error) {
+	var err error
+	var modelTutor Tutor
+
+	err = repo.db.WithContext(ctx).
+		Preload("Courses").
+		First(&modelTutor, tutorID).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Course{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("tutorID " + strconv.Itoa(int(tutorID)) + " not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Course{}, err
+	}
+
+	var domainCourses []domain.Course
+	for _, modelCourse := range modelTutor.Courses {
+		// TODO: preload Tutor, Students if needed
+		domainCourses = append(domainCourses, domain.Course{
+			Title:       modelCourse.Title,
+			Description: modelCourse.Description,
+		})
+	}
+
+	return domainCourses, err
+}
+
 //func (repo *CourseRepository) UpdateCourse(
 //	ctx context.Context,
 //	uid uint32,

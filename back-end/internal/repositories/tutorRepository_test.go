@@ -33,7 +33,7 @@ func TestTutorRepository_CreateTutor(t *testing.T) {
 		mockSqlUserQueryExpected    string
 		mockSqlTutorQueryExpected   string
 		mockInsertedTutorIdReturned int
-		mockInsertedUserIdReturned  int
+		mockInsertedUserIDReturned  int
 		expectedTutorUid            uint
 	}{
 		{
@@ -55,7 +55,7 @@ func TestTutorRepository_CreateTutor(t *testing.T) {
 			},
 			mockSqlTutorQueryExpected:   `INSERT INTO "tutors" ("created_at","updated_at","deleted_at","academic_rank","user_id") VALUES ($1,$2,$3,$4,$5)`,
 			mockSqlUserQueryExpected:    `INSERT INTO "users" ("created_at","updated_at","deleted_at","username","password","first_name","last_name","email","birth_date","phone_number","photo") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
-			mockInsertedUserIdReturned:  1,
+			mockInsertedUserIDReturned:  1,
 			mockInsertedTutorIdReturned: 2,
 			expectedTutorUid:            2,
 		},
@@ -74,12 +74,12 @@ func TestTutorRepository_CreateTutor(t *testing.T) {
 					tt.args.tutor.LastName, tt.args.tutor.Email, tt.args.tutor.BirthDate, tt.args.tutor.PhoneNumber,
 					tt.args.tutor.Photo,
 				).
-				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIdReturned))
+				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIDReturned))
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlTutorQueryExpected)).
 				WithArgs(
 					sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(),
-					tt.args.tutor.AcademicRank, tt.mockInsertedUserIdReturned,
+					tt.args.tutor.AcademicRank, tt.mockInsertedUserIDReturned,
 				).
 				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedTutorIdReturned))
 			mockDb.ExpectCommit()
@@ -114,7 +114,7 @@ func TestTutorRepository_CreateTutorReturnsErrorOnTutorCreate(t *testing.T) {
 		name                       string
 		args                       args
 		mockSqlUserQueryExpected   string
-		mockInsertedUserIdReturned int
+		mockInsertedUserIDReturned int
 		mockSqlTutorQueryExpected  string
 		mockSqlTutorQueryError     error
 		expectedError              error
@@ -137,7 +137,7 @@ func TestTutorRepository_CreateTutorReturnsErrorOnTutorCreate(t *testing.T) {
 				},
 			},
 			mockSqlUserQueryExpected:   `INSERT INTO "users" ("created_at","updated_at","deleted_at","username","password","first_name","last_name","email","birth_date","phone_number","photo") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
-			mockInsertedUserIdReturned: 1,
+			mockInsertedUserIDReturned: 1,
 			mockSqlTutorQueryExpected:  `INSERT INTO "tutors" ("created_at","updated_at","deleted_at","academic_rank","user_id") VALUES ($1,$2,$3,$4,$5)`,
 			mockSqlTutorQueryError:     errors.New("random error"),
 			expectedError:              errors.New("random error"),
@@ -157,12 +157,12 @@ func TestTutorRepository_CreateTutorReturnsErrorOnTutorCreate(t *testing.T) {
 					tt.args.tutor.LastName, tt.args.tutor.Email, tt.args.tutor.BirthDate, tt.args.tutor.PhoneNumber,
 					tt.args.tutor.Photo,
 				).
-				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIdReturned))
+				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIDReturned))
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlTutorQueryExpected)).
 				WithArgs(
 					sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(),
-					tt.args.tutor.AcademicRank, tt.mockInsertedUserIdReturned,
+					tt.args.tutor.AcademicRank, tt.mockInsertedUserIDReturned,
 				).
 				WillReturnError(tt.mockSqlTutorQueryError)
 			mockDb.ExpectRollback()
@@ -351,7 +351,7 @@ func TestTutorRepository_DeleteTutor(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 				User: User{
 					Model:       gorm.Model{ID: 3},
 					Username:    "username",
@@ -382,7 +382,7 @@ func TestTutorRepository_DeleteTutor(t *testing.T) {
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 			mockDb.ExpectBegin()
@@ -439,7 +439,7 @@ func TestTutorRepository_DeleteTutorWithSelectError(t *testing.T) {
 			mockSqlErrorReturned:            gorm.ErrRecordNotFound,
 			expectedError: apierrors.DataNotFoundErrorWrapper{
 				ReturnedStatusCode: http.StatusNotFound,
-				OriginalError:      errors.New("uid 2 not found"),
+				OriginalError:      errors.New("studentID 2 not found"),
 			},
 		},
 	}
@@ -492,7 +492,7 @@ func TestTutorRepository_DeleteTutorWithUpdateError(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 				User: User{
 					Model:       gorm.Model{ID: 3},
 					Username:    "username",
@@ -524,7 +524,7 @@ func TestTutorRepository_DeleteTutorWithUpdateError(t *testing.T) {
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 			mockDb.ExpectBegin()
@@ -572,7 +572,7 @@ func TestTutorRepository_GetTutor(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockUserReturned: &User{
@@ -614,12 +614,12 @@ func TestTutorRepository_GetTutor(t *testing.T) {
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserQueryExpected)).
-				WithArgs(tt.mockTutorReturned.UserId).
+				WithArgs(tt.mockTutorReturned.UserID).
 				WillReturnRows(
 					sqlmock.NewRows(
 						[]string{
@@ -676,7 +676,7 @@ func TestTutorRepository_GetTutorReturnsErrorOnUserSelect(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockSqlUserErrorReturned: errors.New("random error"),
@@ -691,15 +691,15 @@ func TestTutorRepository_GetTutorReturnsErrorOnUserSelect(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockSqlUserErrorReturned: gorm.ErrRecordNotFound,
-			// The error is that we didnt find a uid 2 even though the Tutor with
-			// id 2 exists. It's because the Tutor had not an associated user with uid 2
+			// The error is that we didnt find a studentID 2 even though the Tutor with
+			// id 2 exists. It's because the Tutor had not an associated user with studentID 2
 			expectedError: apierrors.DataNotFoundErrorWrapper{
 				ReturnedStatusCode: http.StatusNotFound,
-				OriginalError:      errors.New("uid 2 not found"),
+				OriginalError:      errors.New("studentID 2 not found"),
 			},
 		},
 	}
@@ -716,12 +716,12 @@ func TestTutorRepository_GetTutorReturnsErrorOnUserSelect(t *testing.T) {
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserQueryExpected)).
-				WithArgs(tt.mockTutorReturned.UserId).
+				WithArgs(tt.mockTutorReturned.UserID).
 				WillReturnError(tt.mockSqlUserErrorReturned)
 
 			_, actual := repo.GetTutor(context.Background(), tt.args.uid)
@@ -770,7 +770,7 @@ func TestTutorRepository_GetTutorReturnsErrorOnTutorSelect(t *testing.T) {
 			mockSqlTutorErrorReturned: gorm.ErrRecordNotFound,
 			expectedError: apierrors.DataNotFoundErrorWrapper{
 				ReturnedStatusCode: http.StatusNotFound,
-				OriginalError:      errors.New("uid 2 not found"),
+				OriginalError:      errors.New("studentID 2 not found"),
 			},
 		},
 	}
@@ -814,7 +814,7 @@ func TestTutorRepository_UpdateExistingTutor(t *testing.T) {
 		mockSqlUserSelectQueryExpected  string
 		mockUserReturned                *User
 		mockSqlUserInsertQueryExpected  string
-		mockInsertedUserIdReturned      int
+		mockInsertedUserIDReturned      int
 		mockUpdatedTutorIdReturned      int
 		mockSqlTutorUpdateQueryExpected string
 	}{
@@ -840,7 +840,7 @@ func TestTutorRepository_UpdateExistingTutor(t *testing.T) {
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserSelectQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockUserReturned: &User{
@@ -856,7 +856,7 @@ func TestTutorRepository_UpdateExistingTutor(t *testing.T) {
 			},
 			mockSqlTutorUpdateQueryExpected: `UPDATE "tutors" SET "created_at"=$1,"updated_at"=$2,"deleted_at"=$3,"academic_rank"=$4,"user_id"=$5 WHERE "tutors"."deleted_at" IS NULL AND "id" = $6`,
 			mockSqlUserInsertQueryExpected:  `INSERT INTO "users" ("created_at","updated_at","deleted_at","username","password","first_name","last_name","email","birth_date","phone_number","photo") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
-			mockInsertedUserIdReturned:      1,
+			mockInsertedUserIDReturned:      1,
 			mockUpdatedTutorIdReturned:      2,
 		},
 	}
@@ -874,12 +874,12 @@ func TestTutorRepository_UpdateExistingTutor(t *testing.T) {
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserSelectQueryExpected)).
-				WithArgs(tt.mockTutorReturned.UserId).
+				WithArgs(tt.mockTutorReturned.UserID).
 				WillReturnRows(
 					sqlmock.NewRows(
 						[]string{
@@ -901,12 +901,12 @@ func TestTutorRepository_UpdateExistingTutor(t *testing.T) {
 					tt.args.tutor.LastName, tt.args.tutor.Email, tt.args.tutor.BirthDate, tt.args.tutor.PhoneNumber,
 					tt.args.tutor.Photo,
 				).
-				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIdReturned))
+				WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(tt.mockInsertedUserIDReturned))
 
 			mockDb.ExpectExec(regexp.QuoteMeta(tt.mockSqlTutorUpdateQueryExpected)).
 				WithArgs(
 					sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(),
-					tt.args.tutor.AcademicRank, tt.mockInsertedUserIdReturned,
+					tt.args.tutor.AcademicRank, tt.mockInsertedUserIDReturned,
 					tt.args.uid,
 				).
 				WillReturnResult(
@@ -994,7 +994,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsTutorSelectError(t *testing.T
 			mockSqlTutorErrorReturned:       gorm.ErrRecordNotFound,
 			expectedError: apierrors.DataNotFoundErrorWrapper{
 				ReturnedStatusCode: http.StatusNotFound,
-				OriginalError:      errors.New("uid 2 not found"),
+				OriginalError:      errors.New("studentID 2 not found"),
 			},
 		},
 	}
@@ -1062,7 +1062,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserSelectQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockSqlUserErrorReturned:       errors.New("random error"),
@@ -1090,13 +1090,13 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 			mockTutorReturned: &Tutor{
 				Model:        gorm.Model{ID: 2},
 				AcademicRank: "academicRank",
-				UserId:       3,
+				UserID:       3,
 			},
 			mockSqlUserSelectQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 			mockSqlUserErrorReturned:       gorm.ErrRecordNotFound,
 			expectedError: apierrors.DataNotFoundErrorWrapper{
 				ReturnedStatusCode: http.StatusNotFound,
-				OriginalError:      errors.New("uid 2 not found"),
+				OriginalError:      errors.New("studentID 2 not found"),
 			},
 		},
 	}
@@ -1114,12 +1114,12 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 						[]string{"id", "academic_rank", "user_id"},
 					).AddRow(
 						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-						tt.mockTutorReturned.UserId,
+						tt.mockTutorReturned.UserID,
 					),
 				)
 
 			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserSelectQueryExpected)).
-				WithArgs(tt.mockTutorReturned.UserId).
+				WithArgs(tt.mockTutorReturned.UserID).
 				WillReturnError(tt.mockSqlUserErrorReturned)
 
 			_, actual := repo.GetTutor(context.Background(), tt.args.uid)
@@ -1142,7 +1142,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 ////	gormDb, err := gorm.Open(postgres.New(postgres.Config{Conn: db}))
 ////
 ////	type args struct {
-////		uid     uint32
+////		studentID     uint32
 ////		tutor *domain.Tutor
 ////	}
 ////	tests := []struct {
@@ -1159,7 +1159,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 ////		{
 ////			name: "random error",
 ////			args: args{
-////				uid: 2,
+////				studentID: 2,
 ////				tutor: &domain.Tutor{
 ////					User: domain.User{
 ////						Username:    "username",
@@ -1178,7 +1178,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 ////			mockTutorReturned: &Tutor{
 ////				Model:              gorm.Model{ID: 2},
 ////				AcademicRank: "academicRank",
-////				UserId:             3,
+////				UserID:             3,
 ////			},
 ////			mockSqlUserSelectQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 ////			mockUserReturned: &User{
@@ -1210,12 +1210,12 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 ////						[]string{"id", "academic_rank", "user_id"},
 ////					).AddRow(
 ////						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-////						tt.mockTutorReturned.UserId,
+////						tt.mockTutorReturned.UserID,
 ////					),
 ////				)
 ////
 ////			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserSelectQueryExpected)).
-////				WithArgs(tt.mockTutorReturned.UserId).
+////				WithArgs(tt.mockTutorReturned.UserID).
 ////				WillReturnRows(
 ////					sqlmock.NewRows(
 ////						[]string{
@@ -1234,14 +1234,14 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 ////				WithArgs(
 ////					sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(),
 ////					tt.args.tutor.AcademicRank, sqlmock.AnyArg(),
-////					tt.args.uid,
+////					tt.args.studentID,
 ////				).
 ////				WillReturnError(tt.mockSqlTutorUpdateErrorReturned)
 ////			mockDb.ExpectRollback()
 ////
 ////			err := repo.UpdateTutor(
 ////				context.Background(),
-////				tt.args.uid,
+////				tt.args.studentID,
 ////				tt.args.tutor,
 ////			)
 ////
@@ -1262,7 +1262,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 //	gormDb, err := gorm.Open(postgres.New(postgres.Config{Conn: db}))
 //
 //	type args struct {
-//		uid     uint32
+//		studentID     uint32
 //		tutor *domain.Tutor
 //	}
 //	tests := []struct {
@@ -1279,7 +1279,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 //		{
 //			name: "random error",
 //			args: args{
-//				uid: 2,
+//				studentID: 2,
 //				tutor: &domain.Tutor{
 //					User: domain.User{
 //						Username:    "username",
@@ -1298,7 +1298,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 //			mockTutorReturned: &Tutor{
 //				Model:              gorm.Model{ID: 2},
 //				AcademicRank: "academicRank",
-//				UserId:             3,
+//				UserID:             3,
 //			},
 //			mockSqlUserSelectQueryExpected: `SELECT * FROM "users" WHERE "users"."id" = $1 AND "users"."deleted_at" IS NULL`,
 //			mockUserReturned: &User{
@@ -1331,12 +1331,12 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 //						[]string{"id", "academic_rank", "user_id"},
 //					).AddRow(
 //						tt.mockTutorReturned.ID, tt.mockTutorReturned.AcademicRank,
-//						tt.mockTutorReturned.UserId,
+//						tt.mockTutorReturned.UserID,
 //					),
 //				)
 //
 //			mockDb.ExpectQuery(regexp.QuoteMeta(tt.mockSqlUserSelectQueryExpected)).
-//				WithArgs(tt.mockTutorReturned.UserId).
+//				WithArgs(tt.mockTutorReturned.UserID).
 //				WillReturnRows(
 //					sqlmock.NewRows(
 //						[]string{
@@ -1363,7 +1363,7 @@ func TestTutorRepository_UpdateExistingTutorReturnsUserSelectError(t *testing.T)
 //
 //			err := repo.UpdateTutor(
 //				context.Background(),
-//				tt.args.uid,
+//				tt.args.studentID,
 //				tt.args.tutor,
 //			)
 //

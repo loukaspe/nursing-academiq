@@ -82,10 +82,13 @@ func (s *Server) initializeRoutes() {
 
 	getCourseHandler := course.NewGetCourseHandler(courseService, s.logger)
 	getCourseByStudentIDHandler := course.NewGetCourseByStudentIDHandler(courseService, s.logger)
+	getCourseByTutorIDHandler := course.NewGetCourseByTutorIDHandler(courseService, s.logger)
 	protected.HandleFunc("/course/{id:[0-9]+}", getCourseHandler.GetCourseController).Methods("GET")
 	protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}/courses", getCourseByStudentIDHandler.GetCourseByStudentIDController).Methods("GET")
 	protected.HandleFunc("/student/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", getCourseByTutorIDHandler.GetCourseByTutorIDController).Methods("GET")
+	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 

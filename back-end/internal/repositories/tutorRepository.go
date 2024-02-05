@@ -74,7 +74,7 @@ func (repo *TutorRepository) GetTutor(
 	if err == gorm.ErrRecordNotFound {
 		return &domain.Tutor{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -106,11 +106,11 @@ func (repo *TutorRepository) UpdateTutor(
 	modelUser := &User{}
 	modelTutor := &Tutor{}
 
-	err := repo.db.WithContext(ctx).Preload("User").First(modelTutor).Error
+	err := repo.db.WithContext(ctx).Preload("User").Model(modelTutor).Where("id = ?", uid).Error
 	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -155,7 +155,7 @@ func (repo *TutorRepository) DeleteTutor(
 	if db.Error == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("uid " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 

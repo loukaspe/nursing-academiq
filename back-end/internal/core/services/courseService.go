@@ -22,6 +22,10 @@ func (service CourseService) GetCourseByStudentID(ctx context.Context, studentID
 	return service.repository.GetCourseByStudentID(ctx, studentID)
 }
 
+func (service CourseService) GetCourseByTutorID(ctx context.Context, tutorID uint32) ([]domain.Course, error) {
+	return service.repository.GetCourseByTutorID(ctx, tutorID)
+}
+
 //func (service CourseService) CreateCourse(ctx context.Context, course *domain.Course) (uint, error) {
 //	return service.repository.CreateCourse(ctx, course)
 //}

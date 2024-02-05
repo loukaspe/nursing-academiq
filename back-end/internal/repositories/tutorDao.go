@@ -8,8 +8,9 @@ import (
 type Tutor struct {
 	gorm.Model
 	AcademicRank string `gorm:"not null;"`
-	UserId       uint   `gorm:"not null"`
-	User         User   `gorm:"foreignKey:UserId"`
+	UserID       uint   `gorm:"not null"`
+	User         User
+	Courses      []Course
 }
 
 func (t *Tutor) validate() error {
