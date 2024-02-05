@@ -7,8 +7,9 @@ import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 
-const CoursesList = () => {
+const LimitedCoursesList = () => {
     const [courses, setCourses] = useState([]);
+    const [visibleCourses, setVisibleCourses] = useState(1);
 
     useEffect(() => {
         const fetchUserCourses = async () => {
@@ -60,7 +61,7 @@ const CoursesList = () => {
         <React.Fragment>
             <ul className="coursesList">
                 <div className="coursesListTitle">Τα μαθήματά μου</div>
-                {courses.map((item) => {
+                {courses.slice(0, visibleCourses).map((item) => {
                     return (
                         <div className="singleCourseContainer">
                             <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
@@ -71,9 +72,15 @@ const CoursesList = () => {
                         </div>
                     );
                 })}
+                {
+                    courses.length > visibleCourses &&
+                    (
+                        <Link className="moreButton" to="/courses">+ Περισσότερα Μαθήματα</Link>
+                    )
+                }
             </ul>
         </React.Fragment>
     );
 };
 
-export default CoursesList;
+export default LimitedCoursesList;

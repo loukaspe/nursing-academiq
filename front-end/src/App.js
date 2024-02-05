@@ -1,6 +1,6 @@
 import React from 'react';
 import {Routes, Route, Link} from "react-router-dom";
-import CoursesList from "./components/CoursesList/CoursesList";
+import LimitedCoursesList from "./components/CoursesList/LimitedCoursesList";
 import Homepage from "./components/Homepage/Homepage";
 import Layout from "./components/Layout/Layout";
 import QuestionsWrapper from "./components/Questions/QuestionsWrapper/QuestionsWrapper";
@@ -8,6 +8,8 @@ import {questions} from "./questions";
 import ProtectedRoutes from "./routes/ProtectedRoute";
 import Cookies from "universal-cookie";
 import LoginPage from "./components/Login/LoginPage";
+import CoursesList from "./components/CoursesList/CoursesList";
+import QuizzesList from "./components/QuizzesList/QuizzesList";
 
 const cookies = new Cookies();
 
@@ -40,6 +42,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <CoursesList/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="quizzes"
+                        element={
+                            <ProtectedRoutes>
+                                <QuizzesList/>
                             </ProtectedRoutes>
                         }
                     />
