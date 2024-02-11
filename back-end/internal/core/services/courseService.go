@@ -18,6 +18,10 @@ func (service CourseService) GetCourse(ctx context.Context, uid uint32) (*domain
 	return service.repository.GetCourse(ctx, uid)
 }
 
+func (service CourseService) GetCourses(ctx context.Context) ([]domain.Course, error) {
+	return service.repository.GetCourses(ctx)
+}
+
 func (service CourseService) GetCourseByStudentID(ctx context.Context, studentID uint32) ([]domain.Course, error) {
 	return service.repository.GetCourseByStudentID(ctx, studentID)
 }

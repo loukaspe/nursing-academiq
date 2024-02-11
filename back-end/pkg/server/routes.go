@@ -83,6 +83,7 @@ func (s *Server) initializeRoutes() {
 	courseService := services.NewCourseService(courseRepository)
 
 	getCourseHandler := course.NewGetCourseHandler(courseService, s.logger)
+	getCoursesHandler := course.NewGetCoursesHandler(courseService, s.logger)
 	getCourseByStudentIDHandler := course.NewGetCourseByStudentIDHandler(courseService, s.logger)
 	getCourseByTutorIDHandler := course.NewGetCourseByTutorIDHandler(courseService, s.logger)
 	//createCourseHandler := course.NewCreateCourseHandler(courseService, s.logger)
@@ -93,6 +94,8 @@ func (s *Server) initializeRoutes() {
 	//protected.HandleFunc("/course", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/course/{id:[0-9]+}", getCourseHandler.GetCourseController).Methods("GET")
 	protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/courses", getCoursesHandler.GetCoursesController).Methods("GET")
+	protected.HandleFunc("/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 	//protected.HandleFunc("/course/{id:[0-9]+}", deleteCourseHandler.DeleteCourseController).Methods("DELETE")
 	//protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	//protected.HandleFunc("/course/{id:[0-9]+}", updateCourseHandler.UpdateCourseController).Methods("PUT")

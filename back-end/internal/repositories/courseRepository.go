@@ -60,6 +60,37 @@ func (repo *CourseRepository) GetCourse(
 	}, err
 }
 
+func (repo *CourseRepository) GetCourses(
+	ctx context.Context,
+) ([]domain.Course, error) {
+	var err error
+	var modelCourses []Course
+
+	err = repo.db.WithContext(ctx).
+		Model(Course{}).
+		Find(&modelCourses).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Course{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courses not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Course{}, err
+	}
+
+	var domainCourses []domain.Course
+	for _, modelCourse := range modelCourses {
+		domainCourses = append(domainCourses, domain.Course{
+			Title:       modelCourse.Title,
+			Description: modelCourse.Description,
+		})
+	}
+
+	return domainCourses, err
+}
+
 func (repo *CourseRepository) GetCourseByStudentID(
 	ctx context.Context,
 	studentID uint32,
