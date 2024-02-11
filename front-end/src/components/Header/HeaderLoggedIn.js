@@ -15,10 +15,10 @@ const HeaderLoggedIn = () => {
                 <nav className="nav">
                     <ul className="ul menu">
                         <li>
-                            <Link className="link" to="/courses">Τα Μαθήματά Μου</Link>
+                            <Link className="link" to="/my-courses">Τα Μαθήματά Μου</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/courses">Κατάλογος Μαθημάτων</Link>
+                            <Link className="link" to="/my-courses">Κατάλογος Μαθημάτων</Link>
                         </li>
                         <li>
                             <Link className="link" to="/questions">Διαθέσιμα Quiz</Link>

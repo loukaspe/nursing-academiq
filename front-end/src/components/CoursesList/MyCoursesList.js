@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 
-const CoursesList = () => {
+const MyCoursesList = () => {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
@@ -76,4 +76,4 @@ const CoursesList = () => {
     );
 };
 
-export default CoursesList;
+export default MyCoursesList;

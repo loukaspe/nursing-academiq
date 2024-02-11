@@ -7,8 +7,9 @@ import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 
-const QuizzesList = () => {
+const LimitedMyQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
+    const [visibleCourses, setVisibleCourses] = useState(1);
 
     useEffect(() => {
         const fetchUserQuizzes = async () => {
@@ -60,7 +61,7 @@ const QuizzesList = () => {
         <React.Fragment>
             <ul className="quizzesList">
                 <div className="quizzesListTitle">Διαθέσιμα Quiz</div>
-                {quizzes.map((item) => {
+                {quizzes.slice(0, visibleCourses).map((item) => {
                     return (
                         <div className="singleQuizTextContainer">
                             <div className="singleQuizTitle">{item.Title}</div>
@@ -69,9 +70,15 @@ const QuizzesList = () => {
                         </div>
                     );
                 })}
+                {
+                    quizzes.length > visibleCourses &&
+                    (
+                        <Link className="moreButton" to="/my-quizzes">+ Περισσότερα Quiz</Link>
+                    )
+                }
             </ul>
         </React.Fragment>
     );
 };
 
-export default QuizzesList;
+export default LimitedMyQuizzesList;

@@ -1,8 +1,8 @@
 import React from "react";
 import "./Homepage.css";
 import PageTitle from "../Utilities/PageTitle";
-import LimitedCoursesList from "../CoursesList/LimitedCoursesList";
-import LimitedQuizzesList from "../QuizzesList/LimitedQuizzesList";
+import LimitedMyCoursesList from "../CoursesList/LimitedMyCoursesList";
+import LimitedMyQuizzesList from "../QuizzesList/LimitedMyQuizzesList";
 
 
 const Homepage = (props) => {
@@ -13,10 +13,10 @@ const Homepage = (props) => {
             </div>
             <div className="homepageContainer">
                 <div className="coursesListContainer">
-                    <LimitedCoursesList/>
+                    <LimitedMyCoursesList/>
                 </div>
                 <div className="quizListContainer">
-                    <LimitedQuizzesList/>
+                    <LimitedMyQuizzesList/>
                 </div>
             </div>
             <div style={{clear: 'both'}}></div>
