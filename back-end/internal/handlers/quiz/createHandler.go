@@ -82,7 +82,7 @@ type CreateQuizResponse struct {
 //		RegistrationNumber: quizRequest.RegistrationNumber,
 //	}
 //
-//	uid, err := handler.QuizService.CreateQuiz(context.TODO(), domainQuiz)
+//	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
 //	if err != nil {
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": err.Error(),

@@ -75,7 +75,7 @@ type CreateCourseResponse struct {
 //		RegistrationNumber: courseRequest.RegistrationNumber,
 //	}
 //
-//	uid, err := handler.CourseService.CreateCourse(context.TODO(), domainCourse)
+//	uid, err := handler.CourseService.CreateCourse(context.Background(), domainCourse)
 //	if err != nil {
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": err.Error(),

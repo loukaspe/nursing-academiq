@@ -102,7 +102,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		AcademicRank: tutorRequest.AcademicRank,
 	}
 
-	uid, err := handler.TutorService.CreateTutor(context.TODO(), domainTutor)
+	uid, err := handler.TutorService.CreateTutor(context.Background(), domainTutor)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

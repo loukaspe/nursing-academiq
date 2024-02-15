@@ -92,7 +92,7 @@ func (handler *CreateStudentHandler) CreateStudentController(w http.ResponseWrit
 		RegistrationNumber: studentRequest.RegistrationNumber,
 	}
 
-	uid, err := handler.StudentService.CreateStudent(context.TODO(), domainStudent)
+	uid, err := handler.StudentService.CreateStudent(context.Background(), domainStudent)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

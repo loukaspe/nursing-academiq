@@ -97,8 +97,8 @@ package quiz
 //		RegistrationNumber: quizRequest.RegistrationNumber,
 //	}
 //
-//	err = handler.QuizService.UpdateQuiz(context.TODO(), uint32(uid), domainQuiz)
 //	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+//	err = handler.QuizService.UpdateQuiz(context.Background(), uint32(uid), domainQuiz)
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 //		}).Debug("Error in updating solar panel data")

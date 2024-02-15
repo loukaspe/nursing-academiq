@@ -25,8 +25,11 @@ func NewGetCoursesHandler(
 }
 
 type GetCoursesResponse struct {
-	ErrorMessage string          `json:"errorMessage,omitempty"`
-	Courses      []CourseRequest `json:"courses,omitempty"`
+	ErrorMessage string `json:"errorMessage,omitempty"`
+	Courses      []struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+	} `json:"courses,omitempty"`
 }
 
 func (handler *GetCourseHandler) GetCoursesController(w http.ResponseWriter, r *http.Request) {
@@ -52,14 +55,12 @@ func (handler *GetCourseHandler) GetCoursesController(w http.ResponseWriter, r *
 	}
 
 	for _, course := range courses {
-		response.Courses = append(response.Courses, CourseRequest{
-			Course: struct {
-				Title       string `json:"title"`
-				Description string `json:"description"`
-			}{
-				Title:       course.Title,
-				Description: course.Description,
-			},
+		response.Courses = append(response.Courses, struct {
+			Title       string `json:"title"`
+			Description string `json:"description"`
+		}{
+			Title:       course.Title,
+			Description: course.Description,
 		})
 	}
 
