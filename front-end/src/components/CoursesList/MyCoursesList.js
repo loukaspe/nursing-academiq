@@ -71,6 +71,7 @@ const MyCoursesList = () => {
                         </div>
                     );
                 })}
+                <Link className="registerButton" to="/courses">+ Εγγραφή σε Μάθημα</Link>
             </ul>
         </React.Fragment>
     );
