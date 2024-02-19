@@ -97,7 +97,7 @@ package course
 //		RegistrationNumber: courseRequest.RegistrationNumber,
 //	}
 //
-//	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+//	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 //	err = handler.CourseService.UpdateCourse(context.Background(), uint32(uid), domainCourse)
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

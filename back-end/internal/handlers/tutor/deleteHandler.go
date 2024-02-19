@@ -51,7 +51,7 @@ func (handler *DeleteTutorHandler) DeleteTutorController(w http.ResponseWriter, 
 	}
 
 	err = handler.TutorService.DeleteTutor(context.Background(), uint32(uid))
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in updating solar panel data")

@@ -63,7 +63,7 @@ func (handler *GetQuizByTutorIDHandler) GetQuizByTutorIDController(w http.Respon
 	}
 
 	quizs, err := handler.QuizService.GetQuizByTutorID(context.TODO(), uint32(tutorId))
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in getting user data")

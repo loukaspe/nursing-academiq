@@ -96,8 +96,8 @@ func (handler *UpdateStudentHandler) UpdateStudentController(w http.ResponseWrit
 		RegistrationNumber: studentRequest.RegistrationNumber,
 	}
 
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
-	err = handler.StudentService.UpdateStudent(context.Background(), uint32(uid), domainStudent)
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
+		err = handler.StudentService.UpdateStudent(context.Background(), uint32(uid), domainStudent)
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in updating solar panel data")

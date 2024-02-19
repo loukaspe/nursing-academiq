@@ -38,7 +38,7 @@ func (handler *GetCourseHandler) GetCoursesController(w http.ResponseWriter, r *
 	response := &GetCoursesResponse{}
 
 	courses, err := handler.CourseService.GetCourses(context.TODO())
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in getting courses")

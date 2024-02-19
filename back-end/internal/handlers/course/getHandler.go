@@ -52,7 +52,7 @@ func (handler *GetCourseHandler) GetCourseController(w http.ResponseWriter, r *h
 	}
 
 	course, err := handler.CourseService.GetCourse(context.TODO(), uint32(uid))
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in getting user data")

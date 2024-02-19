@@ -52,7 +52,7 @@ func (handler *GetStudentHandler) GetStudentController(w http.ResponseWriter, r 
 	}
 
 	student, err := handler.StudentService.GetStudent(context.TODO(), uint32(uid))
-	if dataNotFoundErrorWrapper, ok := err.(*apierrors.DataNotFoundErrorWrapper); ok {
+	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in getting user data")
