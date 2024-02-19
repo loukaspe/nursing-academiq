@@ -50,6 +50,7 @@ func (s *Server) initializeRoutes() {
 	createStudentHandler := student.NewCreateStudentHandler(studentService, s.logger)
 	deleteStudentHandler := student.NewDeleteStudentHandler(studentService, s.logger)
 	updateStudentHandler := student.NewUpdateStudentHandler(studentService, s.logger)
+	registerStudentCoursesHandler := student.NewRegisterStudentCoursesHandler(studentService, s.logger)
 
 	protected.HandleFunc("/student", createStudentHandler.CreateStudentController).Methods("POST")
 	protected.HandleFunc("/student", optionsHandlerForCors).Methods(http.MethodOptions)
@@ -102,6 +103,8 @@ func (s *Server) initializeRoutes() {
 	//protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	protected.HandleFunc("/student/{id:[0-9]+}/courses", getCourseByStudentIDHandler.GetCourseByStudentIDController).Methods("GET")
+	protected.HandleFunc("/student/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/student/{id:[0-9]+}/courses", registerStudentCoursesHandler.RegisterStudentCoursesController).Methods("POST")
 	protected.HandleFunc("/student/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", getCourseByTutorIDHandler.GetCourseByTutorIDController).Methods("GET")
 	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)

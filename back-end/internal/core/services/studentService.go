@@ -30,3 +30,7 @@ func (service StudentService) UpdateStudent(ctx context.Context, uid uint32, stu
 func (service StudentService) DeleteStudent(ctx context.Context, uid uint32) error {
 	return service.repository.DeleteStudent(ctx, uid)
 }
+
+func (service StudentService) RegisterCourses(ctx context.Context, studentID uint32, courses []domain.Course) (*domain.Student, error) {
+	return service.repository.RegisterCourses(ctx, studentID, courses)
+}

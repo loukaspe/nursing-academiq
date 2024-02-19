@@ -161,3 +161,86 @@ func (repo *StudentRepository) DeleteStudent(
 
 	return db.Error
 }
+
+// RegisterCourses This takes a list of courses and add them to the student
+// Any previous relationships are removed
+func (repo *StudentRepository) RegisterCourses(
+	ctx context.Context,
+	studentID uint32,
+	courses []domain.Course,
+) (*domain.Student, error) {
+	var err error
+	var modelStudent Student
+	var modelCourses []Course
+
+	// firstly we check if the domain courses exist in the database
+	for _, course := range courses {
+		var modelCourse Course
+		err = repo.db.WithContext(ctx).
+			Where("id = ?", course.ID).
+			First(&modelCourse).Error
+
+		if err == gorm.ErrRecordNotFound {
+			return nil, apierrors.DataNotFoundErrorWrapper{
+				ReturnedStatusCode: http.StatusNotFound,
+				OriginalError:      errors.New("course " + strconv.Itoa(int(course.ID)) + " not found"),
+			}
+		}
+		if err != nil {
+			return nil, err
+		}
+
+		modelCourses = append(modelCourses, modelCourse)
+	}
+
+	err = repo.db.WithContext(ctx).
+		Preload("Courses").
+		Preload("User").
+		First(&modelStudent, studentID).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return nil, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(studentID)) + " not found"),
+		}
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	if err := repo.db.WithContext(ctx).Model(&modelStudent).Association("Courses").Clear(); err != nil {
+		return nil, err
+	}
+
+	for _, course := range modelCourses {
+		modelStudent.Courses = append(modelStudent.Courses, course)
+	}
+
+	if err := repo.db.WithContext(ctx).Save(&modelStudent).Error; err != nil {
+		return nil, err
+	}
+
+	var domainCourses []domain.Course
+	for _, modelCourse := range modelStudent.Courses {
+		domainCourses = append(domainCourses, domain.Course{
+			ID:          uint32(modelCourse.ID),
+			Title:       modelCourse.Title,
+			Description: modelCourse.Description,
+		})
+	}
+
+	return &domain.Student{
+		User: domain.User{
+			Username: modelStudent.User.Username,
+			//Password:    modelStudent.User.Password,
+			FirstName:   modelStudent.User.FirstName,
+			LastName:    modelStudent.User.LastName,
+			Email:       modelStudent.User.Email,
+			BirthDate:   modelStudent.User.BirthDate,
+			PhoneNumber: modelStudent.User.PhoneNumber,
+			Photo:       modelStudent.User.Photo,
+		},
+		RegistrationNumber: modelStudent.RegistrationNumber,
+		Courses:            domainCourses,
+	}, err
+}
