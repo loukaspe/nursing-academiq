@@ -83,6 +83,7 @@ func (repo *CourseRepository) GetCourses(
 	var domainCourses []domain.Course
 	for _, modelCourse := range modelCourses {
 		domainCourses = append(domainCourses, domain.Course{
+			ID:          uint32(modelCourse.ID),
 			Title:       modelCourse.Title,
 			Description: modelCourse.Description,
 		})
@@ -139,6 +140,7 @@ func (repo *CourseRepository) GetCourseByStudentID(
 	for _, modelCourse := range modelStudent.Courses {
 		// TODO: preload Tutor, Students if needed
 		domainCourses = append(domainCourses, domain.Course{
+			ID:          uint32(modelCourse.ID),
 			Title:       modelCourse.Title,
 			Description: modelCourse.Description,
 		})
@@ -172,6 +174,7 @@ func (repo *CourseRepository) GetCourseByTutorID(
 	for _, modelCourse := range modelTutor.Courses {
 		// TODO: preload Tutor, Students if needed
 		domainCourses = append(domainCourses, domain.Course{
+			ID:          uint32(modelCourse.ID),
 			Title:       modelCourse.Title,
 			Description: modelCourse.Description,
 		})

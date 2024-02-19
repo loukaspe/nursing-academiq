@@ -83,7 +83,7 @@ var student2 = repositories.Student{
 	UserID:             3,
 	RegistrationNumber: "123",
 	Courses: []repositories.Course{
-		course1,
+		course3,
 	},
 }
 
@@ -125,6 +125,15 @@ var chapter3 = repositories.Chapter{
 var course2 = repositories.Course{
 	Title:       "math kat",
 	Description: "mathimatika kateythynshs",
+	TutorID:     2,
+	//Students: []*repositories.Students{
+	//	&student2, &student3,
+	//},
+}
+
+var course3 = repositories.Course{
+	Title:       "math 3",
+	Description: "mathimatika 3",
 	TutorID:     2,
 	//Students: []*repositories.Students{
 	//	&student2, &student3,
