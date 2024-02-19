@@ -8,7 +8,7 @@ const CoursesList = () => {
     const [courses, setCourses] = useState([]);
     const [myCourses, setMyCourses] = useState([]);
     // const [selectedCourses, setSelectedCourses] = useState([]);
-    // const [submitting, setSubmitting] = useState(false);
+    const [isSubmitting, setSubmitting] = useState(false);
 
     const handleCheckboxChange = (id, isChecked) => {
         if (isChecked) {
@@ -39,7 +39,7 @@ const CoursesList = () => {
         let requestBody = JSON.stringify({courses});
         console.log(requestBody);
 
-        // setSubmitting(true);
+        setSubmitting(true);
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -59,7 +59,7 @@ const CoursesList = () => {
         } catch (error) {
             console.error('Error registering courses:', error);
         } finally {
-            // setSubmitting(false);
+            setSubmitting(false);
         }
     };
 
@@ -172,8 +172,15 @@ const CoursesList = () => {
                         </div>
                     );
                 })}
-                <button className="registerButton" onClick={handleCourseRegistration}>
-                    Υποβολή
+                <button
+                    className="registerButton"
+                    onClick={handleCourseRegistration}
+                    style={{
+                        backgroundColor: isSubmitting ? "#C3C3C3" : "#220D6A",
+                    }}
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? 'Υποβολή...' : 'Υποβολή'}
                 </button>
             </ul>
         </React.Fragment>
