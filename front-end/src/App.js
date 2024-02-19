@@ -10,6 +10,7 @@ import Cookies from "universal-cookie";
 import LoginPage from "./components/Login/LoginPage";
 import MyCoursesList from "./components/CoursesList/MyCoursesList";
 import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
+import CoursesList from "./components/CoursesList/CoursesList";
 
 const cookies = new Cookies();
 
@@ -34,6 +35,14 @@ const App = () => {
                                 <QuestionsWrapper
                                     questions={questions}
                                 />
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses"
+                        element={
+                            <ProtectedRoutes>
+                                <CoursesList/>
                             </ProtectedRoutes>
                         }
                     />

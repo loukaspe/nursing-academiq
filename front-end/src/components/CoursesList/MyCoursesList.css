@@ -1,14 +1,12 @@
 @import "../../styles/variables.css";
 
-.coursesList {
+.myCoursesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
-    padding-right: 15em;
-    padding-left: 15em;
 }
 
-.coursesListTitle {
+.myCoursesListTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 1em;
@@ -17,58 +15,43 @@
     font-weight: bold;
 }
 
-.singleCourseContainer {
+.mySingleCourseContainer {
+    /*margin: auto auto 2rem;*/
+    /*padding: 1rem;*/
     display: flex;
-    border-bottom: 1px solid var(--dark-grey-color);
-    padding-bottom: 1rem;
+    align-items: center;
 }
 
-.headerContainer {
-    display: flex;
+.bookmarkIcon {
+    color: #F8A16E;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.singleCourseTextContainer {
-    flex: 1;
+.mySingleCourseTextContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin-left: 0.5rem;
 }
 
-.singleCourseCheckbox {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.registerTitle {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 1rem;
-    color: var(--brand-color);
-}
-
-.singleCourseTitle {
-    color: var(--brand-dark-color);
+.mySingleCourseTitle {
+    color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     font-size: 1.5rem;
     margin: 0;
-    /*font-weight: bold;*/
+    font-weight: bold;
 }
 
-.singleCourseDetails {
+.mySingleCourseDetails {
     color: var(--dark-grey-color);
     font-size: 1rem;
-    /*font-weight: bold;*/
+    font-weight: bold;
     margin: 0;
     /*margin-left: 1rem;*/
 }
 
-.registerButton {
+.moreButton {
     color: var(--light-color);
     background-color: var(--dark-color);
     font-size: 1rem;
@@ -78,6 +61,4 @@
     border: none;
     font-weight: bold;
     display: inline-block;
-    float: right;
-    cursor: pointer;
 }

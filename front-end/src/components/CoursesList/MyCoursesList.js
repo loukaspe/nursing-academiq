@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import "./CoursesList.css";
+import "./MyCoursesList.css";
 import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
@@ -58,15 +58,15 @@ const MyCoursesList = () => {
 
     return (
         <React.Fragment>
-            <ul className="coursesList">
-                <div className="coursesListTitle">Τα μαθήματά μου</div>
+            <ul className="myCoursesList">
+                <div className="myCoursesListTitle">Τα μαθήματά μου</div>
                 {courses.map((item) => {
                     return (
-                        <div className="singleCourseContainer">
+                        <div className="mySingleCourseContainer">
                             <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
-                            <div className="singleCourseTextContainer">
-                                <span className="singleCourseTitle">{item.title}</span>
-                                <div className="singleCourseDetails">{item.description}</div>
+                            <div className="mySingleCourseTextContainer">
+                                <span className="mySingleCourseTitle">{item.title}</span>
+                                <div className="mySingleCourseDetails">{item.description}</div>
                             </div>
                         </div>
                     );
