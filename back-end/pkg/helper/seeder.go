@@ -239,6 +239,51 @@ var quiz1 = repositories.Quiz{
 	},
 }
 
+var quiz11 = repositories.Quiz{
+	Title:            "first and one quiz",
+	Description:      "the first quiz of the chapter",
+	CourseID:         1,
+	Visibility:       true,
+	ShowSubset:       false,
+	SubsetSize:       1,
+	NumberOfSessions: 2,
+	ScoreSum:         3,
+	MaxScore:         4,
+	Questions: []*repositories.Question{
+		&question1, &question3,
+	},
+}
+
+var quiz12 = repositories.Quiz{
+	Title:            "first and two quiz",
+	Description:      "the first quiz of the chapter",
+	CourseID:         1,
+	Visibility:       true,
+	ShowSubset:       false,
+	SubsetSize:       1,
+	NumberOfSessions: 2,
+	ScoreSum:         3,
+	MaxScore:         4,
+	Questions: []*repositories.Question{
+		&question1, &question3,
+	},
+}
+
+var quiz13 = repositories.Quiz{
+	Title:            "first and three quiz",
+	Description:      "the first quiz of the chapter",
+	CourseID:         1,
+	Visibility:       true,
+	ShowSubset:       false,
+	SubsetSize:       1,
+	NumberOfSessions: 2,
+	ScoreSum:         3,
+	MaxScore:         4,
+	Questions: []*repositories.Question{
+		&question1, &question3,
+	},
+}
+
 var quiz2 = repositories.Quiz{
 	Title:            "second quiz",
 	Description:      "the second quiz of the chapter",
@@ -490,6 +535,18 @@ func CreateQuizzes(db *gorm.DB) {
 	}
 
 	err = db.Debug().Model(&repositories.Quiz{}).Create(&quiz1).Error
+	if err != nil {
+		log.Fatalf("cannot seed quizs table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.Quiz{}).Create(&quiz11).Error
+	if err != nil {
+		log.Fatalf("cannot seed quizs table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.Quiz{}).Create(&quiz12).Error
+	if err != nil {
+		log.Fatalf("cannot seed quizs table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.Quiz{}).Create(&quiz13).Error
 	if err != nil {
 		log.Fatalf("cannot seed quizs table: %v", err)
 	}

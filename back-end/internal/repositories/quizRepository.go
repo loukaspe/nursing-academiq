@@ -7,6 +7,7 @@ import (
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
 	"net/http"
+	"sort"
 	"strconv"
 )
 
@@ -130,12 +131,17 @@ func (repo *QuizRepository) GetQuizByStudentID(
 				ScoreSum:          modelQuiz.ScoreSum,
 				MaxScore:          modelQuiz.MaxScore,
 				NumberOfQuestions: numberOfQuestions,
+				CreatedAt:         modelQuiz.CreatedAt,
 				Course: &domain.Course{
 					Title: courseName,
 				},
 			})
 		}
 	}
+
+	sort.Slice(domainQuizs, func(i, j int) bool {
+		return domainQuizs[i].CreatedAt.Before(domainQuizs[j].CreatedAt)
+	})
 
 	return domainQuizs, err
 }

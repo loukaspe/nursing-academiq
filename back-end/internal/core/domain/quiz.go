@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type Quiz struct {
 	Title             string
 	Description       string
@@ -12,4 +14,5 @@ type Quiz struct {
 	MaxScore          int
 	Questions         []Question
 	NumberOfQuestions int
+	CreatedAt         time.Time
 }

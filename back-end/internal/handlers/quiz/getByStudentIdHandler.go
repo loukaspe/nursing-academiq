@@ -42,6 +42,7 @@ type GetQuizByStudentIDResponse struct {
 	} `json:"quizzes,omitempty"`
 }
 
+// GetQuizByStudentIDController this will return the quizzes sorted from newest to oldest
 func (handler *GetQuizByStudentIDHandler) GetQuizByStudentIDController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//var err error
