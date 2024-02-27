@@ -4,6 +4,8 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
+    padding-right: 20em;
+    padding-left: 20em;
 }
 
 .quizzesListTitle {
@@ -49,4 +51,9 @@
     border: none;
     font-weight: bold;
     display: inline-block;
+}
+
+.hasBeenDoneOnceCheckmark {
+    color: #62BF53;
+    margin-left: 0.5rem;
 }

@@ -21,7 +21,7 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="/courses">Κατάλογος Μαθημάτων</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/questions">Διαθέσιμα Quiz</Link>
+                            <Link className="link" to="/my-quizzes">Διαθέσιμα Quiz</Link>
                         </li>
                         <li>
                             <Link className="link" to="/questions">Ιστορικό Quiz</Link>

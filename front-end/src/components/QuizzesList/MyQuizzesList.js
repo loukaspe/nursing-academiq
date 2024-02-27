@@ -2,68 +2,114 @@ import React, {useEffect, useState} from "react";
 import "./QuizzesList.css";
 import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark} from "@fortawesome/free-solid-svg-icons";
+import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 
 const MyQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
+    const [quizSessions, setQuizSessions] = useState([]);
+    const [finalQuizzes, setFinalQuizzes] = useState([]);
 
     useEffect(() => {
-        const fetchUserQuizzes = async () => {
-            let userCookie = cookies.get("user");
-            let userType = userCookie.type;
-            let specificID = userCookie.specificID;
+        const fetchData = async () => {
+            const userCookie = cookies.get("user");
+            const userType = userCookie.type;
+            const specificID = userCookie.specificID;
 
-            let apiUrl = "";
-            if (userType === "student") {
-                apiUrl = process.env.REACT_APP_API_URL + `/student/${specificID}/quizzes`;
-            } else if (userType === "tutor") {
-                apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/quizzes`;
-            }
+            const apiUrlQuizzes = userType === "student"
+                ? `${process.env.REACT_APP_API_URL}/student/${specificID}/quizzes`
+                : `${process.env.REACT_APP_API_URL}/tutor/${specificID}/quizzes`;
 
+            const apiUrlQuizSessions = `${process.env.REACT_APP_API_URL}/student/${specificID}/quiz_sessions`;
 
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                    credentials: 'include',
-                });
-                const result = await response.json();
-                // TODO if 401 show unauthorized
-                // TODO if 500 show server error
-                if (response.status === 500) {
-                    throw Error(result.message);
+                const [quizzesResponse, quizSessionsResponse] = await Promise.all([
+                    fetch(apiUrlQuizzes, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${cookies.get("token")}`,
+                        },
+                        credentials: 'include',
+                    }),
+                    fetch(apiUrlQuizSessions, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${cookies.get("token")}`,
+                        },
+                        credentials: 'include',
+                    }),
+                ]);
+
+                const [quizzesResult, quizSessionsResult] = await Promise.all([
+                    quizzesResponse.json(),
+                    quizSessionsResponse.json(),
+                ]);
+
+                if (quizzesResponse.status === 500 || quizSessionsResponse.status === 500) {
+                    throw Error(quizzesResult.message || quizSessionsResult.message);
                 }
 
-                if (response.status === 401) {
+                if (quizzesResponse.status === 401 || quizSessionsResponse.status === 401) {
                     throw Error("unauthorized: 401");
                 }
 
-                if (result.quizzes === undefined) {
-                    throw Error("error getting quizzes for student");
+                if (quizzesResult.quizzes === undefined || quizSessionsResult.quizSessions === undefined) {
+                    throw Error("error getting quizzes or quiz sessions");
                 }
-                setQuizzes(result.quizzes);
+
+                console.log(quizzesResult.quizzes)
+                console.log(quizSessionsResult.quizSessions)
+
+                setQuizzes(quizzesResult.quizzes);
+                setQuizSessions(quizSessionsResult.quizSessions);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchUserQuizzes();
+        fetchData();
+        console.log(quizzes)
+        console.log(quizSessions)
     }, []);
+
+    const checkIfQuizHasBeenDone = () => {
+        const updatedFinalQuizzes = quizzes.map(quiz => {
+            let quizSession = quizSessions.find(session => session.quizName === quiz.Title);
+            return {
+                Title: quiz.Title,
+                CourseName: quiz.CourseName,
+                NumberOfQuestions: quiz.NumberOfQuestions,
+                hasBeenDoneOnce: !!quizSession,
+            };
+        });
+
+        setFinalQuizzes(updatedFinalQuizzes);
+    };
+
+    useEffect(() => {
+        checkIfQuizHasBeenDone()
+    }, [quizzes, quizSessions]);
 
     return (
         <React.Fragment>
             <ul className="quizzesList">
                 <div className="quizzesListTitle">Διαθέσιμα Quiz</div>
-                {quizzes.map((item) => {
+                {finalQuizzes.map((item) => {
+                    // console.log(item)
                     return (
                         <div className="singleQuizTextContainer">
-                            <div className="singleQuizTitle">{item.Title}</div>
+                            <div className="singleQuizTitle">
+                                {item.Title}
+                                {item.hasBeenDoneOnce ? (
+                                    <FontAwesomeIcon icon={faCheck} className="hasBeenDoneOnceCheckmark"/>
+                                ) : (
+                                    ""
+                                )}
+                            </div>
                             <div className="singleQuizDetails">{item.CourseName}</div>
                             <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
                         </div>
