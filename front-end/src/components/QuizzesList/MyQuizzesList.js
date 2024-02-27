@@ -61,9 +61,6 @@ const MyQuizzesList = () => {
                     throw Error("error getting quizzes or quiz sessions");
                 }
 
-                console.log(quizzesResult.quizzes)
-                console.log(quizSessionsResult.quizSessions)
-
                 setQuizzes(quizzesResult.quizzes);
                 setQuizSessions(quizSessionsResult.quizSessions);
             } catch (error) {
@@ -72,8 +69,6 @@ const MyQuizzesList = () => {
         };
 
         fetchData();
-        console.log(quizzes)
-        console.log(quizSessions)
     }, []);
 
     const checkIfQuizHasBeenDone = () => {
@@ -99,7 +94,6 @@ const MyQuizzesList = () => {
             <ul className="quizzesList">
                 <div className="quizzesListTitle">Διαθέσιμα Quiz</div>
                 {finalQuizzes.map((item) => {
-                    // console.log(item)
                     return (
                         <div className="singleQuizTextContainer">
                             <div className="singleQuizTitle">
