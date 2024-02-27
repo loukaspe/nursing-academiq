@@ -23,7 +23,6 @@ type Quiz struct {
 	//Course           Course
 	CourseID         uint
 	CourseName       string
-	QuizSessionID    *uint
 	Visibility       bool `gorm:"not null;"`
 	ShowSubset       bool `gorm:"not null;"`
 	SubsetSize       int
@@ -31,4 +30,18 @@ type Quiz struct {
 	ScoreSum         float32     `gorm:"not null;"`
 	MaxScore         int         `gorm:"not null;"`
 	Questions        []*Question `gorm:"many2many:quiz_has_question;"`
+}
+
+type QuizSession struct {
+	gorm.Model
+	//QuizID            uint
+	Quiz              Quiz
+	QuizID            uint
+	StudentID         uint
+	DateTime          time.Time `gorm:"not null;"`
+	DurationInSeconds int       `gorm:"not null;"`
+	Score             float32   `gorm:"not null;"`
+	MaxScore          int       `gorm:"not null;"`
+	QuestionSessions  []QuestionSession
+	AnswerSessions    []AnswerSession
 }

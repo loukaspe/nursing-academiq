@@ -10,6 +10,7 @@ type Student struct {
 	RegistrationNumber string `gorm:"not null;"`
 	UserID             uint   `gorm:"not null"`
 	User               User
+	QuizSessions       []QuizSession
 	Courses            []Course `gorm:"many2many:student_takes_course;"`
 }
 

@@ -300,16 +300,7 @@ var quiz2 = repositories.Quiz{
 }
 
 var quizSession1 = repositories.QuizSession{
-	Model: gorm.Model{
-		ID:        0,
-		CreatedAt: time.Time{},
-		UpdatedAt: time.Time{},
-		DeletedAt: gorm.DeletedAt{
-			Time:  time.Time{},
-			Valid: false,
-		},
-	},
-	DateTime:          time.Time{},
+	DateTime:          time.Now(),
 	DurationInSeconds: 1,
 	Score:             2,
 	MaxScore:          3,
@@ -319,26 +310,21 @@ var quizSession1 = repositories.QuizSession{
 	AnswerSessions: []repositories.AnswerSession{
 		answerSession1, answerSession2,
 	},
+	StudentID: 1,
+	QuizID:    1,
 }
 
 var quizSessionID1 uint = 1
 
 var quizSession2 = repositories.QuizSession{
-	Model: gorm.Model{
-		ID:        0,
-		CreatedAt: time.Time{},
-		UpdatedAt: time.Time{},
-		DeletedAt: gorm.DeletedAt{
-			Time:  time.Time{},
-			Valid: false,
-		},
-	},
-	DateTime:          time.Time{},
+	DateTime:          time.Now(),
 	DurationInSeconds: 11,
 	Score:             22,
 	MaxScore:          33,
 	QuestionSessions:  []repositories.QuestionSession{},
 	AnswerSessions:    []repositories.AnswerSession{},
+	StudentID:         2,
+	QuizID:            2,
 }
 
 var questionSession1 = repositories.QuestionSession{
@@ -657,19 +643,19 @@ func DropTables(db *gorm.DB) {
 		}
 	}
 	if db.Migrator().HasTable(&repositories.QuizSession{}) {
-		err := db.Migrator().DropTable("quizSessionByStudents")
+		err := db.Migrator().DropTable("quiz_sessions")
 		if err != nil {
 			log.Fatalf("cannot drop table: %v", err)
 		}
 	}
 	if db.Migrator().HasTable(&repositories.QuestionSession{}) {
-		err := db.Migrator().DropTable("questionSessions")
+		err := db.Migrator().DropTable("question_sessions")
 		if err != nil {
 			log.Fatalf("cannot drop table: %v", err)
 		}
 	}
 	if db.Migrator().HasTable(&repositories.AnswerSession{}) {
-		err := db.Migrator().DropTable("answerSessions")
+		err := db.Migrator().DropTable("answer_sessions")
 		if err != nil {
 			log.Fatalf("cannot drop table: %v", err)
 		}

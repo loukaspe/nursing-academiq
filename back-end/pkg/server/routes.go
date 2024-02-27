@@ -7,6 +7,7 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/course"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/quiz"
+	"github.com/loukaspe/nursing-academiq/internal/handlers/quizSessionByStudent"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
@@ -133,6 +134,28 @@ func (s *Server) initializeRoutes() {
 	protected.HandleFunc("/student/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	// quizSession
+	quizSessionByStudentRepository := repositories.NewQuizSessionRepository(s.DB)
+	quizSessionByStudentService := services.NewQuizSessionByStudentService(quizSessionByStudentRepository)
+
+	getQuizSessionByStudentHandler := quizSessionByStudent.NewGetQuizSessionByStudentIDHandler(quizSessionByStudentService, s.logger)
+	getQuizSessionByStudentByStudentIDHandler := quizSessionByStudent.NewGetQuizSessionByStudentIDHandler(quizSessionByStudentService, s.logger)
+	//createQuizSessionByStudentHandler := quizSessionByStudent.NewCreateQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
+	//deleteQuizSessionByStudentHandler := quizSessionByStudent.NewDeleteQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
+	//updateQuizSessionByStudentHandler := quizSessionByStudent.NewUpdateQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
+
+	//protected.HandleFunc("/quizSessionByStudent", createQuizSessionByStudentHandler.CreateQuizSessionByStudentController).Methods("POST")
+	//protected.HandleFunc("/quizSessionByStudent", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", getQuizSessionByStudentHandler.GetQuizSessionByStudentIDController).Methods("GET")
+	protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", deleteQuizSessionByStudentHandler.DeleteQuizSessionByStudentController).Methods("DELETE")
+	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", updateQuizSessionByStudentHandler.UpdateQuizSessionByStudentController).Methods("PUT")
+	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	protected.HandleFunc("/student/{id:[0-9]+}/quiz_sessions", getQuizSessionByStudentByStudentIDHandler.GetQuizSessionByStudentIDController).Methods("GET")
+	protected.HandleFunc("/student/{id:[0-9]+}/quiz_sessions", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
