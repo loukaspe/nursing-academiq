@@ -22,6 +22,8 @@
     display: flex;
     flex-direction: column;
     margin-left: 0.5rem;
+    padding-bottom: 1em;
+    border-bottom: 1px solid var(--grey-color);
 }
 
 .singleQuizTitle {
