@@ -24,7 +24,10 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="/my-quizzes">Διαθέσιμα Quiz</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/questions">Ιστορικό Quiz</Link>
+                            <Link className="link" to="/quiz-history">Ιστορικό Quiz</Link>
+                        </li>
+                        <li>
+                            <Link className="link" to="/questions">Questions</Link>
                         </li>
                     </ul>
                     <ul className="ul myAccountMenu">
