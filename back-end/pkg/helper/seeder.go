@@ -314,6 +314,96 @@ var quizSession1 = repositories.QuizSession{
 	QuizID:    1,
 }
 
+var quizSession11 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 11,
+	Score:             21,
+	MaxScore:          31,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    2,
+}
+
+var quizSession12 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 11,
+	Score:             22,
+	MaxScore:          32,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    1,
+}
+
+var quizSession13 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 11,
+	Score:             22,
+	MaxScore:          33,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    1,
+}
+
+var quizSession14 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 14,
+	Score:             24,
+	MaxScore:          34,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    1,
+}
+
+var quizSession15 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 15,
+	Score:             25,
+	MaxScore:          35,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    1,
+}
+
+var quizSession16 = repositories.QuizSession{
+	DateTime:          time.Now(),
+	DurationInSeconds: 1,
+	Score:             2,
+	MaxScore:          3,
+	QuestionSessions: []repositories.QuestionSession{
+		questionSession1, questionSession2,
+	},
+	AnswerSessions: []repositories.AnswerSession{
+		answerSession1, answerSession2,
+	},
+	StudentID: 1,
+	QuizID:    1,
+}
+
 var quizSessionID1 uint = 1
 
 var quizSession2 = repositories.QuizSession{
@@ -550,6 +640,26 @@ func CreateQuizSessions(db *gorm.DB) {
 	}
 
 	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession1).Error
+	if err != nil {
+		log.Fatalf("cannot seed quiz sessions table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession11).Error
+	if err != nil {
+		log.Fatalf("cannot seed quiz sessions table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession12).Error
+	if err != nil {
+		log.Fatalf("cannot seed quiz sessions table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession13).Error
+	if err != nil {
+		log.Fatalf("cannot seed quiz sessions table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession14).Error
+	if err != nil {
+		log.Fatalf("cannot seed quiz sessions table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession15).Error
 	if err != nil {
 		log.Fatalf("cannot seed quiz sessions table: %v", err)
 	}

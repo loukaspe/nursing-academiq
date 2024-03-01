@@ -83,7 +83,7 @@ func (handler *GetQuizSessionByStudentIDHandler) GetQuizSessionByStudentIDContro
 			MaxScore int     `json:"maxScore"`
 		}{
 			QuizName: quizSessionByStudent.Quiz.Title,
-			Date:     quizSessionByStudent.Date.String(),
+			Date:     quizSessionByStudent.Date.Format("02/01/2006"),
 			Duration: quizSessionByStudent.DurationInSeconds,
 			Score:    quizSessionByStudent.Score,
 			MaxScore: quizSessionByStudent.MaxScore,
