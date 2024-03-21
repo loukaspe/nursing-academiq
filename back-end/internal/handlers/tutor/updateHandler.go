@@ -98,11 +98,11 @@ func (handler *UpdateTutorHandler) UpdateTutorController(w http.ResponseWriter, 
 		AcademicRank: tutorRequest.AcademicRank,
 	}
 
+	err = handler.TutorService.UpdateTutor(context.Background(), uint32(uid), domainTutor)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
-		err = handler.TutorService.UpdateTutor(context.Background(), uint32(uid), domainTutor)
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
-		}).Debug("Error in updating solar panel data")
+		}).Debug("Error in updating tutor")
 
 		w.WriteHeader(dataNotFoundErrorWrapper.ReturnedStatusCode)
 
