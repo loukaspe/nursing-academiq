@@ -1,2 +1,3 @@
 /DEPRECATEDfront-end
 *.env
+/back-end/uploads

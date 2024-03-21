@@ -26,6 +26,11 @@ func main() {
 		Handler: router,
 	}
 
+	uploadDirPath := os.Getenv("PHOTOS_DIR")
+	if err := os.MkdirAll(uploadDirPath, 0755); err != nil {
+		log.Fatal("cannot create photos dir", err)
+	}
+
 	server := server.NewServer(db, router, httpServer, logger)
 
 	server.Run()

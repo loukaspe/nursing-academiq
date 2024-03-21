@@ -10,6 +10,7 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/handlers/quizSessionByStudent"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
+	"github.com/loukaspe/nursing-academiq/internal/handlers/user"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
 	"github.com/loukaspe/nursing-academiq/pkg/auth"
 	"net/http"
@@ -17,6 +18,9 @@ import (
 )
 
 func (s *Server) initializeRoutes() {
+	fs := http.FileServer(http.Dir("./uploads"))
+	s.router.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", fs))
+
 	// health check
 	healthCheckHandler := handlers.NewHealthCheckHandler(s.DB)
 	s.router.HandleFunc("/health-check", healthCheckHandler.HealthCheckController).Methods("GET")
@@ -42,6 +46,19 @@ func (s *Server) initializeRoutes() {
 
 	protected := s.router.PathPrefix("/").Subrouter()
 	protected.Use(jwtMiddleware.AuthenticationMW)
+
+	// user
+	userService := services.NewUserService(userRepository)
+
+	uploadDir := os.Getenv("PHOTOS_DIR")
+
+	getUserPhotoHandler := user.NewGetUserPhotoHandler(userService, s.logger)
+	updateUserPhotoHandler := user.NewSetUserPhotoHandler(userService, s.logger, uploadDir)
+
+	protected.HandleFunc("/user/{id:[0-9]+}/photo", getUserPhotoHandler.GetUserPhotoController).Methods("GET")
+	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/user/{id:[0-9]+}/photo", updateUserPhotoHandler.SetUserPhotoController).Methods("POST")
+	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// student
 	studentRepository := repositories.NewStudentRepository(s.DB)

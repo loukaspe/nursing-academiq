@@ -17,7 +17,7 @@ var users = []repositories.User{
 		Email:       "email1@email.com",
 		BirthDate:   time.Time{},
 		PhoneNumber: "1111111111",
-		Photo:       "photo1",
+		Photo:       "",
 	},
 	repositories.User{
 		Username:    "user2",
@@ -27,7 +27,7 @@ var users = []repositories.User{
 		Email:       "email2@email.com",
 		BirthDate:   time.Time{},
 		PhoneNumber: "2222222222",
-		Photo:       "photo2",
+		Photo:       "AGT_4354.jpg",
 	},
 	repositories.User{
 		Username:    "user3",
@@ -37,7 +37,7 @@ var users = []repositories.User{
 		Email:       "email3@email.com",
 		BirthDate:   time.Time{},
 		PhoneNumber: "33333333333",
-		Photo:       "photo3",
+		Photo:       "",
 	},
 	repositories.User{
 		Username:    "user4",
@@ -47,7 +47,7 @@ var users = []repositories.User{
 		Email:       "email4@email.com",
 		BirthDate:   time.Time{},
 		PhoneNumber: "4444444444",
-		Photo:       "photo4",
+		Photo:       "",
 	},
 	repositories.User{
 		Username:    "user5",
@@ -57,7 +57,7 @@ var users = []repositories.User{
 		Email:       "email5@email.com",
 		BirthDate:   time.Time{},
 		PhoneNumber: "5555555555",
-		Photo:       "photo5",
+		Photo:       "",
 	},
 }
 

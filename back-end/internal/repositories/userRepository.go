@@ -7,6 +7,7 @@ import (
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 )
 
 type UserRepository struct {
@@ -82,4 +83,54 @@ func (repo *UserRepository) Login(
 		UserType:    userType,
 		SpecificID:  specificID,
 	}, modelUser.ID, err
+}
+
+func (repo *UserRepository) GetUserPhoto(
+	ctx context.Context,
+	uid uint32,
+) (string, error) {
+	var err error
+	var modelUser *User
+
+	err = repo.db.WithContext(ctx).
+		Model(User{}).
+		Where("id = ?", uid).
+		Take(&modelUser).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return "", apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("UserID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return "", err
+	}
+
+	return modelUser.Photo, err
+}
+
+func (repo *UserRepository) SetUserPhoto(
+	ctx context.Context,
+	uid uint32,
+	photo string,
+) error {
+	modelUser := &User{}
+
+	err := repo.db.WithContext(ctx).Model(User{}).Where("id = ?", uid).Take(modelUser).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("UserID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return err
+	}
+
+	modelUser.Photo = photo
+
+	err = repo.db.WithContext(ctx).Save(&modelUser).Error
+
+	return err
 }
