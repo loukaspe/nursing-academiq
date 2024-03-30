@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
@@ -95,6 +96,67 @@ func (repo *StudentRepository) GetStudent(
 	return &domain.Student{
 		User:               domainUser,
 		RegistrationNumber: modelStudent.RegistrationNumber,
+	}, err
+}
+
+func (repo *StudentRepository) GetExtendedStudent(
+	ctx context.Context,
+	uid uint32,
+) (*domain.Student, error) {
+	var err error
+	var modelStudent *Student
+
+	err = repo.db.WithContext(ctx).
+		Preload("User").
+		Preload("QuizSessions").
+		//Preload("QuizSessions.Quiz").
+		Model(Student{}).
+		Where("id = ?", uid).
+		Take(&modelStudent).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return &domain.Student{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return &domain.Student{}, err
+	}
+
+	completedQuizzesIDs := make(map[uint]struct{})
+	totalQuizSessionsScore := float32(0)
+	totalQuizSessionsMaxScore := 0
+
+	for _, quizSession := range modelStudent.QuizSessions {
+		if _, ok := completedQuizzesIDs[quizSession.QuizID]; !ok {
+			completedQuizzesIDs[quizSession.QuizID] = struct{}{}
+		}
+
+		totalQuizSessionsScore += quizSession.Score
+		totalQuizSessionsMaxScore += quizSession.MaxScore
+	}
+
+	domainUser := domain.User{
+		Username:    modelStudent.User.Username,
+		Password:    modelStudent.User.Password,
+		FirstName:   modelStudent.User.FirstName,
+		LastName:    modelStudent.User.LastName,
+		Email:       modelStudent.User.Email,
+		BirthDate:   modelStudent.User.BirthDate,
+		PhoneNumber: modelStudent.User.PhoneNumber,
+		Photo:       modelStudent.User.Photo,
+	}
+
+	questionsScore := fmt.Sprintf("%.1f/%d", totalQuizSessionsScore, totalQuizSessionsMaxScore)
+	percentageOfCorrectAnswers := fmt.Sprintf("%.2f%%", (totalQuizSessionsScore/float32(totalQuizSessionsMaxScore))*100)
+
+	return &domain.Student{
+		User:                       domainUser,
+		RegistrationNumber:         modelStudent.RegistrationNumber,
+		CompletedQuizzes:           len(completedQuizzesIDs),
+		QuestionsScore:             questionsScore,
+		PercentageOfCorrectAnswers: percentageOfCorrectAnswers,
 	}, err
 }
 

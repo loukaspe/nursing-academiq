@@ -65,6 +65,7 @@ func (s *Server) initializeRoutes() {
 	studentService := services.NewStudentService(studentRepository)
 
 	getStudentHandler := student.NewGetStudentHandler(studentService, s.logger)
+	getExtendedStudentHandler := student.NewGetExtendedStudentHandler(studentService, s.logger)
 	createStudentHandler := student.NewCreateStudentHandler(studentService, s.logger)
 	deleteStudentHandler := student.NewDeleteStudentHandler(studentService, s.logger)
 	updateStudentHandler := student.NewUpdateStudentHandler(studentService, s.logger)
@@ -74,6 +75,8 @@ func (s *Server) initializeRoutes() {
 	protected.HandleFunc("/student", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", getStudentHandler.GetStudentController).Methods("GET")
 	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/student/{id:[0-9]+}/extended", getExtendedStudentHandler.GetExtendedStudentController).Methods("GET")
+	protected.HandleFunc("/student/{id:[0-9]+}/extended", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", deleteStudentHandler.DeleteStudentController).Methods("DELETE")
 	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/student/{id:[0-9]+}", updateStudentHandler.UpdateStudentController).Methods("PUT")

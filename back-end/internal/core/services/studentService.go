@@ -19,6 +19,10 @@ func (service StudentService) GetStudent(ctx context.Context, uid uint32) (*doma
 	return service.repository.GetStudent(ctx, uid)
 }
 
+func (service StudentService) GetExtendedStudent(ctx context.Context, uid uint32) (*domain.Student, error) {
+	return service.repository.GetExtendedStudent(ctx, uid)
+}
+
 func (service StudentService) CreateStudent(ctx context.Context, student *domain.Student) (uint, error) {
 	return service.repository.CreateStudent(ctx, student)
 }
