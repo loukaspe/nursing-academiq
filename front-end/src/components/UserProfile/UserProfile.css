@@ -8,7 +8,7 @@
     height: 40%;
     border-bottom: 0.1em solid var(--grey-color);
     display: flex;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .extendedInfo {
@@ -21,25 +21,9 @@
     flex: 1;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-}
-
-.basicSectionTwo {
-    flex: 1;
-    height: 100%;
-}
-
-.extendedSectionOne {
-    flex: 1;
-    height: 100%;
-    border-right: solid 0.1em solid var(--grey-color);
-}
-
-.extendedSectionTwo {
-    flex: 1;
-    height: 100%;
-    border-left: 0.1em solid var(--grey-color);
+    margin-right: 2em;
 }
 
 .userIcon {
@@ -56,4 +40,50 @@
     max-width: 200px;
     max-height: 200px;
     cursor: pointer
+}
+
+.basicSectionTwo {
+    flex: 1;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 2em;
+}
+
+.profileDetails {
+    margin-top: 2em;
+}
+
+.changePasswordButton {
+    color: var(--dark-color);
+    background-color: var(--grey-color);
+    font-size: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profileDetailsText {
+    margin-bottom: 0.5rem;
+}
+
+.profileDetailsTextTitle {
+    font-size: 1rem;
+    color: var(--brand-color);
+}
+
+.extendedSectionOne {
+    flex: 1;
+    height: 100%;
+    border-right: solid 0.1em solid var(--grey-color);
+}
+
+.extendedSectionTwo {
+    flex: 1;
+    height: 100%;
+    border-left: 0.1em solid var(--grey-color);
 }

@@ -32,7 +32,7 @@ const HeaderLoggedIn = () => {
                     </ul>
                     <ul className="ul myAccountMenu">
                         <li>
-                            <Link className="link" to="/questions">Προφίλ</Link>
+                            <Link className="link" to="/profile">Προφίλ</Link>
                         </li>
                         <li>
                             <Link className="link" to="/logout">Αποσύνδεση</Link>
