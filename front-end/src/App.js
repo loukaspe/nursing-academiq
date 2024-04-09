@@ -13,6 +13,7 @@ import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
 import CoursesList from "./components/CoursesList/CoursesList";
 import QuizHistoryList from "./components/QuizzesList/QuizHistoryList";
 import UserProfile from "./components/UserProfile/UserProfile";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
 
 const cookies = new Cookies();
 
@@ -77,6 +78,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <MyQuizzesList/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="change-password"
+                        element={
+                            <ProtectedRoutes>
+                                <ChangePassword/>
                             </ProtectedRoutes>
                         }
                     />
