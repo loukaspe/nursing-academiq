@@ -40,3 +40,16 @@ func (err LoginError) Error() string {
 func (err LoginError) Unwrap() error {
 	return err.OriginalError
 }
+
+type PasswordMismatchError struct {
+	ReturnedStatusCode int
+	OriginalError      error
+}
+
+func (err PasswordMismatchError) Error() string {
+	return "error verifying user password"
+}
+
+func (err PasswordMismatchError) Unwrap() error {
+	return err.OriginalError
+}

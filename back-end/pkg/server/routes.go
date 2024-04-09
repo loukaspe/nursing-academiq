@@ -54,11 +54,14 @@ func (s *Server) initializeRoutes() {
 
 	getUserPhotoHandler := user.NewGetUserPhotoHandler(userService, s.logger)
 	updateUserPhotoHandler := user.NewSetUserPhotoHandler(userService, s.logger, uploadDir)
+	changeUserPasswordHandler := user.NewChangeUserPasswordHandler(userService, s.logger)
 
 	protected.HandleFunc("/user/{id:[0-9]+}/photo", getUserPhotoHandler.GetUserPhotoController).Methods("GET")
 	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/user/{id:[0-9]+}/photo", updateUserPhotoHandler.SetUserPhotoController).Methods("POST")
 	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/user/{id:[0-9]+}/change_password", changeUserPasswordHandler.ChangeUserPasswordController).Methods("POST")
+	protected.HandleFunc("/user/{id:[0-9]+}/change_password", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// student
 	studentRepository := repositories.NewStudentRepository(s.DB)

@@ -134,3 +134,41 @@ func (repo *UserRepository) SetUserPhoto(
 
 	return err
 }
+
+func (repo *UserRepository) ChangeUserPassword(
+	ctx context.Context,
+	uid uint32,
+	oldPassword,
+	newPassword string,
+) error {
+	modelUser := &User{}
+
+	err := repo.db.WithContext(ctx).Model(User{}).Where("id = ?", uid).Take(modelUser).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("UserID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return err
+	}
+
+	err = VerifyPassword(modelUser.Password, oldPassword)
+	if err != nil {
+		return &apierrors.PasswordMismatchError{
+			ReturnedStatusCode: http.StatusInternalServerError,
+			OriginalError:      err,
+		}
+	}
+
+	modelUser.Password = newPassword
+	err = modelUser.BeforeSave()
+	if err != nil {
+		return err
+	}
+
+	err = repo.db.WithContext(ctx).Save(&modelUser).Error
+
+	return err
+}
