@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 import Cookies from "universal-cookie";
+import {Link} from "react-router-dom";
 
 const cookies = new Cookies();
 const UserProfile = () => {
@@ -138,7 +139,7 @@ const UserProfile = () => {
                         <div className="profileDetails">
                             <div className="profileDetailsText"><span className="profileDetailsTextTitle">Ονοματεπώνυμο Χρήστη: </span>{name}</div>
                             <div className="profileDetailsText"><span className="profileDetailsTextTitle">Username: </span>{username}</div>
-                            <button className="changePasswordButton">Αλλαγή Κωδικού</button>
+                            <Link className="changePasswordButton" to="/change-password">Αλλαγή Κωδικού</Link>
                         </div>
                     </div>
                 </div>
