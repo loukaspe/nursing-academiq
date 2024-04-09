@@ -32,10 +32,6 @@ func NewSetUserPhotoHandler(
 	}
 }
 
-type SetUserPhotoRequest struct {
-	ErrorMessage string `json:"errorMessage,omitempty"`
-}
-
 type SetUserPhotoResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
