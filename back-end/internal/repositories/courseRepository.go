@@ -60,6 +60,80 @@ func (repo *CourseRepository) GetCourse(
 	}, err
 }
 
+func (repo *CourseRepository) GetExtendedCourse(
+	ctx context.Context,
+	uid uint32,
+) (*domain.Course, error) {
+	var err error
+	var modelCourse *Course
+
+	err = repo.db.WithContext(ctx).
+		Preload("Quizs.Questions").
+		Preload("Chapters").
+		Preload("Tutor.User").
+		Model(Course{}).
+		Where("id = ?", uid).
+		Take(&modelCourse).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return &domain.Course{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return &domain.Course{}, err
+	}
+
+	domainTutor := domain.Tutor{
+		User: domain.User{
+			FirstName: modelCourse.Tutor.User.FirstName,
+			LastName:  modelCourse.Tutor.User.LastName,
+		},
+	}
+
+	var domainQuizs []domain.Quiz
+
+	for _, modelQuiz := range modelCourse.Quizs {
+		var numberOfQuestions int
+		for _, _ = range modelQuiz.Questions {
+			numberOfQuestions++
+		}
+
+		domainQuizs = append(domainQuizs, domain.Quiz{
+			Title:             modelQuiz.Title,
+			Description:       modelQuiz.Description,
+			Visibility:        modelQuiz.Visibility,
+			ShowSubset:        modelQuiz.ShowSubset,
+			SubsetSize:        modelQuiz.SubsetSize,
+			NumberOfSessions:  modelQuiz.NumberOfSessions,
+			ScoreSum:          modelQuiz.ScoreSum,
+			MaxScore:          modelQuiz.MaxScore,
+			NumberOfQuestions: numberOfQuestions,
+			Course: &domain.Course{
+				Title: modelCourse.Title,
+			},
+		})
+	}
+
+	var domainChapters []domain.Chapter
+
+	for _, modelChapter := range modelCourse.Chapters {
+		domainChapters = append(domainChapters, domain.Chapter{
+			Title:       modelChapter.Title,
+			Description: modelChapter.Description,
+		})
+	}
+
+	return &domain.Course{
+		Title:       modelCourse.Title,
+		Description: modelCourse.Description,
+		Quizzes:     domainQuizs,
+		Chapters:    domainChapters,
+		Tutor:       &domainTutor,
+	}, err
+}
+
 func (repo *CourseRepository) GetCourses(
 	ctx context.Context,
 ) ([]domain.Course, error) {

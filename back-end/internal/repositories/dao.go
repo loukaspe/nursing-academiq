@@ -16,6 +16,15 @@ type Course struct {
 	Quizs       []Quiz
 }
 
+type Chapter struct {
+	gorm.Model
+	Title       string `gorm:"not null;"`
+	Description string
+	CourseID    uint
+	Course      Course
+	Questions   []Question
+}
+
 type Quiz struct {
 	gorm.Model
 	Title       string `gorm:"not null;"`
