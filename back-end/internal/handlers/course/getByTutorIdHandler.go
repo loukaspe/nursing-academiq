@@ -54,7 +54,7 @@ func (handler *GetCourseByTutorIDHandler) GetCourseByTutorIDController(w http.Re
 		return
 	}
 
-	courses, err := handler.CourseService.GetCourseByTutorID(context.TODO(), uint32(tutorId))
+	courses, err := handler.CourseService.GetCourseByTutorID(context.Background(), uint32(tutorId))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

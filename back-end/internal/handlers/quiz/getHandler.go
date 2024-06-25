@@ -51,7 +51,7 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 		return
 	}
 
-	quiz, err := handler.QuizService.GetQuiz(context.TODO(), uint32(uid))
+	quiz, err := handler.QuizService.GetQuiz(context.Background(), uint32(uid))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

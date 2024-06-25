@@ -51,7 +51,7 @@ func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *htt
 		return
 	}
 
-	tutor, err := handler.TutorService.GetTutor(context.TODO(), uint32(uid))
+	tutor, err := handler.TutorService.GetTutor(context.Background(), uint32(uid))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

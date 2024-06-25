@@ -52,7 +52,7 @@ package quizSessionByStudent
 //		return
 //	}
 //
-//	QuizSessionByStudent, err := handler.QuizSessionByStudentService.GetQuizSessionByStudent(context.TODO(), uint32(uid))
+//	QuizSessionByStudent, err := handler.QuizSessionByStudentService.GetQuizSessionByStudent(context.Background(), uint32(uid))
 //	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

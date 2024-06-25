@@ -39,7 +39,7 @@ package quizSessionByStudent
 //	//var err error
 //	response := &GetQuizSessionsByStudentResponse{}
 //
-//	QuizSessionsByStudent, err := handler.QuizSessionByStudentService.GetQuizSessionsByStudent(context.TODO())
+//	QuizSessionsByStudent, err := handler.QuizSessionByStudentService.GetQuizSessionsByStudent(context.Background())
 //	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 //		handler.logger.WithFields(log.Fields{
 //			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
