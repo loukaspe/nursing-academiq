@@ -1,14 +1,6 @@
 @import "../../styles/variables.css";
 
-.quizzesList {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    list-style-type: none;
-    justify-content: center;
-    padding-right: 20em;
-    padding-left: 20em;
-}
-
-.recentQuizzesList {
+.chaptersList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
@@ -16,17 +8,7 @@
     padding-left: 10em;
 }
 
-.quizzesListTitle {
-    color: var(--dark-color);
-    padding-bottom: 0.5em;
-    padding-top: 1em;
-    font-size: 2rem;
-    border-bottom: 1px solid var(--dark-color);
-    font-weight: bold;
-}
-
-
-.singleQuizTextContainer {
+.singleChapterTextContainer {
     display: flex;
     flex-direction: column;
     margin-left: 0.5rem;
@@ -34,7 +16,7 @@
     border-bottom: 1px solid var(--grey-color);
 }
 
-.singleQuizTitle {
+.singleChapterTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 0.5em;
@@ -43,7 +25,7 @@
     font-weight: bold;
 }
 
-.singleQuizDetails {
+.singleChapterDetails {
     color: var(--dark-grey-color);
     font-size: 1rem;
     font-weight: bold;
@@ -61,9 +43,4 @@
     border: none;
     font-weight: bold;
     display: inline-block;
-}
-
-.hasBeenDoneOnceCheckmark {
-    color: #62BF53;
-    margin-left: 0.5rem;
 }
