@@ -9,7 +9,7 @@ const cookies = new Cookies();
 
 const LimitedMyQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
-    const [visibleCourses, setVisibleCourses] = useState(1);
+    const [visibleQuizzes, setVisibleQuizzes] = useState(2);
 
     useEffect(() => {
         const fetchUserQuizzes = async () => {
@@ -61,7 +61,7 @@ const LimitedMyQuizzesList = () => {
         <React.Fragment>
             <ul className="quizzesList">
                 <div className="quizzesListTitle">Διαθέσιμα Quiz</div>
-                {quizzes.slice(0, visibleCourses).map((item) => {
+                {quizzes.slice(0, visibleQuizzes).map((item) => {
                     return (
                         <div className="singleQuizTextContainer">
                             <div className="singleQuizTitle">{item.Title}</div>
@@ -71,7 +71,7 @@ const LimitedMyQuizzesList = () => {
                     );
                 })}
                 {
-                    quizzes.length > visibleCourses &&
+                    quizzes.length > visibleQuizzes &&
                     (
                         <Link className="moreButton" to="/my-quizzes">+ Περισσότερα Quiz</Link>
                     )
