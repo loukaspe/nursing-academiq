@@ -14,6 +14,7 @@ import CoursesList from "./components/CoursesList/CoursesList";
 import QuizHistoryList from "./components/QuizzesList/QuizHistoryList";
 import UserProfile from "./components/UserProfile/UserProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
+import CourseQuizzesList from "./components/QuizzesList/CourseQuizzesList";
 
 const cookies = new Cookies();
 
@@ -62,6 +63,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <CoursesList/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:id/quizzes"
+                        element={
+                            <ProtectedRoutes>
+                                <CourseQuizzesList/>
                             </ProtectedRoutes>
                         }
                     />
