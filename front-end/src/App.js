@@ -14,6 +14,7 @@ import CoursesList from "./components/CoursesList/CoursesList";
 import QuizHistoryList from "./components/QuizzesList/QuizHistoryList";
 import UserProfile from "./components/UserProfile/UserProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
+import SingleCourse from "./components/Course/SingleCourse";
 import CourseChaptersList from "./components/ChaptersList/CourseChaptersList";
 import CourseQuizzesList from "./components/QuizzesList/CourseQuizzesList";
 
@@ -64,6 +65,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <CoursesList/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:id"
+                        element={
+                            <ProtectedRoutes>
+                                <SingleCourse/>
                             </ProtectedRoutes>
                         }
                     />
