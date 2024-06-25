@@ -140,6 +140,7 @@ func (s *Server) initializeRoutes() {
 	getQuizHandler := quiz.NewGetQuizHandler(quizService, s.logger)
 	getQuizByStudentIDHandler := quiz.NewGetQuizByStudentIDHandler(quizService, s.logger)
 	getQuizByTutorIDHandler := quiz.NewGetQuizByTutorIDHandler(quizService, s.logger)
+	getQuizByCourseIDHandler := quiz.NewGetQuizByCourseIDHandler(quizService, s.logger)
 	//createQuizHandler := quiz.NewCreateQuizHandler(quizService, s.logger)
 	//deleteQuizHandler := quiz.NewDeleteQuizHandler(quizService, s.logger)
 	//updateQuizHandler := quiz.NewUpdateQuizHandler(quizService, s.logger)
@@ -157,6 +158,8 @@ func (s *Server) initializeRoutes() {
 	protected.HandleFunc("/student/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
+	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// quizSession
 	quizSessionByStudentRepository := repositories.NewQuizSessionRepository(s.DB)

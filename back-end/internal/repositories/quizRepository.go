@@ -197,6 +197,54 @@ func (repo *QuizRepository) GetQuizByTutorID(
 	return domainQuizs, err
 }
 
+func (repo *QuizRepository) GetQuizByCourseID(
+	ctx context.Context,
+	courseID uint32,
+) ([]domain.Quiz, error) {
+	var err error
+	var modelCourse Course
+
+	err = repo.db.WithContext(ctx).
+		Preload("Quizs.Questions").
+		First(&modelCourse, courseID).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Quiz{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courseID " + strconv.Itoa(int(courseID)) + " not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Quiz{}, err
+	}
+
+	var domainQuizs []domain.Quiz
+
+	for _, modelQuiz := range modelCourse.Quizs {
+		var numberOfQuestions int
+		for _, _ = range modelQuiz.Questions {
+			numberOfQuestions++
+		}
+
+		domainQuizs = append(domainQuizs, domain.Quiz{
+			Title:             modelQuiz.Title,
+			Description:       modelQuiz.Description,
+			Visibility:        modelQuiz.Visibility,
+			ShowSubset:        modelQuiz.ShowSubset,
+			SubsetSize:        modelQuiz.SubsetSize,
+			NumberOfSessions:  modelQuiz.NumberOfSessions,
+			ScoreSum:          modelQuiz.ScoreSum,
+			MaxScore:          modelQuiz.MaxScore,
+			NumberOfQuestions: numberOfQuestions,
+			Course: &domain.Course{
+				Title: modelCourse.Title,
+			},
+		})
+	}
+
+	return domainQuizs, err
+}
+
 //func (repo *QuizRepository) UpdateQuiz(
 //	ctx context.Context,
 //	uid uint32,
