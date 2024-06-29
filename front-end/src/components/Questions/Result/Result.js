@@ -1,9 +1,9 @@
 import React from "react";
 import "./Result.css";
 
-const Result = ({ score, questions, restartHandler }) => {
+const Result = ({score, questions, restartHandler}) => {
     return (
-        <React.Fragment>
+        <div className="resultWrapper">
             <div className="finalScore">
                 You scored {score} out of {questions.length}
             </div>
@@ -11,7 +11,7 @@ const Result = ({ score, questions, restartHandler }) => {
             <button onClick={restartHandler} className="restart">
                 RESTART{" "}
             </button>
-        </React.Fragment>
+        </div>
     );
 };
 

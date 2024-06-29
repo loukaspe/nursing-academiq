@@ -1,69 +1,110 @@
 import React, {useState} from "react";
-import Questions from "../Questions/Questions";
-import "./QuestionWrapper.css";
+import "./QuestionsWrapper.css";
 import Result from "../Result/Result";
-import Circle from "../../Utilities/Circle";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faStopwatch} from "@fortawesome/free-solid-svg-icons";
+
 
 const QuestionsWrapper = ({questions}) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedAnswers, setSelectedAnswers] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
     const [score, setScore] = useState(0);
 
-    function onAnswer(isCorrect) {
-        if (isCorrect) {
-            setScore((preValue) => preValue + 1);
-        }
+    const handleAnswerClick = (answer) => {
+        setSelectedAnswers(prev => ({
+            ...prev,
+            [currentQuestionIndex]: answer
+        }));
+    };
 
-        if (currentIndex === questions.length - 1) {
+    const handleNext = () => {
+        setCurrentQuestionIndex((prev) => Math.min(prev + 1, questions.length - 1));
+    };
+
+    const handlePrevious = () => {
+        setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
+    };
+
+    const handleSubmit = () => {
+
+        const unansweredCount = questions.length - Object.keys(selectedAnswers).length;
+        const confirmMessage = `You have ${unansweredCount} unanswered questions. Are you sure you want to submit?`;
+
+        if (window.confirm(confirmMessage)) {
+            questions.forEach((question, index) => {
+                let correctAnswer = question.answerOptions.find((answer) => answer.isCorrect);
+
+                if (selectedAnswers[index] === correctAnswer) {
+                    setScore((preValue) => preValue + 1);
+                }
+            });
+
             setQuizFinished(true);
-        } else {
-            setCurrentIndex((value) => value + 1);
         }
-    }
+    };
+
+    const handleCircleClick = (index) => {
+        setCurrentQuestionIndex(index);
+    };
 
     const restartHandler = () => {
-        setCurrentIndex(0);
+        setCurrentQuestionIndex(0);
         setQuizFinished(false);
+        setSelectedAnswers({});
         setScore(0);
     };
 
-    function renderQuestionCircles() {
-        return questions.map((key, value) => {
-            return (
-                <Circle text={value + 1}/>
-            );
-        })
-    }
-
     return (
-        <div className="wrapper">
-            {
-                quizFinished ? (
-                    <Result
-                        score={score}
-                        restartHandler={restartHandler}
-                        questions={questions}
-                    />
-                ) : (
-                    <React.Fragment>
-                        {renderQuestionCircles()}
-                        <div className="timer">
-                            <FontAwesomeIcon icon={faStopwatch} size="2xl" className="timerIcon"/>
-                            <span className="timerText">00:00</span>
-                        </div>
-                        <div className="questions">
-                            <Questions
-                                index={currentIndex}
-                                question={questions}
-                                onAnswer={onAnswer}
-                            />
-                        </div>
-                    </React.Fragment>
-                )}
-        </div>
-    )
+        quizFinished ? (
+            <Result
+                score={score}
+                restartHandler={restartHandler}
+                questions={questions}
+            />
+        ) : (<div className="quiz-container">
+            <div className="progress-line">
+                {questions.map((_, index) => (
+                    <span
+                        key={index}
+                        className={`${selectedAnswers[index] ? 'completed' : ''} ${currentQuestionIndex === index ? 'current' : ''}`}
+                        onClick={() => handleCircleClick(index)}
+                    >
+            {index + 1}
+          </span>
+                ))}
+            </div>
+            <div className="questionCard">
+                <div className="question-section">
+                    <h2>{questions[currentQuestionIndex].questionText}</h2>
+                    <hr/>
+                    <ul>
+                        {questions[currentQuestionIndex].answerOptions.map((answer, idx) => (
+                            <li
+                                key={idx}
+                                className={selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''}
+                                onClick={() => handleAnswerClick(answer)}
+                            >
+                                {answer.answerText}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="questionButtons">
+                    <button className="questionsSimpleButton" onClick={handlePrevious}
+                            disabled={currentQuestionIndex === 0}>
+                        Προηγούμενη
+                    </button>
+                    <button className="questionsSimpleButton" onClick={handleNext}
+                            disabled={currentQuestionIndex === questions.length - 1}>
+                        Eπόμενη
+                    </button>
+                    <button className="questionsSubmitButton" onClick={handleSubmit}>
+                        Υποβολή
+                    </button>
+                </div>
+            </div>
+        </div>)
+    );
 };
+
 
 export default QuestionsWrapper;

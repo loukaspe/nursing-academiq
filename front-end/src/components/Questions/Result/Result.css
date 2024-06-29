@@ -1,5 +1,9 @@
 @import "../../../styles/variables.css";
 
+.resultWrapper {
+    text-align: center;
+}
+
 .finalScore {
     font-size: 2rem;
     color: var(--positive-color);
