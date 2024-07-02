@@ -11,7 +11,8 @@ export const questions = [
                 isCorrect: true
             },
             {answerText: "Ακετυλοσαλικυλικό Οξύ", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "How can you add a comment in a JavaScript?",
@@ -19,7 +20,8 @@ export const questions = [
             {answerText: "* This is a comment *", isCorrect: false},
             {answerText: " //This is a comment", isCorrect: true},
             {answerText: "<!-- This is a comment -->", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "How can you detect the client's browser name?",
@@ -27,14 +29,16 @@ export const questions = [
             {answerText: "navigator.appName", isCorrect: true},
             {answerText: "browser.name", isCorrect: false},
             {answerText: "client.navName", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "is JavaScript case- sensitive ?",
         answerOptions: [
             {answerText: "NO", isCorrect: false},
             {answerText: "YES", isCorrect: true}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "What is the output of the Math.pow(5,2) ?",
@@ -42,7 +46,8 @@ export const questions = [
             {answerText: "10", isCorrect: false},
             {answerText: "2.5", isCorrect: false},
             {answerText: "25", isCorrect: true}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "What is the usage of unshift method ?",
@@ -54,7 +59,8 @@ export const questions = [
 
             {answerText: "To add new element at beginning", isCorrect: true},
             {answerText: "To add the element at the end", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: ` What is output of
@@ -64,7 +70,8 @@ export const questions = [
             {answerText: "NaN", isCorrect: false},
             {answerText: "false", isCorrect: true},
             {answerText: "true", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText: "How do you find the min of 2 numbers ?",
@@ -72,7 +79,8 @@ export const questions = [
             {answerText: "Math.min(x,y)", isCorrect: true},
             {answerText: "Min(x,y)", isCorrect: false},
             {answerText: "Maths.min(x,y)", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText:
@@ -81,7 +89,8 @@ export const questions = [
             {answerText: "function", isCorrect: false},
             {answerText: "File", isCorrect: true},
             {answerText: "Date", isCorrect: false}
-        ]
+        ],
+        explanation: "blablabla",
     },
     {
         questionText:
@@ -90,6 +99,7 @@ export const questions = [
             {answerText: "2variable", isCorrect: false},
             {answerText: "_variable", isCorrect: false},
             {answerText: "variable5", isCorrect: true}
-        ]
+        ],
+        explanation: "blablabla",
     }
 ];

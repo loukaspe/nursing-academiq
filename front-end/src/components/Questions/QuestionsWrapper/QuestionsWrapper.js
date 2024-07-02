@@ -6,6 +6,7 @@ import Result from "../Result/Result";
 const QuestionsWrapper = ({questions}) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState({});
+    const [checkedQuestions, setCheckedQuestions] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
     const [score, setScore] = useState(0);
 
@@ -42,6 +43,17 @@ const QuestionsWrapper = ({questions}) => {
         }
     };
 
+    const handleCheck = () => {
+        if (!selectedAnswers.hasOwnProperty(currentQuestionIndex)) {
+            alert('Please select an answer before checking.');
+            return;
+        }
+        setCheckedQuestions(prev => ({
+            ...prev,
+            [currentQuestionIndex]: true
+        }));
+    };
+
     const handleCircleClick = (index) => {
         setCurrentQuestionIndex(index);
     };
@@ -50,6 +62,7 @@ const QuestionsWrapper = ({questions}) => {
         setCurrentQuestionIndex(0);
         setQuizFinished(false);
         setSelectedAnswers({});
+        setCheckedQuestions({});
         setScore(0);
     };
 
@@ -77,16 +90,52 @@ const QuestionsWrapper = ({questions}) => {
                     <h2>{questions[currentQuestionIndex].questionText}</h2>
                     <hr/>
                     <ul>
-                        {questions[currentQuestionIndex].answerOptions.map((answer, idx) => (
-                            <li
-                                key={idx}
-                                className={selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''}
-                                onClick={() => handleAnswerClick(answer)}
-                            >
-                                {answer.answerText}
-                            </li>
-                        ))}
+                        {questions[currentQuestionIndex].answerOptions.map((answer, idx) => {
+                            let className = '';
+
+                            let correctAnswer = questions[currentQuestionIndex].answerOptions.find((answer) => answer.isCorrect);
+
+                            if (checkedQuestions[currentQuestionIndex]) {
+                                if (answer === correctAnswer) {
+                                    className = 'correct';
+                                } else if (answer === selectedAnswers[currentQuestionIndex]) {
+                                    className = 'incorrect';
+                                }
+                            }
+
+                            return (
+                                <li
+                                    key={idx}
+                                    className={`${selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''} ${className}`}
+                                    onClick={() => handleAnswerClick(answer)}
+                                >
+                                    {answer.answerText}
+                                </li>
+                            );
+                        })}
                     </ul>
+                    {
+                        checkedQuestions[currentQuestionIndex] && (
+                        <div className="explanation">
+                            <div className="explanationResult">
+                                {selectedAnswers[currentQuestionIndex].answerText === questions[currentQuestionIndex].answerOptions.find(option => option.isCorrect).answerText
+                                    ? <span className="correct">Σωστό</span>
+                                    : <span className="incorrect">Λάθος</span>}
+                            </div>
+                            <br/>
+                            <div className="explanationCorrectAnswer">
+                                Σωστή Απάντηση: <strong>{questions[currentQuestionIndex].answerOptions.find(option => option.isCorrect).answerText}</strong>
+                            </div>
+                            <br/>
+                            <div className="explanationDetails">
+                                Εξήγηση: {questions[currentQuestionIndex].explanation}
+                            </div>
+                            <br/>
+                            <div>
+                                Πηγή: {questions[currentQuestionIndex].explanation}
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className="questionButtons">
                     <button className="questionsSimpleButton" onClick={handlePrevious}
@@ -97,10 +146,13 @@ const QuestionsWrapper = ({questions}) => {
                             disabled={currentQuestionIndex === questions.length - 1}>
                         Eπόμενη
                     </button>
-                    <button className="questionsSubmitButton" onClick={handleSubmit}>
-                        Υποβολή
+                    <button className="questionsSubmitButton" onClick={handleCheck}>
+                        Έλεγχος Απάντησης
                     </button>
                 </div>
+                <button className="questionsSubmitButton" onClick={handleSubmit}>
+                    Οριστική Υποβολή Quiz
+                </button>
             </div>
         </div>)
     );

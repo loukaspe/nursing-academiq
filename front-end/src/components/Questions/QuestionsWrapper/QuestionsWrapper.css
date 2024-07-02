@@ -87,6 +87,43 @@ hr {
     background-color: var(--opposite-color);
 }
 
+.question-section li.correct {
+    border: 3px solid var(--positive-color);
+}
+
+.question-section li.incorrect {
+    border: 3px solid var(--error-color);
+}
+
+.explanation {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--mid-white-color);
+    border-radius: 5px;
+    border: solid 1px var(--dark-grey-color);
+    color: var(--dark-color);
+}
+
+.explanationResult {
+    font-size: 1.5rem;
+}
+
+.explanationResult span.correct {
+    color: var(--positive-color);
+}
+
+.explanationResult span.incorrect {
+    color: var(--error-color);
+}
+
+.explanationCorrectAnswer {
+    font-size: 1rem;
+}
+
+.explanationDetails {
+    font-size: 1.2rem;
+}
+
 .questionButtons {
     display: flex;
     justify-content: space-between;
