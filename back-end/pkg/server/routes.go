@@ -29,12 +29,19 @@ func (s *Server) initializeRoutes() {
 		os.Getenv("JWT_SIGNING_METHOD"),
 	)
 	jwtService := services.NewJwtService(jwtMechanism)
-	jwtMiddleware := handlers.NewAuthenticationMw(jwtMechanism)
+	apiKey := os.Getenv("API_KEY")
+	authMiddleware := handlers.NewAuthenticationMw(jwtMechanism, apiKey)
 
 	userRepository := repositories.NewUserRepository(s.DB)
 	loginService := services.NewLoginService(userRepository)
 
 	jwtHandler := handlers.NewJwtClaimsHandler(jwtService, loginService, s.logger)
+
+	protectedJWT := s.router.PathPrefix("/").Subrouter()
+	protectedJWT.Use(authMiddleware.JWTAuthenticationMW)
+
+	protectedApiKey := s.router.PathPrefix("/").Subrouter()
+	protectedApiKey.Use(authMiddleware.APIKeyAuthenticationMW)
 
 	s.router.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
 	s.router.HandleFunc(
@@ -42,14 +49,13 @@ func (s *Server) initializeRoutes() {
 		optionsHandlerForCors,
 	).Methods(http.MethodOptions)
 
-	protected := s.router.PathPrefix("/").Subrouter()
-	protected.Use(jwtMiddleware.AuthenticationMW)
-
 	// user
 	userService := services.NewUserService(userRepository)
 
 	changeUserPasswordHandler := user.NewChangeUserPasswordHandler(userService, s.logger)
 
+	protectedJWT.HandleFunc("/user/{id:[0-9]+}/change_password", changeUserPasswordHandler.ChangeUserPasswordController).Methods("POST")
+	protectedJWT.HandleFunc("/user/{id:[0-9]+}/change_password", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// tutor
 	tutorRepository := repositories.NewTutorRepository(s.DB)
@@ -60,14 +66,14 @@ func (s *Server) initializeRoutes() {
 	deleteTutorHandler := tutor.NewDeleteTutorHandler(tutorService, s.logger)
 	updateTutorHandler := tutor.NewUpdateTutorHandler(tutorService, s.logger)
 
-	protected.HandleFunc("/tutor", createTutorHandler.CreateTutorController).Methods("POST")
-	protected.HandleFunc("/tutor", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/tutor/{id:[0-9]+}", getTutorHandler.GetTutorController).Methods("GET")
-	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/tutor/{id:[0-9]+}", deleteTutorHandler.DeleteTutorController).Methods("DELETE")
-	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
-	protected.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/tutor", createTutorHandler.CreateTutorController).Methods("POST")
+	protectedJWT.HandleFunc("/tutor", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", getTutorHandler.GetTutorController).Methods("GET")
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", deleteTutorHandler.DeleteTutorController).Methods("DELETE")
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", updateTutorHandler.UpdateTutorController).Methods("PUT")
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// course
 	courseRepository := repositories.NewCourseRepository(s.DB)
@@ -76,27 +82,26 @@ func (s *Server) initializeRoutes() {
 	getCourseHandler := course.NewGetCourseHandler(courseService, s.logger)
 	getExtendedCourseHandler := course.NewGetExtendedCourseHandler(courseService, s.logger)
 	getCoursesHandler := course.NewGetCoursesHandler(courseService, s.logger)
-	getCourseByStudentIDHandler := course.NewGetCourseByStudentIDHandler(courseService, s.logger)
 	getCourseByTutorIDHandler := course.NewGetCourseByTutorIDHandler(courseService, s.logger)
 	//createCourseHandler := course.NewCreateCourseHandler(courseService, s.logger)
 	//deleteCourseHandler := course.NewDeleteCourseHandler(courseService, s.logger)
 	//updateCourseHandler := course.NewUpdateCourseHandler(courseService, s.logger)
 
-	//protected.HandleFunc("/course", createCourseHandler.CreateCourseController).Methods("POST")
-	//protected.HandleFunc("/course", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/course/{id:[0-9]+}", getCourseHandler.GetCourseController).Methods("GET")
-	protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/course/{id:[0-9]+}/extended", getExtendedCourseHandler.GetExtendedCourseController).Methods("GET")
-	protected.HandleFunc("/course/{id:[0-9]+}/extended", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/courses", getCoursesHandler.GetCoursesController).Methods("GET")
-	protected.HandleFunc("/courses", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/course/{id:[0-9]+}", deleteCourseHandler.DeleteCourseController).Methods("DELETE")
-	//protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/course/{id:[0-9]+}", updateCourseHandler.UpdateCourseController).Methods("PUT")
-	//protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/course", createCourseHandler.CreateCourseController).Methods("POST")
+	//protectedJWT.HandleFunc("/course", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}", getCourseHandler.GetCourseController).Methods("GET")
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/extended", getExtendedCourseHandler.GetExtendedCourseController).Methods("GET")
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/extended", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/courses", getCoursesHandler.GetCoursesController).Methods("GET")
+	protectedApiKey.HandleFunc("/courses", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/course/{id:[0-9]+}", deleteCourseHandler.DeleteCourseController).Methods("DELETE")
+	//protectedJWT.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/course/{id:[0-9]+}", updateCourseHandler.UpdateCourseController).Methods("PUT")
+	//protectedJWT.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", getCourseByTutorIDHandler.GetCourseByTutorIDController).Methods("GET")
-	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/courses", getCourseByTutorIDHandler.GetCourseByTutorIDController).Methods("GET")
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// quiz
 	quizRepository := repositories.NewQuizRepository(s.DB)
@@ -109,20 +114,19 @@ func (s *Server) initializeRoutes() {
 	//deleteQuizHandler := quiz.NewDeleteQuizHandler(quizService, s.logger)
 	//updateQuizHandler := quiz.NewUpdateQuizHandler(quizService, s.logger)
 
-	//protected.HandleFunc("/quiz", createQuizHandler.CreateQuizController).Methods("POST")
-	//protected.HandleFunc("/quiz", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/quiz/{id:[0-9]+}", getQuizHandler.GetQuizController).Methods("GET")
-	protected.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/quiz/{id:[0-9]+}", deleteQuizHandler.DeleteQuizController).Methods("DELETE")
-	//protected.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/quiz/{id:[0-9]+}", updateQuizHandler.UpdateQuizController).Methods("PUT")
-	//protected.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/quiz", createQuizHandler.CreateQuizController).Methods("POST")
+	//protectedJWT.HandleFunc("/quiz", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/quiz/{id:[0-9]+}", getQuizHandler.GetQuizController).Methods("GET")
+	protectedApiKey.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", deleteQuizHandler.DeleteQuizController).Methods("DELETE")
+	//protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	//protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", updateQuizHandler.UpdateQuizController).Methods("PUT")
+	//protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
-	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
-	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
-
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
+	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
