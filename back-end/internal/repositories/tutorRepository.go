@@ -27,14 +27,11 @@ func (repo *TutorRepository) CreateTutor(
 	modelTutor := Tutor{}
 
 	modelUser := User{
-		Username:    tutor.User.Username,
-		Password:    tutor.User.Password,
-		FirstName:   tutor.User.FirstName,
-		LastName:    tutor.User.LastName,
-		Email:       tutor.User.Email,
-		BirthDate:   tutor.User.BirthDate,
-		PhoneNumber: tutor.User.PhoneNumber,
-		Photo:       tutor.User.Photo,
+		Username:  tutor.User.Username,
+		Password:  tutor.User.Password,
+		FirstName: tutor.User.FirstName,
+		LastName:  tutor.User.LastName,
+		Email:     tutor.User.Email,
 	}
 
 	modelUser.prepare()
@@ -74,7 +71,7 @@ func (repo *TutorRepository) GetTutor(
 	if err == gorm.ErrRecordNotFound {
 		return &domain.Tutor{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("tutorID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -82,14 +79,11 @@ func (repo *TutorRepository) GetTutor(
 	}
 
 	domainUser := domain.User{
-		Username:    modelTutor.User.Username,
-		Password:    modelTutor.User.Password,
-		FirstName:   modelTutor.User.FirstName,
-		LastName:    modelTutor.User.LastName,
-		Email:       modelTutor.User.Email,
-		BirthDate:   modelTutor.User.BirthDate,
-		PhoneNumber: modelTutor.User.PhoneNumber,
-		Photo:       modelTutor.User.Photo,
+		Username:  modelTutor.User.Username,
+		Password:  modelTutor.User.Password,
+		FirstName: modelTutor.User.FirstName,
+		LastName:  modelTutor.User.LastName,
+		Email:     modelTutor.User.Email,
 	}
 
 	return &domain.Tutor{
@@ -110,7 +104,7 @@ func (repo *TutorRepository) UpdateTutor(
 	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("tutorID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 	if err != nil {
@@ -122,9 +116,6 @@ func (repo *TutorRepository) UpdateTutor(
 	modelUser.FirstName = tutor.User.FirstName
 	modelUser.LastName = tutor.User.LastName
 	modelUser.Email = tutor.User.Email
-	modelUser.BirthDate = tutor.User.BirthDate
-	modelUser.PhoneNumber = tutor.User.PhoneNumber
-	modelUser.Photo = tutor.User.Photo
 
 	modelUser.prepare()
 	err = modelUser.validate()
@@ -155,7 +146,7 @@ func (repo *TutorRepository) DeleteTutor(
 	if db.Error == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("studentID " + strconv.Itoa(int(uid)) + " not found"),
+			OriginalError:      errors.New("tutorID " + strconv.Itoa(int(uid)) + " not found"),
 		}
 	}
 

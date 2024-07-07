@@ -7,19 +7,15 @@ import (
 	"gorm.io/gorm"
 	"html"
 	"strings"
-	"time"
 )
 
 type User struct {
 	gorm.Model
-	Username    string `gorm:"not null;"`
-	Password    string `gorm:"not null;"`
-	FirstName   string `gorm:"not null;"`
-	LastName    string `gorm:"not null;"`
-	Email       string `gorm:"not null;"`
-	BirthDate   time.Time
-	PhoneNumber string
-	Photo       string
+	Username  string `gorm:"not null;"`
+	Password  string `gorm:"not null;"`
+	FirstName string `gorm:"not null;"`
+	LastName  string `gorm:"not null;"`
+	Email     string `gorm:"not null;"`
 }
 
 func (u *User) BeforeSave() error {
@@ -37,8 +33,6 @@ func (u *User) prepare() {
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.FirstName = html.EscapeString(strings.TrimSpace(u.FirstName))
 	u.LastName = html.EscapeString(strings.TrimSpace(u.LastName))
-	u.Photo = html.EscapeString(strings.TrimSpace(u.Photo))
-	u.PhoneNumber = html.EscapeString(strings.TrimSpace(u.PhoneNumber))
 }
 
 func (u *User) validate() error {

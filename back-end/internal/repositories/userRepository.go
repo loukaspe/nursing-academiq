@@ -41,17 +41,11 @@ func (repo *UserRepository) Login(
 		return &domain.User{}, 0, err
 	}
 
-	// Get either the Tutor or Student Information
-	var modelStudent Student
 	var modelTutor Tutor
+
 	repo.db.WithContext(ctx).
 		Where("user_id = ?", modelUser.ID).
-		First(&modelStudent)
-	if modelStudent.ID == 0 {
-		repo.db.WithContext(ctx).
-			Where("user_id = ?", modelUser.ID).
-			First(&modelTutor)
-	}
+		First(&modelTutor)
 
 	err = VerifyPassword(modelUser.Password, password)
 	if err != nil {
@@ -63,76 +57,19 @@ func (repo *UserRepository) Login(
 
 	var userType string
 	var specificID uint
-	if modelStudent.ID != 0 {
-		userType = "student"
-		specificID = modelStudent.ID
-	} else if modelTutor.ID != 0 {
-		userType = "tutor"
-		specificID = modelTutor.ID
-	}
+
+	userType = "tutor"
+	specificID = modelTutor.ID
 
 	return &domain.User{
-		Username:    modelUser.Username,
-		Password:    modelUser.Password,
-		FirstName:   modelUser.FirstName,
-		LastName:    modelUser.LastName,
-		Email:       modelUser.Email,
-		BirthDate:   modelUser.BirthDate,
-		PhoneNumber: modelUser.PhoneNumber,
-		Photo:       modelUser.Photo,
-		UserType:    userType,
-		SpecificID:  specificID,
+		Username:   modelUser.Username,
+		Password:   modelUser.Password,
+		FirstName:  modelUser.FirstName,
+		LastName:   modelUser.LastName,
+		Email:      modelUser.Email,
+		UserType:   userType,
+		SpecificID: specificID,
 	}, modelUser.ID, err
-}
-
-func (repo *UserRepository) GetUserPhoto(
-	ctx context.Context,
-	uid uint32,
-) (string, error) {
-	var err error
-	var modelUser *User
-
-	err = repo.db.WithContext(ctx).
-		Model(User{}).
-		Where("id = ?", uid).
-		Take(&modelUser).Error
-
-	if err == gorm.ErrRecordNotFound {
-		return "", apierrors.DataNotFoundErrorWrapper{
-			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("UserID " + strconv.Itoa(int(uid)) + " not found"),
-		}
-	}
-	if err != nil {
-		return "", err
-	}
-
-	return modelUser.Photo, err
-}
-
-func (repo *UserRepository) SetUserPhoto(
-	ctx context.Context,
-	uid uint32,
-	photo string,
-) error {
-	modelUser := &User{}
-
-	err := repo.db.WithContext(ctx).Model(User{}).Where("id = ?", uid).Take(modelUser).Error
-	if err == gorm.ErrRecordNotFound {
-		return apierrors.DataNotFoundErrorWrapper{
-			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("UserID " + strconv.Itoa(int(uid)) + " not found"),
-		}
-	}
-	if err != nil {
-		return err
-	}
-
-	modelUser.Photo = photo
-
-	err = repo.db.WithContext(ctx).Save(&modelUser).Error
-
-	return err
 }
 
 func (repo *UserRepository) ChangeUserPassword(

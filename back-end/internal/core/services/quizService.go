@@ -18,10 +18,6 @@ func (service QuizService) GetQuiz(ctx context.Context, uid uint32) (*domain.Qui
 	return service.repository.GetQuiz(ctx, uid)
 }
 
-func (service QuizService) GetQuizByStudentID(ctx context.Context, studentID uint32) ([]domain.Quiz, error) {
-	return service.repository.GetQuizByStudentID(ctx, studentID)
-}
-
 func (service QuizService) GetQuizByTutorID(ctx context.Context, tutorID uint32) ([]domain.Quiz, error) {
 	return service.repository.GetQuizByTutorID(ctx, tutorID)
 }

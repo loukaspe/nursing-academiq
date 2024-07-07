@@ -7,5 +7,4 @@ type Course struct {
 	Chapters    []Chapter
 	Quizzes     []Quiz
 	Tutor       *Tutor
-	Students    []Student
 }

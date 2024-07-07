@@ -7,7 +7,6 @@ import (
 
 type QuizRepositoryInterface interface {
 	GetQuiz(ctx context.Context, uid uint32) (*domain.Quiz, error)
-	GetQuizByStudentID(ctx context.Context, studentID uint32) ([]domain.Quiz, error)
 	GetQuizByTutorID(ctx context.Context, tutorID uint32) ([]domain.Quiz, error)
 	GetQuizByCourseID(ctx context.Context, courseID uint32) ([]domain.Quiz, error)
 	//CreateQuiz(context.Context, *domain.Quiz) (uint, error)

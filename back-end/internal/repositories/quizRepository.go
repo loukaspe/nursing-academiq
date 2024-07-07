@@ -7,7 +7,6 @@ import (
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
 	"net/http"
-	"sort"
 	"strconv"
 )
 
@@ -55,95 +54,15 @@ func (repo *QuizRepository) GetQuiz(
 	//}
 
 	return &domain.Quiz{
-		Title:            modelQuiz.Title,
-		Description:      modelQuiz.Description,
-		Visibility:       modelQuiz.Visibility,
-		ShowSubset:       modelQuiz.ShowSubset,
-		SubsetSize:       modelQuiz.SubsetSize,
-		NumberOfSessions: modelQuiz.NumberOfSessions,
-		ScoreSum:         modelQuiz.ScoreSum,
-		MaxScore:         modelQuiz.MaxScore,
+		Title:       modelQuiz.Title,
+		Description: modelQuiz.Description,
+		Visibility:  modelQuiz.Visibility,
+		ShowSubset:  modelQuiz.ShowSubset,
+		SubsetSize:  modelQuiz.SubsetSize,
+		ScoreSum:    modelQuiz.ScoreSum,
+		MaxScore:    modelQuiz.MaxScore,
 		//Questions:        nil,
 	}, err
-}
-
-func (repo *QuizRepository) GetQuizByStudentID(
-	ctx context.Context,
-	studentID uint32,
-) ([]domain.Quiz, error) {
-	var err error
-	//var modelQuizs []Quiz
-	var modelStudent Student
-
-	//err = repo.db.WithContext(ctx).
-	//	//Preload("Quizs").
-	//	Where("id = ?", studentID).
-	//	Take(&modelStudent).
-	//	Association("Quizs").
-	//	Find(&modelQuizs)
-
-	//err = repo.db.WithContext(ctx).
-	//	Joins("Quizs").
-	//	Model(Student{}).
-	//	Where("id = ?", studentID).
-	//	Take(&modelStudent).Error
-
-	err = repo.db.WithContext(ctx).
-		Preload("Courses.Quizs.Questions").
-		First(&modelStudent, studentID).Error
-
-	if err == gorm.ErrRecordNotFound {
-		return []domain.Quiz{}, apierrors.DataNotFoundErrorWrapper{
-			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("studentID " + strconv.Itoa(int(studentID)) + " not found"),
-		}
-	}
-	if err != nil {
-		return []domain.Quiz{}, err
-	}
-
-	//var domainQuizs []domain.Quiz
-	//for _, modelQuiz := range modelQuizs {
-	//	// TODO: preload Tutor, Students if needed
-	//	domainQuizs = append(domainQuizs, domain.Quiz{
-	//		Title:       modelQuiz.Title,
-	//		Description: modelQuiz.Description,
-	//	})
-	//}
-
-	var domainQuizs []domain.Quiz
-	for _, modelCourse := range modelStudent.Courses {
-		courseName := modelCourse.Title
-
-		for _, modelQuiz := range modelCourse.Quizs {
-			var numberOfQuestions int
-			for _, _ = range modelQuiz.Questions {
-				numberOfQuestions++
-			}
-
-			domainQuizs = append(domainQuizs, domain.Quiz{
-				Title:             modelQuiz.Title,
-				Description:       modelQuiz.Description,
-				Visibility:        modelQuiz.Visibility,
-				ShowSubset:        modelQuiz.ShowSubset,
-				SubsetSize:        modelQuiz.SubsetSize,
-				NumberOfSessions:  modelQuiz.NumberOfSessions,
-				ScoreSum:          modelQuiz.ScoreSum,
-				MaxScore:          modelQuiz.MaxScore,
-				NumberOfQuestions: numberOfQuestions,
-				CreatedAt:         modelQuiz.CreatedAt,
-				Course: &domain.Course{
-					Title: courseName,
-				},
-			})
-		}
-	}
-
-	sort.Slice(domainQuizs, func(i, j int) bool {
-		return domainQuizs[i].CreatedAt.Before(domainQuizs[j].CreatedAt)
-	})
-
-	return domainQuizs, err
 }
 
 func (repo *QuizRepository) GetQuizByTutorID(
@@ -183,7 +102,6 @@ func (repo *QuizRepository) GetQuizByTutorID(
 				Visibility:        modelQuiz.Visibility,
 				ShowSubset:        modelQuiz.ShowSubset,
 				SubsetSize:        modelQuiz.SubsetSize,
-				NumberOfSessions:  modelQuiz.NumberOfSessions,
 				ScoreSum:          modelQuiz.ScoreSum,
 				MaxScore:          modelQuiz.MaxScore,
 				NumberOfQuestions: numberOfQuestions,
@@ -232,7 +150,6 @@ func (repo *QuizRepository) GetQuizByCourseID(
 			Visibility:        modelQuiz.Visibility,
 			ShowSubset:        modelQuiz.ShowSubset,
 			SubsetSize:        modelQuiz.SubsetSize,
-			NumberOfSessions:  modelQuiz.NumberOfSessions,
 			ScoreSum:          modelQuiz.ScoreSum,
 			MaxScore:          modelQuiz.MaxScore,
 			NumberOfQuestions: numberOfQuestions,

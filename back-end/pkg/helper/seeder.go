@@ -3,62 +3,58 @@ package helper
 import (
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
 	"log"
-	"time"
 
 	"gorm.io/gorm"
 )
 
 var users = []repositories.User{
 	repositories.User{
-		Username:    "user1",
-		Password:    "password1",
-		FirstName:   "firstName1",
-		LastName:    "lastName1",
-		Email:       "email1@email.com",
-		BirthDate:   time.Time{},
-		PhoneNumber: "1111111111",
-		Photo:       "",
+		Username:  "user1",
+		Password:  "password1",
+		FirstName: "firstName1",
+		LastName:  "lastName1",
+		Email:     "email1@email.com",
 	},
 	repositories.User{
-		Username:    "user2",
-		Password:    "password2",
-		FirstName:   "firstName2",
-		LastName:    "lastName2",
-		Email:       "email2@email.com",
-		BirthDate:   time.Time{},
-		PhoneNumber: "2222222222",
-		Photo:       "AGT_4354.jpg",
+		Username:  "user2",
+		Password:  "password2",
+		FirstName: "firstName2",
+		LastName:  "lastName2",
+		Email:     "email2@email.com",
 	},
 	repositories.User{
-		Username:    "user3",
-		Password:    "password3",
-		FirstName:   "firstName3",
-		LastName:    "lastName3",
-		Email:       "email3@email.com",
-		BirthDate:   time.Time{},
-		PhoneNumber: "33333333333",
-		Photo:       "",
+		Username:  "user3",
+		Password:  "password3",
+		FirstName: "firstName3",
+		LastName:  "lastName3",
+		Email:     "email3@email.com",
 	},
 	repositories.User{
-		Username:    "user4",
-		Password:    "password4",
-		FirstName:   "firstName4",
-		LastName:    "lastName4",
-		Email:       "email4@email.com",
-		BirthDate:   time.Time{},
-		PhoneNumber: "4444444444",
-		Photo:       "",
+		Username:  "user4",
+		Password:  "password4",
+		FirstName: "firstName4",
+		LastName:  "lastName4",
+		Email:     "email4@email.com",
 	},
 	repositories.User{
-		Username:    "user5",
-		Password:    "password5",
-		FirstName:   "firstName5",
-		LastName:    "lastName5",
-		Email:       "email5@email.com",
-		BirthDate:   time.Time{},
-		PhoneNumber: "5555555555",
-		Photo:       "",
+		Username:  "user5",
+		Password:  "password5",
+		FirstName: "firstName5",
+		LastName:  "lastName5",
+		Email:     "email5@email.com",
 	},
+	repositories.User{
+		Username:  "korelli",
+		Password:  "korelli",
+		FirstName: "Dr",
+		LastName:  "Korelli",
+		Email:     "email5@email.com",
+	},
+}
+
+var legitTutor = repositories.Tutor{
+	UserID:       6,
+	AcademicRank: "professoras1",
 }
 
 var tutor1 = repositories.Tutor{
@@ -71,37 +67,10 @@ var tutor2 = repositories.Tutor{
 	AcademicRank: "professoras2",
 }
 
-var student1 = repositories.Student{
-	UserID:             2,
-	RegistrationNumber: "§1",
-	Courses: []repositories.Course{
-		course1,
-	},
-}
-
-var student2 = repositories.Student{
-	UserID:             3,
-	RegistrationNumber: "123",
-	Courses: []repositories.Course{
-		course3,
-	},
-}
-
-var student3 = repositories.Student{
-	UserID:             4,
-	RegistrationNumber: "1234",
-	Courses: []repositories.Course{
-		course2,
-	},
-}
-
 var course1 = repositories.Course{
 	Title:       "math gen",
 	Description: "mathimatika genikhs",
 	TutorID:     1,
-	//Students: []*repositories.Students{
-	//	&student1,
-	//},
 }
 
 var chapter1 = repositories.Chapter{
@@ -126,18 +95,12 @@ var course2 = repositories.Course{
 	Title:       "math kat",
 	Description: "mathimatika kateythynshs",
 	TutorID:     2,
-	//Students: []*repositories.Students{
-	//	&student2, &student3,
-	//},
 }
 
 var course3 = repositories.Course{
 	Title:       "math 3",
 	Description: "mathimatika 3",
 	TutorID:     2,
-	//Students: []*repositories.Students{
-	//	&student2, &student3,
-	//},
 }
 
 var question1 = repositories.Question{
@@ -147,11 +110,6 @@ var question1 = repositories.Question{
 	Source:                 "wikipedia1",
 	MultipleCorrectAnswers: true,
 	NumberOfAnswers:        1,
-	TimesAnswered:          2,
-	TimesAnsweredCorrectly: 3,
-	//Quizzes: []repositories.Quiz{
-	//	quiz1,
-	//},
 }
 
 var question2 = repositories.Question{
@@ -161,11 +119,6 @@ var question2 = repositories.Question{
 	Source:                 "google",
 	MultipleCorrectAnswers: true,
 	NumberOfAnswers:        1,
-	TimesAnswered:          2,
-	TimesAnsweredCorrectly: 3,
-	//Quizzes: []repositories.Quiz{
-	//	quiz2,
-	//},
 }
 
 var question3 = repositories.Question{
@@ -175,283 +128,134 @@ var question3 = repositories.Question{
 	Source:                 "chatgpt",
 	MultipleCorrectAnswers: true,
 	NumberOfAnswers:        1,
-	TimesAnswered:          2,
-	TimesAnsweredCorrectly: 3,
-	//Quizzes: []repositories.Quiz{
-	//	quiz1, quiz2,
-	//},
 }
 
 var answer1 = repositories.Answer{
 	Text:       "apanthsh1",
 	QuestionID: 1,
 	IsCorrect:  false,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var answer2 = repositories.Answer{
 	Text:       "apanthsh2",
 	QuestionID: 1,
 	IsCorrect:  true,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var answer3 = repositories.Answer{
 	Text:       "apanthsh3",
 	QuestionID: 2,
 	IsCorrect:  false,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var answer4 = repositories.Answer{
 	Text:       "apanthsh4",
 	QuestionID: 2,
 	IsCorrect:  true,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var answer5 = repositories.Answer{
 	Text:       "apanthsh5",
 	QuestionID: 3,
 	IsCorrect:  false,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var answer6 = repositories.Answer{
 	Text:       "apanthsh6",
 	QuestionID: 3,
 	IsCorrect:  true,
-	TimesGiven: 0,
+	//TimesGiven: 0,
 }
 
 var quiz1 = repositories.Quiz{
-	Title:            "first quiz",
-	Description:      "the first quiz of the chapter",
-	CourseID:         1,
-	Visibility:       true,
-	ShowSubset:       false,
-	SubsetSize:       1,
-	NumberOfSessions: 2,
-	ScoreSum:         3,
-	MaxScore:         4,
+	Title:       "first quiz",
+	Description: "the first quiz of the chapter",
+	CourseID:    1,
+	Visibility:  true,
+	ShowSubset:  false,
+	SubsetSize:  1,
+	////NumberOfSessions: 2,
+	ScoreSum: 3,
+	MaxScore: 4,
 	Questions: []*repositories.Question{
 		&question1, &question3,
 	},
 }
 
 var quiz11 = repositories.Quiz{
-	Title:            "first and one quiz",
-	Description:      "the first quiz of the chapter",
-	CourseID:         1,
-	Visibility:       true,
-	ShowSubset:       false,
-	SubsetSize:       1,
-	NumberOfSessions: 2,
-	ScoreSum:         3,
-	MaxScore:         4,
+	Title:       "first and one quiz",
+	Description: "the first quiz of the chapter",
+	CourseID:    1,
+	Visibility:  true,
+	ShowSubset:  false,
+	SubsetSize:  1,
+	//NumberOfSessions: 2,
+	ScoreSum: 3,
+	MaxScore: 4,
 	Questions: []*repositories.Question{
 		&question1, &question3,
 	},
 }
 
 var quiz12 = repositories.Quiz{
-	Title:            "first and two quiz",
-	Description:      "the first quiz of the chapter",
-	CourseID:         1,
-	Visibility:       true,
-	ShowSubset:       false,
-	SubsetSize:       1,
-	NumberOfSessions: 2,
-	ScoreSum:         3,
-	MaxScore:         4,
+	Title:       "first and two quiz",
+	Description: "the first quiz of the chapter",
+	CourseID:    1,
+	Visibility:  true,
+	ShowSubset:  false,
+	SubsetSize:  1,
+	//NumberOfSessions: 2,
+	ScoreSum: 3,
+	MaxScore: 4,
 	Questions: []*repositories.Question{
 		&question1, &question3,
 	},
 }
 
 var quiz13 = repositories.Quiz{
-	Title:            "first and three quiz",
-	Description:      "the first quiz of the chapter",
-	CourseID:         1,
-	Visibility:       true,
-	ShowSubset:       false,
-	SubsetSize:       1,
-	NumberOfSessions: 2,
-	ScoreSum:         3,
-	MaxScore:         4,
+	Title:       "first and three quiz",
+	Description: "the first quiz of the chapter",
+	CourseID:    1,
+	Visibility:  true,
+	ShowSubset:  false,
+	SubsetSize:  1,
+	//NumberOfSessions: 2,
+	ScoreSum: 3,
+	MaxScore: 4,
 	Questions: []*repositories.Question{
 		&question1, &question3,
 	},
 }
 
 var quiz2 = repositories.Quiz{
-	Title:            "second quiz",
-	Description:      "the second quiz of the chapter",
-	CourseID:         2,
-	Visibility:       true,
-	ShowSubset:       false,
-	SubsetSize:       1,
-	NumberOfSessions: 2,
-	ScoreSum:         3,
-	MaxScore:         4,
+	Title:       "second quiz",
+	Description: "the second quiz of the chapter",
+	CourseID:    2,
+	Visibility:  true,
+	ShowSubset:  false,
+	SubsetSize:  1,
+	//NumberOfSessions: 2,
+	ScoreSum: 3,
+	MaxScore: 4,
 	Questions: []*repositories.Question{
 		&question2, &question3,
 	},
-}
-
-var quizSession1 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 1,
-	Score:             2,
-	MaxScore:          3,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSession11 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 11,
-	Score:             21,
-	MaxScore:          31,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    2,
-}
-
-var quizSession12 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 11,
-	Score:             22,
-	MaxScore:          32,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSession13 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 11,
-	Score:             22,
-	MaxScore:          33,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSession14 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 14,
-	Score:             24,
-	MaxScore:          34,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSession15 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 15,
-	Score:             25,
-	MaxScore:          35,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSession16 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 1,
-	Score:             2,
-	MaxScore:          3,
-	QuestionSessions: []repositories.QuestionSession{
-		questionSession1, questionSession2,
-	},
-	AnswerSessions: []repositories.AnswerSession{
-		answerSession1, answerSession2,
-	},
-	StudentID: 1,
-	QuizID:    1,
-}
-
-var quizSessionID1 uint = 1
-
-var quizSession2 = repositories.QuizSession{
-	DateTime:          time.Now(),
-	DurationInSeconds: 11,
-	Score:             22,
-	MaxScore:          33,
-	QuestionSessions:  []repositories.QuestionSession{},
-	AnswerSessions:    []repositories.AnswerSession{},
-	StudentID:         2,
-	QuizID:            2,
-}
-
-var questionSession1 = repositories.QuestionSession{
-	QuizSessionID: &quizSessionID1,
-	Question:      question1,
-	Position:      1,
-}
-
-var questionSession2 = repositories.QuestionSession{
-	QuizSessionID: &quizSessionID1,
-	Question:      question3,
-	Position:      2,
-}
-
-var answerSession1 = repositories.AnswerSession{
-	QuizSessionID: &quizSessionID1,
-	Answer:        answer1,
-}
-
-var answerSession2 = repositories.AnswerSession{
-	QuizSessionID: &quizSessionID1,
-	Answer:        answer2,
 }
 
 func LoadFakeData(db *gorm.DB) {
 	DropTables(db)
 	CreateUsers(db)
 	CreateTutors(db)
-	CreateStudents(db)
 	//CreateCourses(db)
 	CreateChapters(db)
 	CreateQuestions(db)
 	CreateAnswers(db)
 	CreateQuizzes(db)
-	CreateQuizSessions(db)
-	CreateQuestionSession(db)
-	CreateAnswerSession(db)
 }
 
 func CreateUsers(db *gorm.DB) {
@@ -487,27 +291,6 @@ func CreateTutors(db *gorm.DB) {
 	err = db.Debug().Model(&repositories.Tutor{}).Create(&tutor2).Error
 	if err != nil {
 		log.Fatalf("cannot seed tutors table: %v", err)
-	}
-}
-
-func CreateStudents(db *gorm.DB) {
-	var err error
-	err = db.Debug().AutoMigrate(&repositories.Student{})
-	if err != nil {
-		log.Fatalf("cannot migrate table: %v", err)
-	}
-
-	err = db.Debug().Model(&repositories.Student{}).Create(&student1).Error
-	if err != nil {
-		log.Fatalf("cannot seed students table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.Student{}).Create(&student2).Error
-	if err != nil {
-		log.Fatalf("cannot seed students table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.Student{}).Create(&student3).Error
-	if err != nil {
-		log.Fatalf("cannot seed students table: %v", err)
 	}
 }
 
@@ -632,77 +415,6 @@ func CreateQuizzes(db *gorm.DB) {
 	}
 }
 
-func CreateQuizSessions(db *gorm.DB) {
-	var err error
-	err = db.Debug().AutoMigrate(&repositories.QuizSession{})
-	if err != nil {
-		log.Fatalf("cannot migrate table: %v", err)
-	}
-
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession1).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession11).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession12).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession13).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession14).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession15).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuizSession{}).Create(&quizSession2).Error
-	if err != nil {
-		log.Fatalf("cannot seed quiz sessions table: %v", err)
-	}
-}
-
-func CreateQuestionSession(db *gorm.DB) {
-	var err error
-	err = db.Debug().AutoMigrate(&repositories.QuestionSession{})
-	if err != nil {
-		log.Fatalf("cannot migrate table: %v", err)
-	}
-
-	err = db.Debug().Model(&repositories.QuestionSession{}).Create(&questionSession1).Error
-	if err != nil {
-		log.Fatalf("cannot seed question sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.QuestionSession{}).Create(&questionSession2).Error
-	if err != nil {
-		log.Fatalf("cannot seed question sessions table: %v", err)
-	}
-}
-
-func CreateAnswerSession(db *gorm.DB) {
-	var err error
-	err = db.Debug().AutoMigrate(&repositories.AnswerSession{})
-	if err != nil {
-		log.Fatalf("cannot migrate table: %v", err)
-	}
-
-	err = db.Debug().Model(&repositories.AnswerSession{}).Create(&answerSession1).Error
-	if err != nil {
-		log.Fatalf("cannot seed answer sessions table: %v", err)
-	}
-	err = db.Debug().Model(&repositories.AnswerSession{}).Create(&answerSession2).Error
-	if err != nil {
-		log.Fatalf("cannot seed answer sessions table: %v", err)
-	}
-}
-
 func DropTables(db *gorm.DB) {
 	if db.Migrator().HasTable(&repositories.User{}) {
 		err := db.Migrator().DropTable("users")
@@ -712,12 +424,6 @@ func DropTables(db *gorm.DB) {
 	}
 	if db.Migrator().HasTable(&repositories.Tutor{}) {
 		err := db.Migrator().DropTable("tutors")
-		if err != nil {
-			log.Fatalf("cannot drop table: %v", err)
-		}
-	}
-	if db.Migrator().HasTable(&repositories.Student{}) {
-		err := db.Migrator().DropTable("students")
 		if err != nil {
 			log.Fatalf("cannot drop table: %v", err)
 		}
@@ -752,29 +458,7 @@ func DropTables(db *gorm.DB) {
 			log.Fatalf("cannot drop table: %v", err)
 		}
 	}
-	if db.Migrator().HasTable(&repositories.QuizSession{}) {
-		err := db.Migrator().DropTable("quiz_sessions")
-		if err != nil {
-			log.Fatalf("cannot drop table: %v", err)
-		}
-	}
-	if db.Migrator().HasTable(&repositories.QuestionSession{}) {
-		err := db.Migrator().DropTable("question_sessions")
-		if err != nil {
-			log.Fatalf("cannot drop table: %v", err)
-		}
-	}
-	if db.Migrator().HasTable(&repositories.AnswerSession{}) {
-		err := db.Migrator().DropTable("answer_sessions")
-		if err != nil {
-			log.Fatalf("cannot drop table: %v", err)
-		}
-	}
 	err := db.Migrator().DropTable("quiz_has_question")
-	if err != nil {
-		log.Fatalf("cannot drop table: %v", err)
-	}
-	err = db.Migrator().DropTable("student_takes_course")
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}

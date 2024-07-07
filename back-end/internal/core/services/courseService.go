@@ -26,10 +26,6 @@ func (service CourseService) GetCourses(ctx context.Context) ([]domain.Course, e
 	return service.repository.GetCourses(ctx)
 }
 
-func (service CourseService) GetCourseByStudentID(ctx context.Context, studentID uint32) ([]domain.Course, error) {
-	return service.repository.GetCourseByStudentID(ctx, studentID)
-}
-
 func (service CourseService) GetCourseByTutorID(ctx context.Context, tutorID uint32) ([]domain.Course, error) {
 	return service.repository.GetCourseByTutorID(ctx, tutorID)
 }

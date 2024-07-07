@@ -56,7 +56,6 @@ func (repo *CourseRepository) GetCourse(
 	return &domain.Course{
 		Title:       modelCourse.Title,
 		Description: modelCourse.Description,
-		Students:    nil,
 	}, err
 }
 
@@ -106,7 +105,6 @@ func (repo *CourseRepository) GetExtendedCourse(
 			Visibility:        modelQuiz.Visibility,
 			ShowSubset:        modelQuiz.ShowSubset,
 			SubsetSize:        modelQuiz.SubsetSize,
-			NumberOfSessions:  modelQuiz.NumberOfSessions,
 			ScoreSum:          modelQuiz.ScoreSum,
 			MaxScore:          modelQuiz.MaxScore,
 			NumberOfQuestions: numberOfQuestions,
@@ -156,63 +154,6 @@ func (repo *CourseRepository) GetCourses(
 
 	var domainCourses []domain.Course
 	for _, modelCourse := range modelCourses {
-		domainCourses = append(domainCourses, domain.Course{
-			ID:          uint32(modelCourse.ID),
-			Title:       modelCourse.Title,
-			Description: modelCourse.Description,
-		})
-	}
-
-	return domainCourses, err
-}
-
-func (repo *CourseRepository) GetCourseByStudentID(
-	ctx context.Context,
-	studentID uint32,
-) ([]domain.Course, error) {
-	var err error
-	//var modelCourses []Course
-	var modelStudent Student
-
-	//err = repo.db.WithContext(ctx).
-	//	//Preload("Courses").
-	//	Where("id = ?", studentID).
-	//	Take(&modelStudent).
-	//	Association("Courses").
-	//	Find(&modelCourses)
-
-	//err = repo.db.WithContext(ctx).
-	//	Joins("Courses").
-	//	Model(Student{}).
-	//	Where("id = ?", studentID).
-	//	Take(&modelStudent).Error
-
-	err = repo.db.WithContext(ctx).
-		Preload("Courses").
-		First(&modelStudent, studentID).Error
-
-	if err == gorm.ErrRecordNotFound {
-		return []domain.Course{}, apierrors.DataNotFoundErrorWrapper{
-			ReturnedStatusCode: http.StatusNotFound,
-			OriginalError:      errors.New("studentID " + strconv.Itoa(int(studentID)) + " not found"),
-		}
-	}
-	if err != nil {
-		return []domain.Course{}, err
-	}
-
-	//var domainCourses []domain.Course
-	//for _, modelCourse := range modelCourses {
-	//	// TODO: preload Tutor, Students if needed
-	//	domainCourses = append(domainCourses, domain.Course{
-	//		Title:       modelCourse.Title,
-	//		Description: modelCourse.Description,
-	//	})
-	//}
-
-	var domainCourses []domain.Course
-	for _, modelCourse := range modelStudent.Courses {
-		// TODO: preload Tutor, Students if needed
 		domainCourses = append(domainCourses, domain.Course{
 			ID:          uint32(modelCourse.ID),
 			Title:       modelCourse.Title,

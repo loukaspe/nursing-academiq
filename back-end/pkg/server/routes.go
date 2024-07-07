@@ -7,8 +7,6 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/course"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/quiz"
-	"github.com/loukaspe/nursing-academiq/internal/handlers/quizSessionByStudent"
-	"github.com/loukaspe/nursing-academiq/internal/handlers/student"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/user"
 	"github.com/loukaspe/nursing-academiq/internal/repositories"
@@ -50,40 +48,8 @@ func (s *Server) initializeRoutes() {
 	// user
 	userService := services.NewUserService(userRepository)
 
-	uploadDir := os.Getenv("PHOTOS_DIR")
-
-	getUserPhotoHandler := user.NewGetUserPhotoHandler(userService, s.logger)
-	updateUserPhotoHandler := user.NewSetUserPhotoHandler(userService, s.logger, uploadDir)
 	changeUserPasswordHandler := user.NewChangeUserPasswordHandler(userService, s.logger)
 
-	protected.HandleFunc("/user/{id:[0-9]+}/photo", getUserPhotoHandler.GetUserPhotoController).Methods("GET")
-	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/user/{id:[0-9]+}/photo", updateUserPhotoHandler.SetUserPhotoController).Methods("POST")
-	protected.HandleFunc("/user/{id:[0-9]+}/photo", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/user/{id:[0-9]+}/change_password", changeUserPasswordHandler.ChangeUserPasswordController).Methods("POST")
-	protected.HandleFunc("/user/{id:[0-9]+}/change_password", optionsHandlerForCors).Methods(http.MethodOptions)
-
-	// student
-	studentRepository := repositories.NewStudentRepository(s.DB)
-	studentService := services.NewStudentService(studentRepository)
-
-	getStudentHandler := student.NewGetStudentHandler(studentService, s.logger)
-	getExtendedStudentHandler := student.NewGetExtendedStudentHandler(studentService, s.logger)
-	createStudentHandler := student.NewCreateStudentHandler(studentService, s.logger)
-	deleteStudentHandler := student.NewDeleteStudentHandler(studentService, s.logger)
-	updateStudentHandler := student.NewUpdateStudentHandler(studentService, s.logger)
-	registerStudentCoursesHandler := student.NewRegisterStudentCoursesHandler(studentService, s.logger)
-
-	protected.HandleFunc("/student", createStudentHandler.CreateStudentController).Methods("POST")
-	protected.HandleFunc("/student", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/student/{id:[0-9]+}", getStudentHandler.GetStudentController).Methods("GET")
-	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/student/{id:[0-9]+}/extended", getExtendedStudentHandler.GetExtendedStudentController).Methods("GET")
-	protected.HandleFunc("/student/{id:[0-9]+}/extended", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/student/{id:[0-9]+}", deleteStudentHandler.DeleteStudentController).Methods("DELETE")
-	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/student/{id:[0-9]+}", updateStudentHandler.UpdateStudentController).Methods("PUT")
-	protected.HandleFunc("/student/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// tutor
 	tutorRepository := repositories.NewTutorRepository(s.DB)
@@ -129,10 +95,6 @@ func (s *Server) initializeRoutes() {
 	//protected.HandleFunc("/course/{id:[0-9]+}", updateCourseHandler.UpdateCourseController).Methods("PUT")
 	//protected.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	protected.HandleFunc("/student/{id:[0-9]+}/courses", getCourseByStudentIDHandler.GetCourseByStudentIDController).Methods("GET")
-	protected.HandleFunc("/student/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/student/{id:[0-9]+}/courses", registerStudentCoursesHandler.RegisterStudentCoursesController).Methods("POST")
-	protected.HandleFunc("/student/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", getCourseByTutorIDHandler.GetCourseByTutorIDController).Methods("GET")
 	protected.HandleFunc("/tutor/{id:[0-9]+}/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 
@@ -141,7 +103,6 @@ func (s *Server) initializeRoutes() {
 	quizService := services.NewQuizService(quizRepository)
 
 	getQuizHandler := quiz.NewGetQuizHandler(quizService, s.logger)
-	getQuizByStudentIDHandler := quiz.NewGetQuizByStudentIDHandler(quizService, s.logger)
 	getQuizByTutorIDHandler := quiz.NewGetQuizByTutorIDHandler(quizService, s.logger)
 	getQuizByCourseIDHandler := quiz.NewGetQuizByCourseIDHandler(quizService, s.logger)
 	//createQuizHandler := quiz.NewCreateQuizHandler(quizService, s.logger)
@@ -157,34 +118,11 @@ func (s *Server) initializeRoutes() {
 	//protected.HandleFunc("/quiz/{id:[0-9]+}", updateQuizHandler.UpdateQuizController).Methods("PUT")
 	//protected.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	protected.HandleFunc("/student/{id:[0-9]+}/quizzes", getQuizByStudentIDHandler.GetQuizByStudentIDController).Methods("GET")
-	protected.HandleFunc("/student/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
 	protected.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
 	protected.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 
-	// quizSession
-	quizSessionByStudentRepository := repositories.NewQuizSessionRepository(s.DB)
-	quizSessionByStudentService := services.NewQuizSessionByStudentService(quizSessionByStudentRepository)
-
-	getQuizSessionByStudentHandler := quizSessionByStudent.NewGetQuizSessionByStudentIDHandler(quizSessionByStudentService, s.logger)
-	getQuizSessionByStudentByStudentIDHandler := quizSessionByStudent.NewGetQuizSessionByStudentIDHandler(quizSessionByStudentService, s.logger)
-	//createQuizSessionByStudentHandler := quizSessionByStudent.NewCreateQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
-	//deleteQuizSessionByStudentHandler := quizSessionByStudent.NewDeleteQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
-	//updateQuizSessionByStudentHandler := quizSessionByStudent.NewUpdateQuizSessionByStudentHandler(quizSessionByStudentService, s.logger)
-
-	//protected.HandleFunc("/quizSessionByStudent", createQuizSessionByStudentHandler.CreateQuizSessionByStudentController).Methods("POST")
-	//protected.HandleFunc("/quizSessionByStudent", optionsHandlerForCors).Methods(http.MethodOptions)
-	protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", getQuizSessionByStudentHandler.GetQuizSessionByStudentIDController).Methods("GET")
-	protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", deleteQuizSessionByStudentHandler.DeleteQuizSessionByStudentController).Methods("DELETE")
-	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", updateQuizSessionByStudentHandler.UpdateQuizSessionByStudentController).Methods("PUT")
-	//protected.HandleFunc("/quiz_sessions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
-
-	protected.HandleFunc("/student/{id:[0-9]+}/quiz_sessions", getQuizSessionByStudentByStudentIDHandler.GetQuizSessionByStudentIDController).Methods("GET")
-	protected.HandleFunc("/student/{id:[0-9]+}/quiz_sessions", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
