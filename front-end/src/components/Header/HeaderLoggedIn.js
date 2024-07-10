@@ -29,6 +29,9 @@ const HeaderLoggedIn = () => {
                         <li>
                             <Link className="link" to="/questions">Questions</Link>
                         </li>
+                        <li>
+                            <Link className="link" to="/questions/import">Import</Link>
+                        </li>
                     </ul>
                     <ul className="ul myAccountMenu">
                         <li>

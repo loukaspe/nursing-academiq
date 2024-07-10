@@ -5,7 +5,7 @@ import LimitedMyCoursesList from "../CoursesList/LimitedMyCoursesList";
 import LimitedMyQuizzesList from "../QuizzesList/LimitedMyQuizzesList";
 
 
-const Homepage = (props) => {
+const Homepage = () => {
     return (
         <>
             <div>
@@ -13,10 +13,12 @@ const Homepage = (props) => {
             </div>
             <div className="homepageContainer">
                 <div className="coursesListContainer">
-                    <LimitedMyCoursesList/>
+                    {/*<LimitedMyCoursesList/>*/}
+                    TI NA DEIKSW 1
                 </div>
                 <div className="quizListContainer">
-                    <LimitedMyQuizzesList/>
+                    {/*<LimitedMyQuizzesList/>*/}
+                    TI NA DEIKSW 2
                 </div>
             </div>
             <div style={{clear: 'both'}}></div>

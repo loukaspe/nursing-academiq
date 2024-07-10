@@ -9,10 +9,10 @@ const LoginPage = (props) => {
             <>
                 <div className="loginPageContainer">
                     <div className="formContainer">
-                        <LoginForm/>
+                        <Logo/>
                     </div>
                     <div className="logoContainer">
-                        <Logo/>
+                        <LoginForm/>
                     </div>
                 </div>
                 <div style={{clear: 'both'}}></div>

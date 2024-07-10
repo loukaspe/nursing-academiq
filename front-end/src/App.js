@@ -26,14 +26,7 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/" element={<Layout/>}>
-                    <Route
-                        index
-                        element={
-                            <ProtectedRoutes>
-                                <Homepage/>
-                            </ProtectedRoutes>
-                        }
-                    />
+                    <Route index element={<Homepage/>}/>
                     <Route
                         path="profile"
                         element={
@@ -45,11 +38,9 @@ const App = () => {
                     <Route
                         path="questions"
                         element={
-                            <ProtectedRoutes>
-                                <QuestionsWrapper
-                                    questions={questions}
-                                />
-                            </ProtectedRoutes>
+                            <QuestionsWrapper
+                                questions={questions}
+                            />
                         }
                     />
                     <Route
@@ -63,33 +54,25 @@ const App = () => {
                     <Route
                         path="courses"
                         element={
-                            <ProtectedRoutes>
-                                <CoursesList/>
-                            </ProtectedRoutes>
+                            <CoursesList/>
                         }
                     />
                     <Route
                         path="courses/:id"
                         element={
-                            <ProtectedRoutes>
-                                <SingleCourse/>
-                            </ProtectedRoutes>
+                            <SingleCourse/>
                         }
                     />
                     <Route
                         path="courses/:id/chapters"
                         element={
-                            <ProtectedRoutes>
-                                <CourseChaptersList/>
-                            </ProtectedRoutes>
+                            <CourseChaptersList/>
                         }
                     />
                     <Route
                         path="courses/:id/quizzes"
                         element={
-                            <ProtectedRoutes>
-                                <CourseQuizzesList/>
-                            </ProtectedRoutes>
+                            <CourseQuizzesList/>
                         }
                     />
                     <Route
@@ -117,26 +100,12 @@ const App = () => {
                         }
                     />
                     <Route path="login" element={<LoginPage/>}/>
-                    {/*<Route path="loginForm" element={<LoginForm/>}/>*/}
                     <Route path="logout" element={<Logout/>}/>
 
                     <Route path="*" element={<NotFound/>}/>
                 </Route>
             </Routes>
         </>
-
-        // <>
-        //     <Header/>
-        //     <div style={{width: '100%'}}>
-        //         <div style={{float: 'left', width: '50%'}}>
-        //             <CoursesList coursesList={coursesList}/>
-        //         </div>
-        //         <div style={{float: 'right', width: '50%'}}>
-        //             <LoginForm/>
-        //         </div>
-        //     </div>
-        //     <div style={{clear: 'both'}}></div>
-        // </>
     )
 }
 

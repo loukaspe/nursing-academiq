@@ -26,7 +26,7 @@ const CourseQuizzesList = (props) => {
 
         axios.get(apiUrl, {
             headers: {
-                'Authorization': `Bearer ${cookies.get("token")}`,
+                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
             },
         })
             .then(response => {
