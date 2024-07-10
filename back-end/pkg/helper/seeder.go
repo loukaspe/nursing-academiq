@@ -251,7 +251,7 @@ func LoadFakeData(db *gorm.DB) {
 	DropTables(db)
 	CreateUsers(db)
 	CreateTutors(db)
-	//CreateCourses(db)
+	CreateCourses(db)
 	CreateChapters(db)
 	CreateQuestions(db)
 	CreateAnswers(db)

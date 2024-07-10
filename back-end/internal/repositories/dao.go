@@ -59,8 +59,8 @@ type Answer struct {
 	gorm.Model
 	Text string `gorm:"not null;"`
 	//Question   *Question
-	QuestionID      uint
-	AnswerSessionID *uint
-	IsCorrect       bool `gorm:"not null;"`
+	QuestionID uint
+	//AnswerSessionID *uint
+	IsCorrect bool `gorm:"not null;"`
 	//TimesGiven      int  `gorm:"not null;"`
 }

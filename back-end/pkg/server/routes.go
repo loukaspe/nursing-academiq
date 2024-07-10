@@ -6,6 +6,7 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/course"
+	"github.com/loukaspe/nursing-academiq/internal/handlers/question"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/quiz"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/tutor"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/user"
@@ -127,6 +128,15 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	// question
+	questionsRepository := repositories.NewQuestionRepository(s.DB)
+	questionsService := services.NewQuestionService(questionsRepository)
+
+	importQuestionHandler := question.NewImportQuestionHandler(questionsService, s.logger)
+
+	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", importQuestionHandler.ImportQuestionController).Methods("POST")
+	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
