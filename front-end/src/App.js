@@ -17,6 +17,7 @@ import ChangePassword from "./components/ChangePassword/ChangePassword";
 import SingleCourse from "./components/Course/SingleCourse";
 import CourseChaptersList from "./components/ChaptersList/CourseChaptersList";
 import CourseQuizzesList from "./components/QuizzesList/CourseQuizzesList";
+import CsvImport from "./components/Questions/Import/CsvImport";
 
 const cookies = new Cookies();
 
@@ -96,6 +97,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <ChangePassword/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="questions/import"
+                        element={
+                            <ProtectedRoutes>
+                                <CsvImport/>
                             </ProtectedRoutes>
                         }
                     />

@@ -1,0 +1,154 @@
+@import "../../../styles/variables.css";
+
+.quiz-container {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.questionCard {
+    box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
+    max-width: 80%;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.progress-line {
+    display: flex;
+    justify-content: space-around;
+    margin: 2em;
+}
+
+.progress-line span {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    background-color: var(--dark-grey-color);
+    color: var(--light-white-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.progress-line span.completed {
+    background-color: var(--brand-color);
+    color: white;
+}
+
+.progress-line span.current {
+    background-color: var(--opposite-color);
+    color: white;
+}
+
+hr {
+    border-color: var(--light-color);
+}
+
+.question-section {
+    margin-bottom: 2em;
+}
+
+.question-section h2 {
+    color: var(--dark-color);
+    padding: 1rem;
+    font-size: 1.3rem;
+    font-weight: bolder;
+}
+
+.question-section ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.question-section li {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    font-size: 1rem;
+    margin: 0.2rem;
+    border-radius: 5px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    text-align: left;
+    max-width: 60%;
+}
+
+.question-section li a:hover {
+    background-color: var(--opposite-color);
+    cursor: pointer;
+    color: white;
+}
+
+.question-section li.selected {
+    background-color: var(--opposite-color);
+}
+
+.question-section li.correct {
+    border: 3px solid var(--positive-color);
+}
+
+.question-section li.incorrect {
+    border: 3px solid var(--error-color);
+}
+
+.explanation {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--mid-white-color);
+    border-radius: 5px;
+    border: solid 1px var(--dark-grey-color);
+    color: var(--dark-color);
+}
+
+.explanationResult {
+    font-size: 1.5rem;
+}
+
+.explanationResult span.correct {
+    color: var(--positive-color);
+}
+
+.explanationResult span.incorrect {
+    color: var(--error-color);
+}
+
+.explanationCorrectAnswer {
+    font-size: 1rem;
+}
+
+.explanationDetails {
+    font-size: 1.2rem;
+}
+
+.questionButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.questionsSimpleButton {
+    background-color: var(--grey-color);
+    color: var(--dark-color);
+    font-size: 1rem;
+    margin: 1rem 1rem 1rem 0;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    display: flex;
+    gap: 2em;
+}
+
+.questionsSubmitButton {
+    color: var(--light-color);
+    background-color: var(--brand-color);
+    font-size: 1rem;
+    margin: 1rem 1rem 1rem auto;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+}
