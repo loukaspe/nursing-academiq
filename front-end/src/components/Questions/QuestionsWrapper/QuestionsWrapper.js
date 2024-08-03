@@ -1,15 +1,55 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./QuestionsWrapper.css";
 import Result from "../Result/Result";
+import {useParams} from "react-router-dom";
 
 
-const QuestionsWrapper = ({questions}) => {
+const QuestionsWrapper = () => {
+    const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [checkedQuestions, setCheckedQuestions] = useState({});
     const [quizFinished, setQuizFinished] = useState(false);
     const [score, setScore] = useState(0);
 
+    const params = useParams();
+    let quizID = params.quizID;
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${quizID}`
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                    },
+                    credentials: 'include',
+                });
+                const result = await response.json();
+                // TODO if 401 show unauthorized
+                // TODO if 500 show server error
+                if (response.status === 500) {
+                    throw Error(result.message);
+                }
+
+                if (response.status === 401) {
+                    throw Error("unauthorized: 401");
+                }
+
+                if (result.quiz.Questions === undefined) {
+                    throw Error("error getting quiz questions");
+                }
+                setQuestions(result.quiz.Questions);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchQuestions();
+    }, [quizID]);
     const handleAnswerClick = (answer) => {
         setSelectedAnswers(prev => ({
             ...prev,
@@ -32,7 +72,7 @@ const QuestionsWrapper = ({questions}) => {
 
         if (window.confirm(confirmMessage)) {
             questions.forEach((question, index) => {
-                let correctAnswer = question.answerOptions.find((answer) => answer.isCorrect);
+                let correctAnswer = question.Answers.find((answer) => answer.IsCorrect);
 
                 if (selectedAnswers[index] === correctAnswer) {
                     setScore((preValue) => preValue + 1);
@@ -66,6 +106,10 @@ const QuestionsWrapper = ({questions}) => {
         setScore(0);
     };
 
+    if (questions.length === 0) {
+        return <div> Παρακαλώ Περιμένετε ...</div>;
+    }
+
     return (
         quizFinished ? (
             <Result
@@ -73,88 +117,91 @@ const QuestionsWrapper = ({questions}) => {
                 restartHandler={restartHandler}
                 questions={questions}
             />
-        ) : (<div className="quiz-container">
-            <div className="progress-line">
-                {questions.map((_, index) => (
-                    <span
-                        key={index}
-                        className={`${selectedAnswers[index] ? 'completed' : ''} ${currentQuestionIndex === index ? 'current' : ''}`}
-                        onClick={() => handleCircleClick(index)}
-                    >
+        ) : (<React.Fragment>
+            <div className="quiz-container">
+                <div className="progress-line">
+                    {questions.map((_, index) => (
+                        <span
+                            key={index}
+                            className={`${selectedAnswers[index] ? 'completed' : ''} ${currentQuestionIndex === index ? 'current' : ''}`}
+                            onClick={() => handleCircleClick(index)}
+                        >
             {index + 1}
           </span>
-                ))}
-            </div>
-            <div className="questionCard">
-                <div className="question-section">
-                    <h2>{questions[currentQuestionIndex].questionText}</h2>
-                    <hr/>
-                    <ul>
-                        {questions[currentQuestionIndex].answerOptions.map((answer, idx) => {
-                            let className = '';
+                    ))}
+                </div>
+                <div className="questionCard">
+                    <div className="question-section">
+                        <h2>{questions[currentQuestionIndex].Text}</h2>
+                        <hr/>
+                        <ul>
+                            {questions[currentQuestionIndex].Answers.map((answer, idx) => {
+                                let className = '';
 
-                            let correctAnswer = questions[currentQuestionIndex].answerOptions.find((answer) => answer.isCorrect);
+                                let correctAnswer = questions[currentQuestionIndex].Answers.find((answer) => answer.IsCorrect);
 
-                            if (checkedQuestions[currentQuestionIndex]) {
-                                if (answer === correctAnswer) {
-                                    className = 'correct';
-                                } else if (answer === selectedAnswers[currentQuestionIndex]) {
-                                    className = 'incorrect';
+                                if (checkedQuestions[currentQuestionIndex]) {
+                                    if (answer === correctAnswer) {
+                                        className = 'correct';
+                                    } else if (answer === selectedAnswers[currentQuestionIndex]) {
+                                        className = 'incorrect';
+                                    }
                                 }
-                            }
 
-                            return (
-                                <li
-                                    key={idx}
-                                    className={`${selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''} ${className}`}
-                                    onClick={() => handleAnswerClick(answer)}
-                                >
-                                    {answer.answerText}
-                                </li>
-                            );
-                        })}
-                    </ul>
-                    {
-                        checkedQuestions[currentQuestionIndex] && (
-                        <div className="explanation">
-                            <div className="explanationResult">
-                                {selectedAnswers[currentQuestionIndex].answerText === questions[currentQuestionIndex].answerOptions.find(option => option.isCorrect).answerText
-                                    ? <span className="correct">Σωστό</span>
-                                    : <span className="incorrect">Λάθος</span>}
-                            </div>
-                            <br/>
-                            <div className="explanationCorrectAnswer">
-                                Σωστή Απάντηση: <strong>{questions[currentQuestionIndex].answerOptions.find(option => option.isCorrect).answerText}</strong>
-                            </div>
-                            <br/>
-                            <div className="explanationDetails">
-                                Εξήγηση: {questions[currentQuestionIndex].explanation}
-                            </div>
-                            <br/>
-                            <div>
-                                Πηγή: {questions[currentQuestionIndex].explanation}
-                            </div>
-                        </div>
-                    )}
+                                return (
+                                    <li
+                                        key={idx}
+                                        className={`${selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''} ${className}`}
+                                        onClick={() => handleAnswerClick(answer)}
+                                    >
+                                        {answer.Text}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                        {
+                            checkedQuestions[currentQuestionIndex] && (
+                                <div className="Explanation">
+                                    <div className="ExplanationResult">
+                                        {selectedAnswers[currentQuestionIndex].Text === questions[currentQuestionIndex].Answers.find(option => option.IsCorrect).Text
+                                            ? <span className="correct">Σωστό</span>
+                                            : <span className="incorrect">Λάθος</span>}
+                                    </div>
+                                    <br/>
+                                    <div className="ExplanationCorrectAnswer">
+                                        Σωστή
+                                        Απάντηση: <strong>{questions[currentQuestionIndex].Answers.find(option => option.IsCorrect).Text}</strong>
+                                    </div>
+                                    <br/>
+                                    <div className="ExplanationDetails">
+                                        Εξήγηση: {questions[currentQuestionIndex].Explanation}
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        Πηγή: {questions[currentQuestionIndex].Source}
+                                    </div>
+                                </div>
+                            )}
+                    </div>
+                    <div className="questionButtons">
+                        <button className="questionsSimpleButton" onClick={handlePrevious}
+                                disabled={currentQuestionIndex === 0}>
+                            Προηγούμενη
+                        </button>
+                        <button className="questionsSimpleButton" onClick={handleNext}
+                                disabled={currentQuestionIndex === questions.length - 1}>
+                            Eπόμενη
+                        </button>
+                        <button className="questionsSubmitButton" onClick={handleCheck}>
+                            Έλεγχος Απάντησης
+                        </button>
+                    </div>
+                    <button className="questionsSubmitButton" onClick={handleSubmit}>
+                        Οριστική Υποβολή Quiz
+                    </button>
                 </div>
-                <div className="questionButtons">
-                    <button className="questionsSimpleButton" onClick={handlePrevious}
-                            disabled={currentQuestionIndex === 0}>
-                        Προηγούμενη
-                    </button>
-                    <button className="questionsSimpleButton" onClick={handleNext}
-                            disabled={currentQuestionIndex === questions.length - 1}>
-                        Eπόμενη
-                    </button>
-                    <button className="questionsSubmitButton" onClick={handleCheck}>
-                        Έλεγχος Απάντησης
-                    </button>
-                </div>
-                <button className="questionsSubmitButton" onClick={handleSubmit}>
-                    Οριστική Υποβολή Quiz
-                </button>
             </div>
-        </div>)
+        </React.Fragment>)
     );
 };
 

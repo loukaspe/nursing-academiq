@@ -1,6 +1,5 @@
 import React from 'react';
 import {Routes, Route, Link} from "react-router-dom";
-import LimitedMyCoursesList from "./components/CoursesList/LimitedMyCoursesList";
 import Homepage from "./components/Homepage/Homepage";
 import Layout from "./components/Layout/Layout";
 import QuestionsWrapper from "./components/Questions/QuestionsWrapper/QuestionsWrapper";
@@ -8,10 +7,7 @@ import {questions} from "./questions";
 import ProtectedRoutes from "./routes/ProtectedRoute";
 import Cookies from "universal-cookie";
 import LoginPage from "./components/Login/LoginPage";
-import MyCoursesList from "./components/CoursesList/MyCoursesList";
-import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
 import CoursesList from "./components/CoursesList/CoursesList";
-import QuizHistoryList from "./components/QuizzesList/QuizHistoryList";
 import UserProfile from "./components/UserProfile/UserProfile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import SingleCourse from "./components/Course/SingleCourse";
@@ -28,30 +24,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<Homepage/>}/>
-                    <Route
-                        path="profile"
-                        element={
-                            <ProtectedRoutes>
-                                <UserProfile/>
-                            </ProtectedRoutes>
-                        }
-                    />
-                    <Route
-                        path="questions"
-                        element={
-                            <QuestionsWrapper
-                                questions={questions}
-                            />
-                        }
-                    />
-                    <Route
-                        path="quiz-history"
-                        element={
-                            <ProtectedRoutes>
-                                <QuizHistoryList/>
-                            </ProtectedRoutes>
-                        }
-                    />
+                    {/* Courses */}
                     <Route
                         path="courses"
                         element={
@@ -76,19 +49,29 @@ const App = () => {
                             <CourseQuizzesList/>
                         }
                     />
+                    {/* Chapters */}
+                    {/* Quizzes */}
                     <Route
-                        path="my-courses"
+                        path="quiz/:quizID"
                         element={
-                            <ProtectedRoutes>
-                                <MyCoursesList/>
-                            </ProtectedRoutes>
+                            <QuestionsWrapper/>
                         }
                     />
+                    {/* Questions */}
                     <Route
-                        path="my-quizzes"
+                        path="questions"
+                        element={
+                            <QuestionsWrapper
+                                questions={questions}
+                            />
+                        }
+                    />
+                    {/* User */}
+                    <Route
+                        path="profile"
                         element={
                             <ProtectedRoutes>
-                                <MyQuizzesList/>
+                                <UserProfile/>
                             </ProtectedRoutes>
                         }
                     />
