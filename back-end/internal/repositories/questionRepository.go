@@ -21,7 +21,8 @@ func (repo *QuestionRepository) ImportForCourse(
 ) error {
 	var err error
 
-	return repo.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	modelQuestions := make([]*Question, 0, len(questions))
+	err = repo.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		for _, question := range questions {
 			var chapter Chapter
 			result := tx.Where("title = ?", question.Chapter.Title).First(&chapter)
@@ -59,8 +60,22 @@ func (repo *QuestionRepository) ImportForCourse(
 			if err != nil {
 				return err
 			}
+			modelQuestions = append(modelQuestions, &modelQuestion)
 		}
 
 		return nil
 	})
+
+	if err != nil {
+		return err
+	}
+
+	// TODO remove fake quiz create
+	modelQuiz := Quiz{}
+	modelQuiz.Title = "Test Quiz"
+	modelQuiz.Description = "This is just a test quiz"
+	modelQuiz.CourseID = courseID
+	modelQuiz.Questions = modelQuestions
+
+	return repo.db.WithContext(ctx).Create(&modelQuiz).Error
 }

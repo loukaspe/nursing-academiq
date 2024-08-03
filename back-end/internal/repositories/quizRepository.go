@@ -28,6 +28,7 @@ func (repo *QuizRepository) GetQuiz(
 	err = repo.db.WithContext(ctx).
 		//Preload("Tutor").
 		Model(Quiz{}).
+		Preload("Questions.Answers").
 		Where("id = ?", uid).
 		Take(&modelQuiz).Error
 
@@ -39,6 +40,31 @@ func (repo *QuizRepository) GetQuiz(
 	}
 	if err != nil {
 		return &domain.Quiz{}, err
+	}
+
+	domainQuestions := make([]domain.Question, 0, len(modelQuiz.Questions))
+	for _, modelQuestion := range modelQuiz.Questions {
+
+		domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
+		for _, modelAnswer := range modelQuestion.Answers {
+			domainAnswer := &domain.Answer{
+				Text:      modelAnswer.Text,
+				IsCorrect: modelAnswer.IsCorrect,
+			}
+
+			domainAnswers = append(domainAnswers, *domainAnswer)
+		}
+
+		domainQuestion := &domain.Question{
+			Text:                   modelQuestion.Text,
+			Explanation:            modelQuestion.Explanation,
+			Source:                 modelQuestion.Source,
+			MultipleCorrectAnswers: modelQuestion.MultipleCorrectAnswers,
+			NumberOfAnswers:        modelQuestion.NumberOfAnswers,
+			Answers:                domainAnswers,
+		}
+
+		domainQuestions = append(domainQuestions, *domainQuestion)
 	}
 
 	// TODO: preload Tutor if needed
@@ -61,7 +87,7 @@ func (repo *QuizRepository) GetQuiz(
 		SubsetSize:  modelQuiz.SubsetSize,
 		ScoreSum:    modelQuiz.ScoreSum,
 		MaxScore:    modelQuiz.MaxScore,
-		//Questions:        nil,
+		Questions:   domainQuestions,
 	}, err
 }
 

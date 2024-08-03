@@ -26,9 +26,35 @@ func NewGetQuizHandler(
 	}
 }
 
+type Answer struct {
+	Text      string
+	IsCorrect bool
+}
+
+type Question struct {
+	Text                   string
+	Explanation            string
+	Source                 string
+	MultipleCorrectAnswers bool
+	NumberOfAnswers        int
+	Answers                []Answer
+}
+
+type QuizResponse struct {
+	Title             string
+	Description       string
+	Visibility        bool
+	ShowSubset        bool
+	SubsetSize        int
+	ScoreSum          float32
+	MaxScore          int
+	NumberOfQuestions int
+	Questions         []Question
+}
+
 type GetQuizResponse struct {
-	ErrorMessage string       `json:"errorMessage,omitempty"`
-	Quiz         *QuizRequest `json:"quiz,omitempty"`
+	ErrorMessage string        `json:"errorMessage,omitempty"`
+	Quiz         *QuizResponse `json:"quiz,omitempty"`
 }
 
 func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.Request) {
@@ -68,28 +94,41 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 		return
 	}
 
-	response.Quiz = &QuizRequest{
-		Quiz: struct {
-			Title             string
-			Description       string
-			Visibility        bool
-			ShowSubset        bool
-			SubsetSize        int
-			NumberOfSessions  int
-			ScoreSum          float32
-			MaxScore          int
-			NumberOfQuestions int
-		}{
-			Title:             quiz.Title,
-			Description:       quiz.Description,
-			Visibility:        quiz.Visibility,
-			ShowSubset:        quiz.ShowSubset,
-			SubsetSize:        quiz.SubsetSize,
-			NumberOfSessions:  quiz.NumberOfSessions,
-			ScoreSum:          quiz.ScoreSum,
-			MaxScore:          quiz.MaxScore,
-			NumberOfQuestions: quiz.NumberOfQuestions,
-		},
+	questions := make([]Question, 0, len(quiz.Questions))
+	for _, domainQuestion := range quiz.Questions {
+
+		answers := make([]Answer, 0, domainQuestion.NumberOfAnswers)
+		for _, modelAnswer := range domainQuestion.Answers {
+			answer := &Answer{
+				Text:      modelAnswer.Text,
+				IsCorrect: modelAnswer.IsCorrect,
+			}
+
+			answers = append(answers, *answer)
+		}
+
+		question := &Question{
+			Text:                   domainQuestion.Text,
+			Explanation:            domainQuestion.Explanation,
+			Source:                 domainQuestion.Source,
+			MultipleCorrectAnswers: domainQuestion.MultipleCorrectAnswers,
+			NumberOfAnswers:        domainQuestion.NumberOfAnswers,
+			Answers:                answers,
+		}
+
+		questions = append(questions, *question)
+	}
+
+	response.Quiz = &QuizResponse{
+		Title:       quiz.Title,
+		Description: quiz.Description,
+		Visibility:  quiz.Visibility,
+		ShowSubset:  quiz.ShowSubset,
+		SubsetSize:  quiz.SubsetSize,
+		//ScoreSum:          ,
+		MaxScore:          quiz.MaxScore,
+		NumberOfQuestions: quiz.NumberOfQuestions,
+		Questions:         questions,
 	}
 
 	json.NewEncoder(w).Encode(response)
