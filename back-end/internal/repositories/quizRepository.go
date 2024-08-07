@@ -165,12 +165,36 @@ func (repo *QuizRepository) GetQuizByCourseID(
 	var domainQuizs []domain.Quiz
 
 	for _, modelQuiz := range modelCourse.Quizs {
-		var numberOfQuestions int
-		for _, _ = range modelQuiz.Questions {
-			numberOfQuestions++
+		domainQuestions := make([]domain.Question, 0, len(modelQuiz.Questions))
+		for _, modelQuestion := range modelQuiz.Questions {
+
+			domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
+			for _, modelAnswer := range modelQuestion.Answers {
+				domainAnswer := &domain.Answer{
+					Text:      modelAnswer.Text,
+					IsCorrect: modelAnswer.IsCorrect,
+				}
+
+				domainAnswers = append(domainAnswers, *domainAnswer)
+			}
+
+			domainQuestion := &domain.Question{
+				Text:                   modelQuestion.Text,
+				Explanation:            modelQuestion.Explanation,
+				Source:                 modelQuestion.Source,
+				MultipleCorrectAnswers: modelQuestion.MultipleCorrectAnswers,
+				NumberOfAnswers:        modelQuestion.NumberOfAnswers,
+				Answers:                domainAnswers,
+				Chapter: &domain.Chapter{
+					ID: uint32(modelQuestion.ChapterID),
+				},
+			}
+
+			domainQuestions = append(domainQuestions, *domainQuestion)
 		}
 
 		domainQuizs = append(domainQuizs, domain.Quiz{
+			ID:                uint32(modelQuiz.ID),
 			Title:             modelQuiz.Title,
 			Description:       modelQuiz.Description,
 			Visibility:        modelQuiz.Visibility,
@@ -178,10 +202,11 @@ func (repo *QuizRepository) GetQuizByCourseID(
 			SubsetSize:        modelQuiz.SubsetSize,
 			ScoreSum:          modelQuiz.ScoreSum,
 			MaxScore:          modelQuiz.MaxScore,
-			NumberOfQuestions: numberOfQuestions,
+			NumberOfQuestions: len(modelQuiz.Questions),
 			Course: &domain.Course{
 				Title: modelCourse.Title,
 			},
+			Questions: domainQuestions,
 		})
 	}
 

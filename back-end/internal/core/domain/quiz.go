@@ -3,6 +3,7 @@ package domain
 import "time"
 
 type Quiz struct {
+	ID                uint32
 	Title             string
 	Description       string
 	Course            *Course

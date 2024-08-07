@@ -118,6 +118,7 @@ func (repo *CourseRepository) GetExtendedCourse(
 
 	for _, modelChapter := range modelCourse.Chapters {
 		domainChapters = append(domainChapters, domain.Chapter{
+			ID:          uint32(modelChapter.ID),
 			Title:       modelChapter.Title,
 			Description: modelChapter.Description,
 		})

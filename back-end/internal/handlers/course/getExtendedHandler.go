@@ -33,6 +33,7 @@ type Quiz struct {
 }
 
 type Chapter struct {
+	ID          uint32
 	Title       string
 	Description string
 }
@@ -97,9 +98,11 @@ func (handler *GetExtendedCourseHandler) GetExtendedCourseController(w http.Resp
 
 	for _, chapter := range extendedCourse.Chapters {
 		response.Chapters = append(response.Chapters, struct {
+			ID          uint32
 			Title       string
 			Description string
 		}{
+			ID:          chapter.ID,
 			Title:       chapter.Title,
 			Description: chapter.Description,
 		})

@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	"github.com/loukaspe/nursing-academiq/internal/handlers"
+	"github.com/loukaspe/nursing-academiq/internal/handlers/chapter"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/course"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/question"
 	"github.com/loukaspe/nursing-academiq/internal/handlers/quiz"
@@ -128,6 +129,15 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", getQuizByCourseIDHandler.GetQuizByCourseIDController).Methods("GET")
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	// chapter
+	chapterRepository := repositories.NewChapterRepository(s.DB)
+	chapterService := services.NewChapterService(chapterRepository, quizRepository)
+
+	getChapterHandler := chapter.NewGetChapterHandler(chapterService, s.logger)
+
+	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", getChapterHandler.GetChapterController).Methods("GET")
+	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// question
 	questionsRepository := repositories.NewQuestionRepository(s.DB)
