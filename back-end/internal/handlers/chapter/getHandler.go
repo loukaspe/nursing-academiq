@@ -22,9 +22,15 @@ type Quiz struct {
 	CourseName        string
 }
 
+type Course struct {
+	ID    uint32
+	Title string
+}
+
 type Chapter struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	Course      Course `json:"course"`
 	Quizzes     []Quiz `json:"quizzes,omitempty"`
 }
 
@@ -92,6 +98,10 @@ func (handler *GetChapterHandler) GetChapterController(w http.ResponseWriter, r 
 
 	response.Chapter.Title = chapter.Title
 	response.Chapter.Description = chapter.Description
+	response.Chapter.Course = Course{
+		ID:    chapter.Course.ID,
+		Title: chapter.Course.Title,
+	}
 
 	json.NewEncoder(w).Encode(response)
 	w.WriteHeader(http.StatusOK)

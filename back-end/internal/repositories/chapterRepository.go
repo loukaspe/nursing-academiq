@@ -26,6 +26,7 @@ func (repo *ChapterRepository) GetChapter(
 	var modelChapter *Chapter
 
 	err = repo.db.WithContext(ctx).
+		Preload("Course").
 		Model(Chapter{}).
 		Where("id = ?", uid).
 		Take(&modelChapter).Error
@@ -44,7 +45,8 @@ func (repo *ChapterRepository) GetChapter(
 		Title:       modelChapter.Title,
 		Description: modelChapter.Description,
 		Course: &domain.Course{
-			ID: uint32(modelChapter.CourseID),
+			ID:    uint32(modelChapter.CourseID),
+			Title: modelChapter.Course.Title,
 		},
 	}, err
 }
