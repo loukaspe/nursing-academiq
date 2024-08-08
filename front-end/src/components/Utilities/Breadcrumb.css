@@ -1,0 +1,24 @@
+@import "../../styles/variables.css";
+
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    margin: 0.1em;
+    border-bottom: 1px solid var(--grey-color);
+    color: var(--dark-grey-color);
+    font-weight: bold;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    padding: 0 0.5rem;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: var(--dark-grey-color);
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}

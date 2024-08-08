@@ -4,15 +4,18 @@ import Cookies from "universal-cookie";
 import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const cookies = new Cookies();
 
 const ChapterQuizzesList = (props) => {
     const [quizzes, setQuizzes] = useState([]);
     const [chapter, setChapter] = useState({});
+    const [course, setCourse] = useState({});
 
     const params = useParams();
-    let chapterID = params.id;
+    let chapterID = params.chapterID;
+    let courseID = params.courseID;
 
     let navigate = useNavigate();
 
@@ -37,6 +40,10 @@ const ChapterQuizzesList = (props) => {
                 if (response.data.chapter.quizzes) {
                     setQuizzes(response.data.chapter.quizzes);
                 }
+
+                if (response.data.chapter.course) {
+                    setCourse(response.data.chapter.course);
+                }
             })
             .catch(error => {
                 console.error('Error fetching chapter quizzes data', error);
@@ -45,6 +52,10 @@ const ChapterQuizzesList = (props) => {
 
     return (
         <React.Fragment>
+            <Breadcrumb
+                actualPath={`/courses/${courseID}/chapters/${courseID}`}
+                namePath={`/Μαθήματα/${course.Title}/Θεματικές Ενότητες/${chapter.title}`}
+            />
             <div className="singleChapterQuizzesPageHeader">
                 <div className="singleChapterQuizzesPageInfo">
                     <span className="singleChapterQuizzesPageChapterName">{chapter.title}</span>

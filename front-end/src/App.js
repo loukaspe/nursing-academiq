@@ -52,7 +52,7 @@ const App = () => {
                     />
                     {/* Chapters */}
                     <Route
-                        path="chapters/:id/quizzes"
+                        path="courses/:courseID/chapters/:chapterID/quizzes"
                         element={
                             <ChapterQuizzesList/>
                         }

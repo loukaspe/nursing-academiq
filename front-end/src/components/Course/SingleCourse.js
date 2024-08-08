@@ -11,6 +11,7 @@ import SectionTitle from "../Utilities/SectionTitle";
 import LimitedRecentCourseQuizzesList from "../QuizzesList/LimitedRecentCourseQuizzesList";
 import axios from "axios";
 import LimitedRecentCourseChaptersList from "../ChaptersList/LimitedCourseChaptersList";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const cookies = new Cookies();
 
@@ -54,6 +55,7 @@ const SingleCourse = () => {
 
     return (
         <React.Fragment>
+            <Breadcrumb actualPath={`/courses/${courseID}`} namePath={`/Μαθήματα/${course.title}`}/>
             <div className="singleCoursePageHeader">
                 <div className="singleCoursePageInfo">
                     <span className="singleCoursePageCourseName">{course.title}</span>

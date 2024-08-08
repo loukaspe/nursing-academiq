@@ -15,7 +15,7 @@ const LimitedCourseChaptersList = (props) => {
                     return (
                         <div className="singleChapterTextContainer">
                             <Link className="singleChapterTitle"
-                                  to={`/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                  to={`/courses/${props.courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
                             <div className="singleChapterDetails">{item.Description}</div>
                         </div>
                     );

@@ -64,7 +64,7 @@ const CourseChaptersList = (props) => {
                         return (
                             <div className="singleChapterTextContainer">
                                 <Link className="singleChapterTitle"
-                                      to={`/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                      to={`courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
                                 <div className="singleChapterDetails">{item.Description}</div>
                             </div>
                         );
