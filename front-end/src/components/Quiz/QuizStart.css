@@ -1,0 +1,87 @@
+@import "../../styles/variables.css";
+
+.quiz-container {
+    width: 80%;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.singleQuizName {
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    padding: 0.5em;
+    font-weight: bold;
+    border-bottom: 1px solid var(--dark-grey-color);
+    margin-bottom: 1em;
+}
+
+.quizCard {
+    box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
+    /*max-width: 80%;*/
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+hr {
+    border-color: var(--light-color);
+}
+
+.quizDescription {
+    color: #393e46;
+    font-size: 1rem;
+    text-align: center;
+    /*padding: 0.5em;*/
+    font-weight: bold;
+    /*border-bottom: 1px solid var(--dark-grey-color);*/
+    margin-top: 5em;
+    margin-bottom: 5em;
+    justify-content: center;
+}
+
+.quizButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*height: 100vh;*/
+}
+
+.quizButtonsRow {
+    display: flex;
+    justify-content: center;
+    /*margin-bottom: 10px;*/
+}
+
+.quizSmallButton {
+    background-color: var(--grey-color);
+    color: var(--dark-color);
+    font-size: 1rem;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    display: flex;
+    width: 7em;
+    margin-right: 1rem;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.small-button:last-child {
+    margin-right: 0;
+}
+
+.quizLargeButton {
+    color: var(--light-color);
+    background-color: var(--brand-color);
+    font-size: 1rem;
+    margin: 1rem 1rem 1rem auto;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+
+    width: 15em;
+}

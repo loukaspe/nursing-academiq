@@ -15,6 +15,7 @@ import CourseChaptersList from "./components/ChaptersList/CourseChaptersList";
 import CourseQuizzesList from "./components/QuizzesList/CourseQuizzesList";
 import CsvImport from "./components/Questions/Import/CsvImport";
 import ChapterQuizzesList from "./components/ChaptersList/ChapterQuizzesList";
+import QuizStart from "./components/Quiz/QuizStart";
 
 const cookies = new Cookies();
 
@@ -59,7 +60,13 @@ const App = () => {
                     />
                     {/* Quizzes */}
                     <Route
-                        path="quiz/:quizID"
+                        path="courses/:courseID/quizzes/:quizID"
+                        element={
+                            <QuizStart/>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/:quizID/complete"
                         element={
                             <QuestionsWrapper/>
                         }

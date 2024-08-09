@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./ChapterQuizzesList.css";
 import Cookies from "universal-cookie";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
@@ -73,7 +73,8 @@ const ChapterQuizzesList = (props) => {
                     {quizzes.map((item) => {
                         return (
                             <div className="singleQuizTextContainer">
-                                <div className="singleQuizTitle">{item.Title}</div>
+                                <Link className="singleQuizTitle"
+                                      to={`/courses/${courseID}/quizzes/${item.id}`}>{item.Title}</Link>
                                 <div className="singleQuizDetails">{item.Description}</div>
                                 <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
                             </div>

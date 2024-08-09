@@ -6,6 +6,7 @@ import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import LimitedRecentCourseChaptersList from "./LimitedCourseChaptersList";
 import {useHistory} from "react-router-dom";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const cookies = new Cookies();
 
@@ -46,6 +47,7 @@ const CourseChaptersList = (props) => {
 
     return (
         <React.Fragment>
+            <Breadcrumb actualPath={`/courses/${courseID}/chapters`} namePath={`/Μαθήματα/${course.title}/Θεματικές Ενότητες`}/>
             <div className="singleCourseChaptersPageHeader">
                 <div className="singleCourseChaptersPageInfo">
                     <span className="singleCourseChaptersPageCourseName">{course.title}</span>
@@ -64,7 +66,7 @@ const CourseChaptersList = (props) => {
                         return (
                             <div className="singleChapterTextContainer">
                                 <Link className="singleChapterTitle"
-                                      to={`courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                      to={`/courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
                                 <div className="singleChapterDetails">{item.Description}</div>
                             </div>
                         );

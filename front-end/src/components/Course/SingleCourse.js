@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "./SingleCourse.css";
 import Cookies from "universal-cookie";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import {useParams} from "react-router-dom";
-import PageTitle from "../Utilities/PageTitle";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
 import SectionTitle from "../Utilities/SectionTitle";
 import LimitedRecentCourseQuizzesList from "../QuizzesList/LimitedRecentCourseQuizzesList";
 import axios from "axios";

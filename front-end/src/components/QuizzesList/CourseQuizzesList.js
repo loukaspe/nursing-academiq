@@ -62,7 +62,8 @@ const CourseQuizzesList = (props) => {
                     {quizzes.map((item) => {
                         return (
                             <div className="singleQuizTextContainer">
-                                <div className="singleQuizTitle">{item.Title}</div>
+                                <Link className="singleQuizTitle"
+                                      to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
                                 <div className="singleQuizDetails">{course.title}</div>
                                 <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
                             </div>
