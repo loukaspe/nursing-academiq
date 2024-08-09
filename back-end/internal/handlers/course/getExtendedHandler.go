@@ -27,6 +27,7 @@ func NewGetExtendedCourseHandler(
 }
 
 type Quiz struct {
+	ID                uint32
 	Title             string
 	NumberOfQuestions int
 	CourseName        string
@@ -85,11 +86,8 @@ func (handler *GetExtendedCourseHandler) GetExtendedCourseController(w http.Resp
 	}
 
 	for _, quiz := range extendedCourse.Quizzes {
-		response.Quizzes = append(response.Quizzes, struct {
-			Title             string
-			NumberOfQuestions int
-			CourseName        string
-		}{
+		response.Quizzes = append(response.Quizzes, Quiz{
+			ID:                quiz.ID,
 			Title:             quiz.Title,
 			NumberOfQuestions: quiz.NumberOfQuestions,
 			CourseName:        quiz.Course.Title,

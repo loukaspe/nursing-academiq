@@ -27,12 +27,11 @@ type Quiz struct {
 	gorm.Model
 	Title       string `gorm:"not null;"`
 	Description string
-	//Course           Course
-	CourseID   uint
-	CourseName string
-	Visibility bool `gorm:"not null;"`
-	ShowSubset bool `gorm:"not null;"`
-	SubsetSize int
+	CourseID    uint
+	Course      Course
+	Visibility  bool `gorm:"not null;"`
+	ShowSubset  bool `gorm:"not null;"`
+	SubsetSize  int
 	//NumberOfSessions int         `gorm:"not null;"`
 	ScoreSum  float32     `gorm:"not null;"`
 	MaxScore  int         `gorm:"not null;"`

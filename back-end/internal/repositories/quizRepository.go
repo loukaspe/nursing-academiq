@@ -29,6 +29,7 @@ func (repo *QuizRepository) GetQuiz(
 		//Preload("Tutor").
 		Model(Quiz{}).
 		Preload("Questions.Answers").
+		Preload("Course").
 		Where("id = ?", uid).
 		Take(&modelQuiz).Error
 
@@ -80,14 +81,20 @@ func (repo *QuizRepository) GetQuiz(
 	//}
 
 	return &domain.Quiz{
-		Title:       modelQuiz.Title,
-		Description: modelQuiz.Description,
-		Visibility:  modelQuiz.Visibility,
-		ShowSubset:  modelQuiz.ShowSubset,
-		SubsetSize:  modelQuiz.SubsetSize,
-		ScoreSum:    modelQuiz.ScoreSum,
-		MaxScore:    modelQuiz.MaxScore,
-		Questions:   domainQuestions,
+		Title:             modelQuiz.Title,
+		Description:       modelQuiz.Description,
+		Visibility:        modelQuiz.Visibility,
+		ShowSubset:        modelQuiz.ShowSubset,
+		SubsetSize:        modelQuiz.SubsetSize,
+		ScoreSum:          modelQuiz.ScoreSum,
+		MaxScore:          modelQuiz.MaxScore,
+		NumberOfQuestions: len(modelQuiz.Questions),
+		Questions:         domainQuestions,
+		Course: &domain.Course{
+			ID:          uint32(modelQuiz.CourseID),
+			Title:       modelQuiz.Course.Title,
+			Description: modelQuiz.Course.Description,
+		},
 	}, err
 }
 

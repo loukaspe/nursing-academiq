@@ -100,6 +100,7 @@ func (repo *CourseRepository) GetExtendedCourse(
 		}
 
 		domainQuizs = append(domainQuizs, domain.Quiz{
+			ID:                uint32(modelQuiz.ID),
 			Title:             modelQuiz.Title,
 			Description:       modelQuiz.Description,
 			Visibility:        modelQuiz.Visibility,

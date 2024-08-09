@@ -40,6 +40,11 @@ type Question struct {
 	Answers                []Answer
 }
 
+type Course struct {
+	ID    uint32
+	Title string
+}
+
 type QuizResponse struct {
 	Title             string
 	Description       string
@@ -50,6 +55,7 @@ type QuizResponse struct {
 	MaxScore          int
 	NumberOfQuestions int
 	Questions         []Question
+	Course            Course
 }
 
 type GetQuizResponse struct {
@@ -129,6 +135,10 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 		MaxScore:          quiz.MaxScore,
 		NumberOfQuestions: quiz.NumberOfQuestions,
 		Questions:         questions,
+		Course: Course{
+			ID:    quiz.Course.ID,
+			Title: quiz.Course.Title,
+		},
 	}
 
 	json.NewEncoder(w).Encode(response)
