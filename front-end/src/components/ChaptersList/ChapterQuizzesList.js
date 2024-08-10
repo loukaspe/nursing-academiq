@@ -74,7 +74,7 @@ const ChapterQuizzesList = (props) => {
                         return (
                             <div className="singleQuizTextContainer">
                                 <Link className="singleQuizTitle"
-                                      to={`/courses/${courseID}/quizzes/${item.id}`}>{item.Title}</Link>
+                                      to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
                                 <div className="singleQuizDetails">{item.Description}</div>
                                 <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
                             </div>

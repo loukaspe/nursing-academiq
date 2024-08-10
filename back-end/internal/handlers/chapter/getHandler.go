@@ -17,6 +17,7 @@ type GetChapterHandler struct {
 }
 
 type Quiz struct {
+	ID                uint32
 	Title             string
 	NumberOfQuestions int
 	CourseName        string
@@ -90,6 +91,7 @@ func (handler *GetChapterHandler) GetChapterController(w http.ResponseWriter, r 
 
 	for _, quiz := range chapter.Quizzes {
 		response.Chapter.Quizzes = append(response.Chapter.Quizzes, Quiz{
+			ID:                quiz.ID,
 			Title:             quiz.Title,
 			CourseName:        quiz.Course.Title,
 			NumberOfQuestions: len(quiz.Questions),
