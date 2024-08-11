@@ -16,6 +16,8 @@ import CourseQuizzesList from "./components/QuizzesList/CourseQuizzesList";
 import CsvImport from "./components/Questions/Import/CsvImport";
 import ChapterQuizzesList from "./components/ChaptersList/ChapterQuizzesList";
 import QuizStart from "./components/Quiz/QuizStart";
+import MyCoursesList from "./components/CoursesList/MyCoursesList";
+import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
 
 const cookies = new Cookies();
 
@@ -27,6 +29,12 @@ const App = () => {
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<Homepage/>}/>
                     {/* Courses */}
+                    <Route
+                        path="my-courses"
+                        element={
+                            <MyCoursesList/>
+                        }
+                    />
                     <Route
                         path="courses"
                         element={
@@ -59,6 +67,12 @@ const App = () => {
                         }
                     />
                     {/* Quizzes */}
+                    <Route
+                        path="my-quizzes"
+                        element={
+                            <MyQuizzesList/>
+                        }
+                    />
                     <Route
                         path="courses/:courseID/quizzes/:quizID"
                         element={
@@ -128,6 +142,7 @@ function NotFound() {
 
 function Logout() {
     cookies.remove("token", {path: "/"});
+    cookies.remove("result", {path: "/"});
     cookies.remove("user", {path: "/"});
     window.location.href = "/";
 }

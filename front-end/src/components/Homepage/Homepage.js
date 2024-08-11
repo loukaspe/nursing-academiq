@@ -1,27 +1,13 @@
 import React from "react";
-import "./Homepage.css";
-import PageTitle from "../Utilities/PageTitle";
+import Cookies from "universal-cookie";
+import HomepageLoggedIn from "./HomepageLoggedIn";
+import HomepageLoggedOut from "./HomepageLoggedOut";
 
+const cookies = new Cookies();
 
 const Homepage = () => {
-    return (
-        <>
-            <div>
-                <PageTitle title={"Αρχική Σελίδα"}/>
-            </div>
-            <div className="homepageContainer">
-                <div className="coursesListContainer">
-                    {/*<LimitedMyCoursesList/>*/}
-                    TI NA DEIKSW 1
-                </div>
-                <div className="quizListContainer">
-                    {/*<LimitedMyQuizzesList/>*/}
-                    TI NA DEIKSW 2
-                </div>
-            </div>
-            <div style={{clear: 'both'}}></div>
-        </>
-    );
+    const token = cookies.get("token");
+    return token ? <HomepageLoggedIn/> : <HomepageLoggedOut/>;
 };
 
 export default Homepage;

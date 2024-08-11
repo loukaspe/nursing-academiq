@@ -20,7 +20,8 @@ const LoginForm = (props) => {
                 method: 'POST',
                 body: JSON.stringify(requestData),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`,
                 },
                 credentials: 'include',
             });
@@ -41,7 +42,7 @@ const LoginForm = (props) => {
 
 
             cookies.set(
-                "resutl",
+                "result",
                 result,
                 {
                     path: "/",

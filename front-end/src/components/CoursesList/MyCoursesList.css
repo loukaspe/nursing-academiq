@@ -1,6 +1,16 @@
 @import "../../styles/variables.css";
 
-.limitedQuizzesList {
+.myCoursesListTitle {
+    color: var(--dark-color);
+    padding-bottom: 0.5em;
+    padding-top: 1em;
+    font-size: 2rem;
+    border-bottom: 1px solid var(--dark-color);
+    font-weight: bold;
+    padding-left: 1em;
+}
+
+.limitedMyCoursesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
@@ -8,7 +18,7 @@
     padding-left: 10em;
 }
 
-.quizzesList {
+.myCoursesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
@@ -16,33 +26,38 @@
     padding-left: 20em;
 }
 
-.recentQuizzesList {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    list-style-type: none;
-    justify-content: center;
-    padding-right: 10em;
-    padding-left: 10em;
-}
-
-.quizzesListTitle {
+.myCoursesListSubTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 1em;
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-bottom: 1px solid var(--dark-color);
     font-weight: bold;
+    text-align: center;
 }
 
-
-.singleQuizTextContainer {
+.mySingleCourseContainer {
+    /*margin: auto auto 2rem;*/
+    /*padding: 1rem;*/
     display: flex;
-    flex-direction: column;
-    margin-left: 0.5rem;
-    padding-bottom: 1em;
+    align-items: center;
+    padding-bottom: 0.5em;
     border-bottom: 1px solid var(--grey-color);
 }
 
-.singleQuizTitle {
+.bookmarkIcon {
+    color: #F8A16E;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.mySingleCourseTextContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+}
+
+.mySingleCourseTitle {
     color: var(--dark-color);
     padding-bottom: 0.5em;
     padding-top: 0.5em;
@@ -51,7 +66,7 @@
     font-weight: bold;
 }
 
-.singleQuizDetails {
+.mySingleCourseDetails {
     color: var(--dark-grey-color);
     font-size: 1rem;
     font-weight: bold;
@@ -59,7 +74,7 @@
     /*margin-left: 1rem;*/
 }
 
-.myQuizzesListButton {
+.myCoursesListButton {
     color: var(--light-color);
     background-color: var(--dark-color);
     font-size: 1rem;
@@ -71,40 +86,16 @@
     display: inline-block;
 }
 
-.hasBeenDoneOnceCheckmark {
-    color: #62BF53;
-    margin-left: 0.5rem;
-}
-
-.quizzesButtonContainer {
+.coursesButtonContainer {
     display: flex;
     text-align: center;
 }
 
-.singleQuizContainer{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1em;
-}
-
-.quizContent {
-    flex-grow: 1;
-    text-align: left;
-}
-
-.quizIcons {
-    display: flex;
-    gap: 5px;
-}
-
-.quizIcon {
-    color: var(--brand-color);
-}
-/*.quizzesButtonContainer.single {*/
+/*.coursesButtonContainer.single {*/
 /*    justify-content: center;*/
 /*}*/
 
-/*.quizzesButtonContainer.multiple {*/
+/*.coursesButtonContainer.multiple {*/
 /*    justify-content: flex-start;*/
+/*    text-align: center;*/
 /*}*/
