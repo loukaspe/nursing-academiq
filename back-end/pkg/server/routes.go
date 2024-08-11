@@ -45,8 +45,8 @@ func (s *Server) initializeRoutes() {
 	protectedApiKey := s.router.PathPrefix("/").Subrouter()
 	protectedApiKey.Use(authMiddleware.APIKeyAuthenticationMW)
 
-	s.router.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
-	s.router.HandleFunc(
+	protectedApiKey.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
+	protectedApiKey.HandleFunc(
 		"/login",
 		optionsHandlerForCors,
 	).Methods(http.MethodOptions)
