@@ -72,9 +72,11 @@ func (handler *GetCourseHandler) GetCourseController(w http.ResponseWriter, r *h
 		Course: struct {
 			Title       string `json:"title"`
 			Description string `json:"description"`
+			TutorID     uint   `json:"tutorID"`
 		}{
 			Title:       course.Title,
 			Description: course.Description,
+			TutorID:     course.Tutor.ID,
 		},
 	}
 

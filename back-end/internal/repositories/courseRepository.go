@@ -56,6 +56,9 @@ func (repo *CourseRepository) GetCourse(
 	return &domain.Course{
 		Title:       modelCourse.Title,
 		Description: modelCourse.Description,
+		Tutor: &domain.Tutor{
+			ID: modelCourse.TutorID,
+		},
 	}, err
 }
 
