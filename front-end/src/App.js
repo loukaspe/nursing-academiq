@@ -34,7 +34,9 @@ const App = () => {
                     <Route
                         path="my-courses"
                         element={
-                            <MyCoursesList/>
+                            <ProtectedRoutes>
+                                <MyCoursesList/>
+                            </ProtectedRoutes>
                         }
                     />
                     <Route
@@ -52,13 +54,17 @@ const App = () => {
                     <Route
                         path="courses/:id/edit"
                         element={
-                            <EditCourse/>
+                            <ProtectedRoutes>
+                                <EditCourse/>
+                            </ProtectedRoutes>
                         }
                     />
                     <Route
                         path="courses/create"
                         element={
-                            <CreateCourse/>
+                            <ProtectedRoutes>
+                                <CreateCourse/>
+                            </ProtectedRoutes>
                         }
                     />
                     <Route
@@ -84,7 +90,9 @@ const App = () => {
                     <Route
                         path="my-quizzes"
                         element={
-                            <MyQuizzesList/>
+                            <ProtectedRoutes>
+                                <MyQuizzesList/>
+                            </ProtectedRoutes>
                         }
                     />
                     <Route
