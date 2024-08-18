@@ -30,14 +30,14 @@ func (service CourseService) GetCourseByTutorID(ctx context.Context, tutorID uin
 	return service.repository.GetCourseByTutorID(ctx, tutorID)
 }
 
-//func (service CourseService) CreateCourse(ctx context.Context, course *domain.Course) (uint, error) {
-//	return service.repository.CreateCourse(ctx, course)
-//}
-//
-//func (service CourseService) UpdateCourse(ctx context.Context, uid uint32, course *domain.Course) error {
-//	return service.repository.UpdateCourse(ctx, uid, course)
-//}
-//
-//func (service CourseService) DeleteCourse(ctx context.Context, uid uint32) error {
-//	return service.repository.DeleteCourse(ctx, uid)
-//}
+func (service CourseService) CreateCourse(ctx context.Context, course *domain.Course, tutorID uint) (uint, error) {
+	return service.repository.CreateCourse(ctx, course, tutorID)
+}
+
+func (service CourseService) UpdateCourse(ctx context.Context, uid uint32, course *domain.Course) error {
+	return service.repository.UpdateCourse(ctx, uid, course)
+}
+
+func (service CourseService) DeleteCourse(ctx context.Context, uid uint32) error {
+	return service.repository.DeleteCourse(ctx, uid)
+}

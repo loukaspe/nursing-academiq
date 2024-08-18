@@ -203,66 +203,65 @@ func (repo *CourseRepository) GetCourseByTutorID(
 	return domainCourses, err
 }
 
-//func (repo *CourseRepository) UpdateCourse(
-//	ctx context.Context,
-//	uid uint32,
-//	course *domain.Course,
-//) error {
-//	modelCourse := &Course{}
-//
-//	// TODO: handle Tutor preload if needed err := repo.db.WithContext(ctx).Preload("User").First(modelCourse).Error
-//	err := repo.db.WithContext(ctx).Model(modelCourse).Where("id = ?", uid).Error
-//	if err == gorm.ErrRecordNotFound {
-//		return apierrors.DataNotFoundErrorWrapper{
-//			ReturnedStatusCode: http.StatusNotFound,
-//			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
-//		}
-//	}
-//	if err != nil {
-//		return err
-//	}
-//
-//	modelCourse.Title = course.Title
-//	modelCourse.Description = course.Description
-//
-//	err = repo.db.WithContext(ctx).Save(&modelCourse).Error
-//
-//	return err
-//}
-//
-//func (repo *CourseRepository) DeleteCourse(
-//	ctx context.Context,
-//	uid uint32,
-//) error {
-//	db := repo.db.WithContext(ctx).Model(&Course{}).
-//		Where("id = ?", uid).
-//		Take(&Course{}).
-//		Delete(&Course{})
-//
-//	if db.Error == gorm.ErrRecordNotFound {
-//		return apierrors.DataNotFoundErrorWrapper{
-//			ReturnedStatusCode: http.StatusNotFound,
-//			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
-//		}
-//	}
-//
-//	return db.Error
-//}
+func (repo *CourseRepository) UpdateCourse(
+	ctx context.Context,
+	uid uint32,
+	course *domain.Course,
+) error {
+	modelCourse := &Course{}
 
-//func (repo *CourseRepository) CreateCourse(
-//	ctx context.Context,
-//	course *domain.Course,
-//	tutorID uint,
-//) (uint, error) {
-//	var err error
-//
-//	// TODO: add course tutor if needed
-//	modelCourse := Course{}
-//	modelCourse.Title = course.Title
-//	modelCourse.Description = course.Description
-//	modelCourse.TutorID = tutorID
-//
-//	err = repo.db.WithContext(ctx).Create(&modelCourse).Error
-//
-//	return modelCourse.ID, err
-//}
+	// Only Title and Description are editable
+	partialUpdates := make(map[string]interface{}, 2)
+	if course.Title != "" {
+		partialUpdates["title"] = course.Title
+	}
+	if course.Description != "" {
+		partialUpdates["description"] = course.Description
+	}
+
+	err := repo.db.WithContext(ctx).Model(modelCourse).Where("id = ?", uid).Updates(partialUpdates).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return err
+}
+
+func (repo *CourseRepository) DeleteCourse(
+	ctx context.Context,
+	uid uint32,
+) error {
+	err := repo.db.WithContext(ctx).Model(&Course{}).
+		Where("id = ?", uid).
+		Take(&Course{}).
+		Delete(&Course{}).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return err
+}
+
+func (repo *CourseRepository) CreateCourse(
+	ctx context.Context,
+	course *domain.Course,
+	tutorID uint,
+) (uint, error) {
+	var err error
+
+	modelCourse := Course{}
+	modelCourse.Title = course.Title
+	modelCourse.Description = course.Description
+	modelCourse.TutorID = tutorID
+
+	err = repo.db.WithContext(ctx).Create(&modelCourse).Error
+
+	return modelCourse.ID, err
+}

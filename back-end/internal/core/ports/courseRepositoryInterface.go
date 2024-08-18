@@ -10,7 +10,7 @@ type CourseRepositoryInterface interface {
 	GetExtendedCourse(ctx context.Context, uid uint32) (*domain.Course, error)
 	GetCourses(ctx context.Context) ([]domain.Course, error)
 	GetCourseByTutorID(ctx context.Context, tutorID uint32) ([]domain.Course, error)
-	//CreateCourse(context.Context, *domain.Course) (uint, error)
-	//UpdateCourse(context.Context, uint32, *domain.Course) error
-	//DeleteCourse(ctx context.Context, uid uint32) error
+	CreateCourse(context.Context, *domain.Course, uint) (uint, error)
+	UpdateCourse(context.Context, uint32, *domain.Course) error
+	DeleteCourse(ctx context.Context, uid uint32) error
 }

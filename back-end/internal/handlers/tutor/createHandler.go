@@ -50,8 +50,8 @@ type TutorRequest struct {
 }
 
 type CreateTutorResponse struct {
-	CreatedTutorUid uint   `json:"insertedUid"`
-	ErrorMessage    string `json:"errorMessage,omitempty"`
+	CreatedTutorID uint   `json:"insertedID"`
+	ErrorMessage   string `json:"errorMessage,omitempty"`
 }
 
 func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +114,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		return
 	}
 
-	response.CreatedTutorUid = uid
+	response.CreatedTutorID = uid
 
 	w.WriteHeader(http.StatusCreated)
 	return

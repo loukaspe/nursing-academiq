@@ -15,8 +15,8 @@ type QuizRequest struct {
 }
 
 type CreateQuizResponse struct {
-	CreatedQuizUid uint   `json:"insertedUid"`
-	ErrorMessage   string `json:"errorMessage,omitempty"`
+	CreatedQuizID uint   `json:"insertedID"`
+	ErrorMessage  string `json:"errorMessage,omitempty"`
 }
 
 //type CreateQuizHandler struct {
@@ -94,7 +94,7 @@ type CreateQuizResponse struct {
 //		return
 //	}
 //
-//	response.CreatedQuizUid = uid
+//	response.CreatedQuizID = uid
 //
 //	w.WriteHeader(http.StatusCreated)
 //	return
