@@ -101,10 +101,11 @@
 .quizIcon {
     color: var(--brand-color);
 }
-/*.quizzesButtonContainer.single {*/
-/*    justify-content: center;*/
-/*}*/
 
-/*.quizzesButtonContainer.multiple {*/
-/*    justify-content: flex-start;*/
-/*}*/
+.quizzesButtonContainer.single {
+    justify-content: center;
+}
+
+.quizzesButtonContainer.multiple {
+    justify-content: flex-start;
+}

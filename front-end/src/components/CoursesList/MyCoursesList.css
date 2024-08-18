@@ -91,11 +91,11 @@
     text-align: center;
 }
 
-/*.coursesButtonContainer.single {*/
-/*    justify-content: center;*/
-/*}*/
+.coursesButtonContainer.single {
+    justify-content: center;
+}
 
-/*.coursesButtonContainer.multiple {*/
-/*    justify-content: flex-start;*/
-/*    text-align: center;*/
-/*}*/
+.coursesButtonContainer.multiple {
+    justify-content: flex-start;
+    text-align: center;
+}

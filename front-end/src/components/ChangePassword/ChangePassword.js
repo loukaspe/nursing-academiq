@@ -16,25 +16,6 @@ const ChangePassword = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const fetchUser = () => {
-        let userCookie = cookies.get("user");
-        let userID = userCookie.id;
-
-        let apiUrl = process.env.REACT_APP_API_URL + `/user/${userID}/change_password`
-
-        let requestData = {oldPassword: formData.oldPassword, newPassword: formData.newPassword};
-
-        axios.post(apiUrl, requestData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${cookies.get("token")}`,
-                }
-            }
-        ).catch(error => {
-            console.error('Error changing user password', error);
-        });
-    };
-
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({
