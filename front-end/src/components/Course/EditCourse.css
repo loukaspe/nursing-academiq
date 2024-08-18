@@ -1,0 +1,76 @@
+.edit-course-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.edit-course-container {
+    width: 40%;
+    padding: 2em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    align-items: center;
+}
+
+.edit-course-title {
+    color: var(--dark-color);
+    padding-bottom: 0.5em;
+    /*padding-top: 1em;*/
+    font-size: 2rem;
+    border-bottom: 1px solid var(--dark-color);
+    font-weight: bold;
+}
+
+.edit-course-form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    justify-content: center;
+}
+
+.edit-course-form-row label {
+    width: 100%;
+    margin-right: 10px;
+    color: var(--brand-dark-color);
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    font-size: 1.5rem;
+    flex: 1;
+}
+
+.edit-course-form-row input {
+    flex: 2;
+    padding: 1em;
+}
+
+.edit-course-error-row {
+    width: 100%;
+    color: var(--error-color);
+    padding-bottom: 0.5em;
+    font-size: 1rem;
+    flex: 1;
+}
+
+.edit-course-success-row {
+    width: 100%;
+    color: var(--positive-color);
+    padding-bottom: 0.5em;
+    font-size: 1rem;
+    flex: 1;
+}
+
+.edit-course-submit {
+    color: var(--light-color);
+    background-color: var(--dark-color);
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    border-radius: 50px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0;
+}

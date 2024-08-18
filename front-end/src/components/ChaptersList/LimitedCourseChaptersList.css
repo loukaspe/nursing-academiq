@@ -13,7 +13,31 @@
     flex-direction: column;
     margin-left: 0.5rem;
     padding-bottom: 1em;
+    justify-content: space-between;
+    /*align-items: center;*/
     border-bottom: 1px solid var(--grey-color);
+}
+
+.chapterContent {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.chapterIcons {
+    display: flex;
+    gap: 5px;
+}
+
+.chapterIcon {
+    color: var(--brand-color);
+}
+
+.chapterButtonContainer.single {
+    justify-content: center;
+}
+
+.chapterButtonContainer.multiple {
+    justify-content: flex-start;
 }
 
 .singleChapterTitle {

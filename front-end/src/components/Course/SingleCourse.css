@@ -50,8 +50,26 @@
 
 }
 
-.unregisterButton:hover {
+.courseButton {
+    margin: 0.5em;
     background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.courseDangerButton {
+    margin: 0.5em;
+    background-color: var(--error-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em;
+    font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .singleCourseDescription {
@@ -104,4 +122,9 @@
     flex: 1;
     height: 100%;
     border-left: 0.1em solid var(--brand-dark-color);
+}
+
+.courseIcon {
+    color: var(--brand-color);
+    margin-left: 0.5em;
 }

@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
 import "./SingleCourse.css";
 import Cookies from "universal-cookie";
-import {Link} from "react-router-dom";
 
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import SectionTitle from "../Utilities/SectionTitle";
 import LimitedRecentCourseQuizzesList from "../QuizzesList/LimitedRecentCourseQuizzesList";
 import axios from "axios";
 import LimitedRecentCourseChaptersList from "../ChaptersList/LimitedCourseChaptersList";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const cookies = new Cookies();
 
@@ -16,6 +17,12 @@ const SingleCourse = () => {
     const [course, setCourse] = useState({});
     const [quizzes, setQuizzes] = useState([]);
     const [chapters, setChapters] = useState([]);
+
+    const token = cookies.get("token");
+
+    const isTutorSignedIn = () => {
+        return !!token;
+    }
 
     const params = useParams();
     let courseID = params.id;
@@ -50,18 +57,65 @@ const SingleCourse = () => {
             });
     };
 
+    const deleteCourse = () => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το μάθημα ${course.title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = "/courses";
+                })
+                .catch(error => {
+                    console.error('Error deleting course', error);
+                });
+        }
+    };
+
     return (
         <React.Fragment>
             <Breadcrumb actualPath={`/courses/${courseID}`} namePath={`/Μαθήματα/${course.title}`}/>
             <div className="singleCoursePageHeader">
                 <div className="singleCoursePageInfo">
                     <span className="singleCoursePageCourseName">{course.title}</span>
-                    <span className="singleCoursePageTeacherName">{course.tutorName}</span>
+                    {
+                        isTutorSignedIn() ? (
+                            <Link className="link" to={`/courses/${courseID}/edit`}>
+                                <FontAwesomeIcon icon={faPenToSquare} className="courseIcon"/>
+                            </Link>
+                        ) : (
+                            <span className="singleCoursePageTeacherName">{course.tutorName}</span>
+                        )
+                    }
                 </div>
-                <Link className="unregisterButton" to="/change-password">Απεγγραφή</Link>
+                {
+                    isTutorSignedIn()
+                    &&
+                    <>
+                        <button className="courseButton" onClick={() => {
+                            alert("questions")
+                        }}>Διαχείριση Ερωτήσεων
+                        </button>
+                        <button className="courseDangerButton" onClick={() => {
+                            deleteCourse()
+                        }}>Διαγραφή
+                        </button>
+                    </>
+                }
             </div>
             <div className="singleCourseDescription">
                 <div>{course.description}</div>
+                {
+                    isTutorSignedIn() &&
+                    <Link className="link" to={`/courses/${courseID}/edit`}>
+                        <FontAwesomeIcon icon={faPenToSquare} className="courseIcon"/>
+                    </Link>
+                }
             </div>
             <div className="singleCoursePageContainer">
                 <div className="singleCoursePageDetails">
@@ -80,7 +134,8 @@ const SingleCourse = () => {
                 </div>
             </div>
         </React.Fragment>
-    );
+    )
+        ;
 };
 
 export default SingleCourse;

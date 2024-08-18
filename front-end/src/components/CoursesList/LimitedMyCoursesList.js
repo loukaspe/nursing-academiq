@@ -73,7 +73,7 @@ const LimitedMyCoursesList = () => {
                     );
                 })}
                 <div className={`coursesButtonContainer ${courses.length > visibleCourses ? 'multiple' : 'single'}`}>
-                    <Link className="myCoursesListButton" to="/my-courses">+ Δημιουργία Μαθήματος</Link>
+                    <Link className="myCoursesListButton" to="/courses/create">+ Δημιουργία Μαθήματος</Link>
                     {
                         courses.length > visibleCourses
                         &&
