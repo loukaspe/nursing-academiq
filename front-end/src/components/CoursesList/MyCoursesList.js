@@ -61,7 +61,7 @@ const MyCoursesList = () => {
                         <div className="mySingleCourseContainer">
                             {/*<FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>*/}
                             <div className="mySingleCourseTextContainer">
-                                <span className="mySingleCourseTitle">{item.title}</span>
+                                <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
                                 <div className="mySingleCourseDetails">{item.description}</div>
                             </div>
                         </div>

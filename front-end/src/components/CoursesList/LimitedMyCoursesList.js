@@ -14,16 +14,9 @@ const LimitedMyCoursesList = () => {
     useEffect(() => {
         const fetchUserCourses = async () => {
             let userCookie = cookies.get("user");
-            let userType = userCookie.type;
             let specificID = userCookie.specificID;
 
-            let apiUrl = "";
-            if (userType === "student") {
-                apiUrl = process.env.REACT_APP_API_URL + `/student/${specificID}/courses`;
-            } else if (userType === "tutor") {
-                apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/courses`;
-            }
-
+            let apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/courses`;
 
             try {
                 const response = await fetch(apiUrl, {
@@ -66,7 +59,7 @@ const LimitedMyCoursesList = () => {
                         <div className="mySingleCourseContainer">
                             <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
                             <div className="mySingleCourseTextContainer">
-                                <span className="mySingleCourseTitle">{item.title}</span>
+                                <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
                                 <div className="mySingleCourseDetails">{item.description}</div>
                             </div>
                         </div>
