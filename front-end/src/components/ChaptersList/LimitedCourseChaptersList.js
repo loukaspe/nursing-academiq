@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const cookies = new Cookies();
 
@@ -15,6 +16,27 @@ const LimitedCourseChaptersList = (props) => {
     const isTutorSignedIn = () => {
         return !!token;
     }
+
+    const deleteChapter = (id, title) => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${id}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = `/courses/${props.courseID}/chapters`;
+                })
+                .catch(error => {
+                    console.error('Error deleting chapter', error);
+                });
+        }
+    };
+
 
     return (
         <React.Fragment>
@@ -31,11 +53,12 @@ const LimitedCourseChaptersList = (props) => {
                             </div>
                             {
                                 isTutorSignedIn() && <div className="chapterIcons">
-                                    <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon" onClick={() => {
-                                        alert("edit")
-                                    }}/>
+
+                                    <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
+                                        <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                    </Link>
                                     <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
-                                        alert("delete")
+                                        deleteChapter(item.ID, item.Title)
                                     }}/>
                                 </div>
                             }

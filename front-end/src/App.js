@@ -20,6 +20,7 @@ import MyCoursesList from "./components/CoursesList/MyCoursesList";
 import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
 import EditCourse from "./components/Course/EditCourse";
 import CreateCourse from "./components/Course/CreateCourse";
+import EditChapter from "./components/Chapter/EditChapter";
 
 const cookies = new Cookies();
 
@@ -84,6 +85,14 @@ const App = () => {
                         path="courses/:courseID/chapters/:chapterID/quizzes"
                         element={
                             <ChapterQuizzesList/>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/chapters/:id/edit"
+                        element={
+                            <ProtectedRoutes>
+                                <EditChapter/>
+                            </ProtectedRoutes>
                         }
                     />
                     {/* Quizzes */}
