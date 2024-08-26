@@ -56,9 +56,12 @@ func (handler *CreateChapterHandler) CreateChapterController(w http.ResponseWrit
 	domainChapter := &domain.Chapter{
 		Title:       request.Title,
 		Description: request.Description,
+		Course: &domain.Course{
+			ID: uint32(request.CourseID),
+		},
 	}
 
-	uid, err := handler.ChapterService.CreateChapter(context.Background(), domainChapter, request.CourseID)
+	uid, err := handler.ChapterService.CreateChapter(context.Background(), domainChapter)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

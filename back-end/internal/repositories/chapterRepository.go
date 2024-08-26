@@ -239,14 +239,13 @@ func (repo *ChapterRepository) DeleteChapter(
 func (repo *ChapterRepository) CreateChapter(
 	ctx context.Context,
 	chapter *domain.Chapter,
-	courseID uint,
 ) (uint, error) {
 	var err error
 
 	modelChapter := Chapter{}
 	modelChapter.Title = chapter.Title
 	modelChapter.Description = chapter.Description
-	modelChapter.CourseID = courseID
+	modelChapter.CourseID = uint(chapter.Course.ID)
 
 	err = repo.db.WithContext(ctx).Create(&modelChapter).Error
 
