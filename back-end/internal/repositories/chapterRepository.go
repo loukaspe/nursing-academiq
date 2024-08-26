@@ -189,3 +189,66 @@ func (repo *ChapterRepository) GetChapter(
 //
 //	return domainChapters, err
 //}
+
+func (repo *ChapterRepository) UpdateChapter(
+	ctx context.Context,
+	uid uint32,
+	chapter *domain.Chapter,
+) error {
+	modelChapter := &Chapter{}
+
+	// Only Title and Description are editable
+	partialUpdates := make(map[string]interface{}, 2)
+	if chapter.Title != "" {
+		partialUpdates["title"] = chapter.Title
+	}
+	if chapter.Description != "" {
+		partialUpdates["description"] = chapter.Description
+	}
+
+	err := repo.db.WithContext(ctx).Model(modelChapter).Where("id = ?", uid).Updates(partialUpdates).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("chapterID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return err
+}
+
+func (repo *ChapterRepository) DeleteChapter(
+	ctx context.Context,
+	uid uint32,
+) error {
+	err := repo.db.WithContext(ctx).Model(&Chapter{}).
+		Where("id = ?", uid).
+		Take(&Chapter{}).
+		Delete(&Chapter{}).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("chapterID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return err
+}
+
+func (repo *ChapterRepository) CreateChapter(
+	ctx context.Context,
+	chapter *domain.Chapter,
+	courseID uint,
+) (uint, error) {
+	var err error
+
+	modelChapter := Chapter{}
+	modelChapter.Title = chapter.Title
+	modelChapter.Description = chapter.Description
+	modelChapter.CourseID = courseID
+
+	err = repo.db.WithContext(ctx).Create(&modelChapter).Error
+
+	return modelChapter.ID, err
+}

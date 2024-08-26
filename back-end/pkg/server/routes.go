@@ -136,9 +136,16 @@ func (s *Server) initializeRoutes() {
 	chapterService := services.NewChapterService(chapterRepository, quizRepository)
 
 	getChapterHandler := chapter.NewGetChapterHandler(chapterService, s.logger)
+	updateChapterHandler := chapter.NewUpdateChapterHandler(chapterService, s.logger)
+	deleteChapterHandler := chapter.NewDeleteChapterHandler(chapterService, s.logger)
 
 	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", getChapterHandler.GetChapterController).Methods("GET")
 	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	// Wanted to do a PATCH but did not work with CORS
+	protectedJWT.HandleFunc("/chapter/{id:[0-9]+}", updateChapterHandler.UpdateChapterController).Methods("PUT")
+	protectedJWT.HandleFunc("/chapter/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/chapter/{id:[0-9]+}", deleteChapterHandler.DeleteChapterController).Methods("DELETE")
+	protectedJWT.HandleFunc("/chapter/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// question
 	questionsRepository := repositories.NewQuestionRepository(s.DB)
