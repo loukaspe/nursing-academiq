@@ -1,5 +1,14 @@
 package quiz
 
+import (
+	"context"
+	"encoding/json"
+	"github.com/loukaspe/nursing-academiq/internal/core/domain"
+	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	log "github.com/sirupsen/logrus"
+	"net/http"
+)
+
 type QuizRequest struct {
 	Quiz struct {
 		Title             string
@@ -19,83 +28,65 @@ type CreateQuizResponse struct {
 	ErrorMessage  string `json:"errorMessage,omitempty"`
 }
 
-//type CreateQuizHandler struct {
-//	QuizService *services.QuizService
-//	logger        *log.Logger
-//}
-//
-//func NewCreateQuizHandler(
-//	service *services.QuizService,
-//	logger *log.Logger,
-//) *CreateQuizHandler {
-//	return &CreateQuizHandler{
-//		QuizService: service,
-//		logger:        logger,
-//	}
-//}
+type CreateQuizHandler struct {
+	QuizService *services.QuizService
+	logger      *log.Logger
+}
 
-//func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r *http.Request) {
-//	w.Header().Set("Content-Type", "application/json")
-//
-//	response := &CreateQuizResponse{}
-//	request := &QuizRequest{}
-//
-//	err := json.NewDecoder(r.Body).Decode(request)
-//	if err != nil {
-//		handler.logger.WithFields(log.Fields{
-//			"errorMessage": err.Error(),
-//		}).Error("Error in creating quiz")
-//
-//		w.WriteHeader(http.StatusInternalServerError)
-//		response.ErrorMessage = "malformed quiz data"
-//		json.NewEncoder(w).Encode(response)
-//		return
-//	}
-//
-//	quizRequest := request.Quiz
-//
-//	birthDate, err := time.Parse("01-02-2006", quizRequest.BirthDate)
-//	if err != nil {
-//		handler.logger.WithFields(log.Fields{
-//			"errorMessage": err.Error(),
-//		}).Error("Error in creating quiz birth date")
-//
-//		w.WriteHeader(http.StatusBadRequest)
-//		response.ErrorMessage = "malformed quiz data: birth date"
-//		json.NewEncoder(w).Encode(response)
-//		return
-//	}
-//
-//	domainUser := &domain.User{
-//		Username:    quizRequest.Username,
-//		Password:    quizRequest.Password,
-//		FirstName:   quizRequest.FirstName,
-//		LastName:    quizRequest.LastName,
-//		Email:       quizRequest.Email,
-//		BirthDate:   birthDate,
-//		PhoneNumber: quizRequest.PhoneNumber,
-//		Photo:       quizRequest.Photo,
-//	}
-//
-//	domainQuiz := &domain.Quiz{
-//		User:               *domainUser,
-//		RegistrationNumber: quizRequest.RegistrationNumber,
-//	}
-//
-//	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
-//	if err != nil {
-//		handler.logger.WithFields(log.Fields{
-//			"errorMessage": err.Error(),
-//		}).Error("Error in creating quiz in service")
-//
-//		w.WriteHeader(http.StatusInternalServerError)
-//		response.ErrorMessage = "error creating quiz"
-//		json.NewEncoder(w).Encode(response)
-//		return
-//	}
-//
-//	response.CreatedQuizID = uid
-//
-//	w.WriteHeader(http.StatusCreated)
-//	return
-//}
+func NewCreateQuizHandler(
+	service *services.QuizService,
+	logger *log.Logger,
+) *CreateQuizHandler {
+	return &CreateQuizHandler{
+		QuizService: service,
+		logger:      logger,
+	}
+}
+
+func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	response := &CreateQuizResponse{}
+	request := &QuizRequest{}
+
+	err := json.NewDecoder(r.Body).Decode(request)
+	if err != nil {
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": err.Error(),
+		}).Error("Error in creating quiz")
+
+		w.WriteHeader(http.StatusInternalServerError)
+		response.ErrorMessage = "malformed quiz data"
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	quizRequest := request.Quiz
+
+	domainQuiz := &domain.Quiz{
+		Title:       quizRequest.Title,
+		Description: quizRequest.Description,
+		Visibility:  quizRequest.Visibility,
+		ShowSubset:  quizRequest.ShowSubset,
+		SubsetSize:  quizRequest.SubsetSize,
+		ScoreSum:    quizRequest.ScoreSum,
+		MaxScore:    quizRequest.MaxScore,
+	}
+
+	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
+	if err != nil {
+		handler.logger.WithFields(log.Fields{
+			"errorMessage": err.Error(),
+		}).Error("Error in creating quiz in service")
+
+		w.WriteHeader(http.StatusInternalServerError)
+		response.ErrorMessage = "error creating quiz"
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	response.CreatedQuizID = uid
+
+	w.WriteHeader(http.StatusCreated)
+	return
+}

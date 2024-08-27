@@ -26,14 +26,14 @@ func (service QuizService) GetQuizByCourseID(ctx context.Context, courseID uint3
 	return service.repository.GetQuizByCourseID(ctx, courseID)
 }
 
-//func (service QuizService) CreateQuiz(ctx context.Context, quiz *domain.Quiz) (uint, error) {
-//	return service.repository.CreateQuiz(ctx, quiz)
-//}
-//
-//func (service QuizService) UpdateQuiz(ctx context.Context, uid uint32, quiz *domain.Quiz) error {
-//	return service.repository.UpdateQuiz(ctx, uid, quiz)
-//}
-//
-//func (service QuizService) DeleteQuiz(ctx context.Context, uid uint32) error {
-//	return service.repository.DeleteQuiz(ctx, uid)
-//}
+func (service QuizService) CreateQuiz(ctx context.Context, quiz *domain.Quiz) (uint, error) {
+	return service.repository.CreateQuiz(ctx, quiz)
+}
+
+func (service QuizService) UpdateQuiz(ctx context.Context, uid uint32, quiz *domain.Quiz) error {
+	return service.repository.UpdateQuiz(ctx, uid, quiz)
+}
+
+func (service QuizService) DeleteQuiz(ctx context.Context, uid uint32) error {
+	return service.repository.DeleteQuiz(ctx, uid)
+}

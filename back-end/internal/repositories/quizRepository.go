@@ -220,66 +220,69 @@ func (repo *QuizRepository) GetQuizByCourseID(
 	return domainQuizs, err
 }
 
-//func (repo *QuizRepository) UpdateQuiz(
-//	ctx context.Context,
-//	uid uint32,
-//	quiz *domain.Quiz,
-//) error {
-//	modelQuiz := &Quiz{}
-//
-//	// TODO: handle Tutor preload if needed err := repo.db.WithContext(ctx).Preload("User").First(modelQuiz).Error
-//	err := repo.db.WithContext(ctx).Model(modelQuiz).Where("id = ?", uid).Error
-//	if err == gorm.ErrRecordNotFound {
-//		return apierrors.DataNotFoundErrorWrapper{
-//			ReturnedStatusCode: http.StatusNotFound,
-//			OriginalError:      errors.New("quizID " + strconv.Itoa(int(uid)) + " not found"),
-//		}
-//	}
-//	if err != nil {
-//		return err
-//	}
-//
-//	modelQuiz.Title = quiz.Title
-//	modelQuiz.Description = quiz.Description
-//
-//	err = repo.db.WithContext(ctx).Save(&modelQuiz).Error
-//
-//	return err
-//}
-//
-//func (repo *QuizRepository) DeleteQuiz(
-//	ctx context.Context,
-//	uid uint32,
-//) error {
-//	db := repo.db.WithContext(ctx).Model(&Quiz{}).
-//		Where("id = ?", uid).
-//		Take(&Quiz{}).
-//		Delete(&Quiz{})
-//
-//	if db.Error == gorm.ErrRecordNotFound {
-//		return apierrors.DataNotFoundErrorWrapper{
-//			ReturnedStatusCode: http.StatusNotFound,
-//			OriginalError:      errors.New("quizID " + strconv.Itoa(int(uid)) + " not found"),
-//		}
-//	}
-//
-//	return db.Error
-//}
+func (repo *QuizRepository) UpdateQuiz(
+	ctx context.Context,
+	uid uint32,
+	quiz *domain.Quiz,
+) error {
+	modelQuiz := &Quiz{}
 
-//func (repo *QuizRepository) CreateQuiz(
-//	ctx context.Context,
-//	quiz *domain.Quiz,
-//	tutorID uint,
-//) (uint, error) {
-//	var err error
-//
-//	// TODO: add quiz tutor if needed
-//	modelQuiz := Quiz{}
-//	modelQuiz.Title = quiz.Title
-//	modelQuiz.Description = quiz.Description
-//	modelQuiz.TutorID = tutorID
-//
-//	err = repo.db.WithContext(ctx).Create(&modelQuiz).Error
-//
-//	return modelQuiz.ID, err
-//}
+	err := repo.db.WithContext(ctx).Model(modelQuiz).Where("id = ?", uid).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("quizID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return err
+	}
+
+	modelQuiz.Title = quiz.Title
+	modelQuiz.Description = quiz.Description
+	modelQuiz.Visibility = quiz.Visibility
+	modelQuiz.ShowSubset = quiz.ShowSubset
+	modelQuiz.SubsetSize = quiz.SubsetSize
+
+	err = repo.db.WithContext(ctx).Save(&modelQuiz).Error
+
+	return err
+}
+
+func (repo *QuizRepository) DeleteQuiz(
+	ctx context.Context,
+	uid uint32,
+) error {
+	db := repo.db.WithContext(ctx).Model(&Quiz{}).
+		Where("id = ?", uid).
+		Take(&Quiz{}).
+		Delete(&Quiz{})
+
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("quizID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return db.Error
+}
+
+func (repo *QuizRepository) CreateQuiz(
+	ctx context.Context,
+	quiz *domain.Quiz,
+) (uint, error) {
+	var err error
+
+	modelQuiz := Quiz{}
+	modelQuiz.Title = quiz.Title
+	modelQuiz.Description = quiz.Description
+	modelQuiz.Visibility = quiz.Visibility
+	modelQuiz.ShowSubset = quiz.ShowSubset
+	modelQuiz.SubsetSize = quiz.SubsetSize
+	modelQuiz.CourseID = uint(quiz.Course.ID)
+
+	err = repo.db.WithContext(ctx).Create(&modelQuiz).Error
+
+	return modelQuiz.ID, err
+}
