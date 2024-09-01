@@ -21,6 +21,7 @@ import MyQuizzesList from "./components/QuizzesList/MyQuizzesList";
 import EditCourse from "./components/Course/EditCourse";
 import CreateCourse from "./components/Course/CreateCourse";
 import EditChapter from "./components/Chapter/EditChapter";
+import CreateChapter from "./components/Chapter/CreateChapter";
 
 const cookies = new Cookies();
 
@@ -92,6 +93,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <EditChapter/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/chapters/create"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateChapter/>
                             </ProtectedRoutes>
                         }
                     />

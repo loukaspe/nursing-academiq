@@ -7,6 +7,8 @@ import SectionTitle from "../Utilities/SectionTitle";
 import LimitedRecentCourseChaptersList from "./LimitedCourseChaptersList";
 import {useHistory} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 
@@ -19,9 +21,35 @@ const CourseChaptersList = (props) => {
 
     let navigate = useNavigate();
 
+    const token = cookies.get("token");
+
+    const isTutorSignedIn = () => {
+        return !!token;
+    }
+
     useEffect(() => {
         fetchCourse();
     }, []);
+
+    const deleteChapter = (id, title) => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${id}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = `/courses/${courseID}/chapters`;
+                })
+                .catch(error => {
+                    console.error('Error deleting chapter', error);
+                });
+        }
+    };
 
     const fetchCourse = () => {
         let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
@@ -51,8 +79,11 @@ const CourseChaptersList = (props) => {
             <div className="singleCourseChaptersPageHeader">
                 <div className="singleCourseChaptersPageInfo">
                     <span className="singleCourseChaptersPageCourseName">{course.title}</span>
+                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
                 </div>
-                <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                <Link className="chapterButton" to={`/courses/${courseID}/chapters/create`}>
+                    + Νέα Θεματική Ενότητα
+                </Link>
             </div>
             <div className="singleCourseDescription">
                 <div>{course.description}</div>
@@ -64,10 +95,25 @@ const CourseChaptersList = (props) => {
                 <ul className="courseChaptersList">
                     {chapters.map((item) => {
                         return (
-                            <div className="singleChapterTextContainer">
-                                <Link className="singleChapterTitle"
-                                      to={`/courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
-                                <div className="singleChapterDetails">{item.Description}</div>
+                            <div className="singleChapterContainer">
+                                <div className="singleChapterRowContainer">
+                                    <Link className="singleChapterTitle"
+                                          to={`/courses/${props.courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                    {
+                                        isTutorSignedIn() && <div className="chapterIcons">
+
+                                            <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
+                                                <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                            </Link>
+                                            <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
+                                                deleteChapter(item.ID, item.Title)
+                                            }}/>
+                                        </div>
+                                    }
+                                </div>
+                                <div className="singleChapterRowContainer">
+                                    <div className="singleChapterDetails">{item.Description}</div>
+                                </div>
                             </div>
                         );
                     })}

@@ -10,10 +10,9 @@
 }
 
 .singleCourseChaptersPageHeader {
-    /*display: flex;*/
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    /*padding: 10px 0;*/
 }
 
 .singleCourseChaptersPageInfo {
@@ -35,6 +34,24 @@
     margin-right: 20px;
 }
 
+.singleChapterContainer2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.chapterContent {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.chapterIcons {
+    display: flex;
+    gap: 5px;
+    margin-right: 1em;
+}
+
 .backButton {
     color: var(--dark-color);
     background-color: var(--grey-color);
@@ -52,6 +69,17 @@
     /*float: right;*/
     /*text-align: center;*/
 
+}
+
+.chapterButton {
+    margin: 0.5em;
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .backButton:hover {

@@ -138,7 +138,10 @@ func (s *Server) initializeRoutes() {
 	getChapterHandler := chapter.NewGetChapterHandler(chapterService, s.logger)
 	updateChapterHandler := chapter.NewUpdateChapterHandler(chapterService, s.logger)
 	deleteChapterHandler := chapter.NewDeleteChapterHandler(chapterService, s.logger)
+	createChapterHandler := chapter.NewCreateChapterHandler(chapterService, s.logger)
 
+	protectedJWT.HandleFunc("/chapter", createChapterHandler.CreateChapterController).Methods("POST")
+	protectedJWT.HandleFunc("/chapter", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", getChapterHandler.GetChapterController).Methods("GET")
 	protectedApiKey.HandleFunc("/chapter/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	// Wanted to do a PATCH but did not work with CORS

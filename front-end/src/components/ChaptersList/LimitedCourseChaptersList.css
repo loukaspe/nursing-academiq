@@ -8,14 +8,26 @@
     padding-left: 10em;
 }
 
-.singleChapterTextContainer {
-    display: flex;
-    flex-direction: column;
-    margin-left: 0.5rem;
-    padding-bottom: 1em;
-    justify-content: space-between;
+.singleChapterContainer {
+    /*display: flex;*/
+    /*margin-left: 0.5rem;*/
+    /*padding-bottom: 1em;*/
+    /*justify-content: space-between;*/
     /*align-items: center;*/
     border-bottom: 1px solid var(--grey-color);
+}
+
+.singleChapterRowContainer {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    margin-left: 0.5rem;
+    padding-bottom: 1em;
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    /*border-bottom: 1px solid var(--grey-color);*/
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .chapterContent {
@@ -30,6 +42,7 @@
 
 .chapterIcon {
     color: var(--brand-color);
+    cursor: pointer;
 }
 
 .chapterButtonContainer.single {
