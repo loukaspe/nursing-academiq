@@ -22,6 +22,8 @@ import EditCourse from "./components/Course/EditCourse";
 import CreateCourse from "./components/Course/CreateCourse";
 import EditChapter from "./components/Chapter/EditChapter";
 import CreateChapter from "./components/Chapter/CreateChapter";
+import EditQuiz from "./components/Quiz/EditQuiz";
+import CreateQuiz from "./components/Quiz/CreateQuiz";
 
 const cookies = new Cookies();
 
@@ -123,6 +125,22 @@ const App = () => {
                         path="courses/:courseID/quizzes/:quizID/complete"
                         element={
                             <QuestionsWrapper/>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/:id/edit"
+                        element={
+                            <ProtectedRoutes>
+                                <EditQuiz/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/create"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuiz/>
+                            </ProtectedRoutes>
                         }
                     />
                     {/* Questions */}

@@ -5,6 +5,8 @@ import {useParams, useNavigate, Link} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 
@@ -16,6 +18,12 @@ const ChapterQuizzesList = (props) => {
     const params = useParams();
     let chapterID = params.chapterID;
     let courseID = params.courseID;
+
+    const token = cookies.get("token");
+
+    const isTutorSignedIn = () => {
+        return !!token;
+    }
 
     let navigate = useNavigate();
 
@@ -50,6 +58,26 @@ const ChapterQuizzesList = (props) => {
             });
     };
 
+    const deleteChapter = (id, title) => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${id}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = `/courses/${courseID}/chapters`;
+                })
+                .catch(error => {
+                    console.error('Error deleting chapter', error);
+                });
+        }
+    };
+
     return (
         <React.Fragment>
             <Breadcrumb
@@ -59,8 +87,30 @@ const ChapterQuizzesList = (props) => {
             <div className="singleChapterQuizzesPageHeader">
                 <div className="singleChapterQuizzesPageInfo">
                     <span className="singleChapterQuizzesPageChapterName">{chapter.title}</span>
+                    {
+                        isTutorSignedIn() &&
+                        <Link to={`/courses/${courseID}/chapters/${chapterID}/edit`}>
+                            <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                        </Link>
+
+                    }
+                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
                 </div>
-                <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+
+                {
+                    isTutorSignedIn()
+                    &&
+                    <>
+                        <button className="courseButton" onClick={() => {
+                            alert("questions")
+                        }}>+ Προσθήκη Quiz
+                        </button>
+                        <button className="courseDangerButton" onClick={() => {
+                            deleteChapter(chapterID, chapter.title)
+                        }}>Διαγραφή Ενότητας
+                        </button>
+                    </>
+                }
             </div>
             <div className="singleChapterDescription">
                 <div>{chapter.description}</div>
@@ -72,11 +122,28 @@ const ChapterQuizzesList = (props) => {
                 <ul className="chapterQuizzesList">
                     {quizzes.map((item) => {
                         return (
-                            <div className="singleQuizTextContainer">
-                                <Link className="singleQuizTitle"
-                                      to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
-                                <div className="singleQuizDetails">{item.Description}</div>
-                                <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
+                            <div className="chaptersSingleQuizContainer">
+                                <div className="singleQuizRowContainer">
+                                    <Link className="singleQuizTitle"
+                                          to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
+                                    {
+                                        isTutorSignedIn() && <div className="chapterIcons">
+
+                                            <Link to={`/courses/${props.courseID}/quizzes/${item.ID}/edit`}>
+                                                <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                            </Link>
+                                            <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
+                                                deleteChapter(item.ID, item.Title)
+                                            }}/>
+                                        </div>
+                                    }
+                                </div>
+                                <div className="singleQuizRowContainer">
+                                    <div className="singleQuizDetails">{item.Description}</div>
+                                </div>
+                                <div className="singleQuizRowContainer">
+                                    <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
+                                </div>
                             </div>
                         );
                     })}
