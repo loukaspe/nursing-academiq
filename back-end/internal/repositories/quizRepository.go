@@ -227,7 +227,7 @@ func (repo *QuizRepository) UpdateQuiz(
 ) error {
 	modelQuiz := &Quiz{}
 
-	err := repo.db.WithContext(ctx).Model(modelQuiz).Where("id = ?", uid).Error
+	err := repo.db.WithContext(ctx).Model(&Quiz{}).First(modelQuiz).Where("id = ?", uid).Error
 	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,

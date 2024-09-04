@@ -20,6 +20,7 @@ type QuizRequest struct {
 		ScoreSum          float32
 		MaxScore          int
 		NumberOfQuestions int
+		CourseID          uint
 	} `json:""`
 }
 
@@ -71,6 +72,7 @@ func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r 
 		SubsetSize:  quizRequest.SubsetSize,
 		ScoreSum:    quizRequest.ScoreSum,
 		MaxScore:    quizRequest.MaxScore,
+		Course:      &domain.Course{ID: uint32(quizRequest.CourseID)},
 	}
 
 	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
