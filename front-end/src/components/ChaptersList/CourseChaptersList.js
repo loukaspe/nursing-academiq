@@ -98,7 +98,7 @@ const CourseChaptersList = (props) => {
                             <div className="singleChapterContainer">
                                 <div className="singleChapterRowContainer">
                                     <Link className="singleChapterTitle"
-                                          to={`/courses/${props.courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                          to={`/courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
                                     {
                                         isTutorSignedIn() && <div className="chapterIcons">
 

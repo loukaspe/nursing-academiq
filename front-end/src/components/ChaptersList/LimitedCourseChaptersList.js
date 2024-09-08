@@ -69,7 +69,8 @@ const LimitedCourseChaptersList = (props) => {
                     {
                         isTutorSignedIn() &&
                         <Link className="myCoursesListButton" to={`/courses/${props.courseID}/chapters/create`}>+ Νέα
-                            Ενότητα</Link>
+                            Ενότητα
+                        </Link>
                     }
                     {
                         props.chapters.length > visibleChapters &&

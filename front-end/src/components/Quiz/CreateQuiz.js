@@ -31,9 +31,11 @@ const CreateQuiz = () => {
             let apiUrl = process.env.REACT_APP_API_URL + `/quiz`
 
             await axios.post(apiUrl, {
-                    title: title,
-                    description: description,
-                    courseID: parseInt(courseID),
+                    quiz: {
+                        title: title,
+                        description: description,
+                        courseID: parseInt(courseID),
+                    }
                 },
                 {
                     headers: {

@@ -78,6 +78,26 @@ const ChapterQuizzesList = (props) => {
         }
     };
 
+    const deleteQuiz = (id, title) => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${id}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = `/courses/${courseID}/chapters`;
+                })
+                .catch(error => {
+                    console.error('Error deleting quiz', error);
+                });
+        }
+    };
+
     return (
         <React.Fragment>
             <Breadcrumb
@@ -92,19 +112,16 @@ const ChapterQuizzesList = (props) => {
                         <Link to={`/courses/${courseID}/chapters/${chapterID}/edit`}>
                             <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
                         </Link>
-
                     }
                     <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
                 </div>
-
                 {
                     isTutorSignedIn()
                     &&
                     <>
-                        <button className="courseButton" onClick={() => {
-                            alert("questions")
-                        }}>+ Προσθήκη Quiz
-                        </button>
+                        <Link className="courseButton" to={`/courses/${courseID}/quizzes/create`}>
+                            + Προσθήκη Quiz
+                        </Link>
                         <button className="courseDangerButton" onClick={() => {
                             deleteChapter(chapterID, chapter.title)
                         }}>Διαγραφή Ενότητας
@@ -133,7 +150,7 @@ const ChapterQuizzesList = (props) => {
                                                 <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
                                             </Link>
                                             <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
-                                                deleteChapter(item.ID, item.Title)
+                                                deleteQuiz(item.ID, item.Title)
                                             }}/>
                                         </div>
                                     }
