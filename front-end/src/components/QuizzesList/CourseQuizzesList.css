@@ -10,7 +10,7 @@
 }
 
 .singleCourseQuizzesPageHeader {
-    /*display: flex;*/
+    display: flex;
     justify-content: space-between;
     align-items: center;
     /*padding: 10px 0;*/
@@ -19,9 +19,12 @@
 .singleCourseQuizzesPageInfo {
     /*display: flex;*/
     /*flex-grow: 1;*/
-    align-items: center;
-    display: inline;
+    /*align-items: center;*/
+    /*display: inline;*/
     /*border-bottom: 1px solid var(--dark-color);*/
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
 }
 .singleCourseQuizzesPageCourseName {
     /*display: inline;*/

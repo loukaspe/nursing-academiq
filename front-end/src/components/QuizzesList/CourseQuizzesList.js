@@ -5,6 +5,9 @@ import {Link, useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import {useHistory} from "react-router-dom";
+import Breadcrumb from "../Utilities/Breadcrumb";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 
@@ -16,6 +19,12 @@ const CourseQuizzesList = (props) => {
     let courseID = params.id;
 
     let navigate = useNavigate();
+
+    const token = cookies.get("token");
+
+    const isTutorSignedIn = () => {
+        return !!token;
+    }
 
     useEffect(() => {
         fetchCourse();
@@ -43,13 +52,47 @@ const CourseQuizzesList = (props) => {
             });
     };
 
+    const deleteQuiz = (id, title) => {
+        const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;
+
+        if (window.confirm(confirmMessage)) {
+            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${id}`
+
+            axios.delete(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${cookies.get("token")}`,
+                },
+            })
+                .then(() => {
+                    window.location.href = `/courses/${courseID}/quizzes`;
+                })
+                .catch(error => {
+                    console.error('Error deleting quiz', error);
+                });
+        }
+    };
+
     return (
         <React.Fragment>
+            <Breadcrumb
+                actualPath={`/courses/${courseID}/quizzes/`}
+                namePath={`/Μαθήματα/${course.title}/Quizzes`}
+            />
             <div className="singleCourseQuizzesPageHeader">
                 <div className="singleCourseQuizzesPageInfo">
                     <span className="singleCourseQuizzesPageCourseName">{course.title}</span>
+                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
                 </div>
-                <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                {
+                    isTutorSignedIn()
+                    &&
+                    <>
+                        <Link className="courseButton" to={`/courses/${courseID}/quizzes/create`}>
+                            + Προσθήκη Quiz
+                        </Link>
+
+                    </>
+                }
             </div>
             <div className="singleCourseDescription">
                 <div>{course.description}</div>
@@ -61,11 +104,25 @@ const CourseQuizzesList = (props) => {
                 <ul className="courseQuizzesList">
                     {quizzes.map((item) => {
                         return (
-                            <div className="singleQuizTextContainer">
-                                <Link className="singleQuizTitle"
-                                      to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
-                                <div className="singleQuizDetails">{course.title}</div>
-                                <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                            <div className="singleQuizContainer">
+                                <div className="quizContent">
+                                    <div className="singleQuizTextContainer">
+                                        <Link className="singleQuizTitle"
+                                              to={`/courses/${props.courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
+                                        <div className="singleQuizDetails">{item.CourseName}</div>
+                                        <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                                    </div>
+                                </div>
+                                {
+                                    isTutorSignedIn() && <div className="quizIcons">
+                                        <Link to={`/courses/${props.courseID}/quizzes/${item.ID}/edit`}>
+                                            <FontAwesomeIcon icon={faPenToSquare} className="quizIcon"/>
+                                        </Link>
+                                        <FontAwesomeIcon icon={faTrashCan} className="quizIcon" onClick={() => {
+                                            deleteQuiz(item.ID, item.Title)
+                                        }}/>
+                                    </div>
+                                }
                             </div>
                         );
                     })}
