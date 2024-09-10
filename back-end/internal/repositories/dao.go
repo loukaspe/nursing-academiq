@@ -44,6 +44,7 @@ type Question struct {
 	Explanation string `gorm:"not null;"`
 	//Chapter                *Chapter
 	ChapterID              uint
+	CourseID               uint
 	Source                 string `gorm:"not null;"`
 	MultipleCorrectAnswers bool   `gorm:"not null;"`
 	NumberOfAnswers        int    `gorm:"not null;"`

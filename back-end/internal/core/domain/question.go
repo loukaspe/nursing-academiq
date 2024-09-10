@@ -2,6 +2,7 @@ package domain
 
 type Question struct {
 	Chapter                *Chapter
+	Course                 *Course
 	Text                   string
 	Explanation            string
 	Source                 string

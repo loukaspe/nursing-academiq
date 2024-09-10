@@ -155,9 +155,27 @@ func (s *Server) initializeRoutes() {
 	questionsService := services.NewQuestionService(questionsRepository)
 
 	importQuestionHandler := question.NewImportQuestionHandler(questionsService, s.logger)
+	getQuestionHandler := question.NewGetQuestionHandler(questionsService, s.logger)
+	getQuestionByCourseIDHandler := question.NewGetQuestionByCourseIDHandler(questionsService, s.logger)
+	updateQuestionHandler := question.NewUpdateQuestionHandler(questionsService, s.logger)
+	deleteQuestionHandler := question.NewDeleteQuestionHandler(questionsService, s.logger)
+	createQuestionHandler := question.NewCreateQuestionHandler(questionsService, s.logger)
 
+	protectedJWT.HandleFunc("/questions", createQuestionHandler.CreateQuestionController).Methods("POST")
+	protectedJWT.HandleFunc("/questions", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/questions/{id:[0-9]+}", getQuestionHandler.GetQuestionController).Methods("GET")
+	protectedApiKey.HandleFunc("/questions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	// Wanted to do a PATCH but did not work with CORS
+	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", updateQuestionHandler.UpdateQuestionController).Methods("PUT")
+	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", deleteQuestionHandler.DeleteQuestionController).Methods("DELETE")
+	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+
+	// TODO change to jwt since only tutors can
 	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", importQuestionHandler.ImportQuestionController).Methods("POST")
 	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions", getQuestionByCourseIDHandler.GetQuestionByCourseIDController).Methods("GET")
+	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
