@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./QuestionsWrapper.css";
-import Result from "../Result/Result";
+import Result from "./Result";
 import {useParams} from "react-router-dom";
 
 
