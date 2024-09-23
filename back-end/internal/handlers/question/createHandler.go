@@ -69,6 +69,7 @@ func (handler *CreateQuestionHandler) CreateQuestionController(w http.ResponseWr
 		NumberOfAnswers:        questionRequest.NumberOfAnswers,
 		Answers:                domainAnswers,
 		Course:                 &domain.Course{ID: uint32(questionRequest.CourseID)},
+		Chapter:                &domain.Chapter{ID: uint32(questionRequest.ChapterID)},
 	}
 
 	uid, err := handler.QuestionService.CreateQuestion(context.Background(), domainQuestion)

@@ -1,6 +1,7 @@
 package domain
 
 type Question struct {
+	ID                     uint32
 	Chapter                *Chapter
 	Course                 *Course
 	Text                   string

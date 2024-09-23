@@ -22,8 +22,8 @@ func (service QuestionService) GetQuestions(ctx context.Context) ([]domain.Quest
 	return service.repository.GetQuestions(ctx)
 }
 
-func (service QuestionService) GetQuestionsByCourseID(ctx context.Context, courseID uint32) ([]domain.Question, error) {
-	return service.repository.GetQuestionsByCourseID(ctx, courseID)
+func (service QuestionService) GetChapterAndQuestionsByCourseID(ctx context.Context, courseID uint32) (domain.Course, error) {
+	return service.repository.GetChapterAndQuestionsByCourseID(ctx, courseID)
 }
 
 func (service QuestionService) CreateQuestion(ctx context.Context, question *domain.Question) (uint, error) {
@@ -40,4 +40,8 @@ func (service QuestionService) UpdateQuestion(ctx context.Context, uid uint32, q
 
 func (service QuestionService) DeleteQuestion(ctx context.Context, uid uint32) error {
 	return service.repository.DeleteQuestion(ctx, uid)
+}
+
+func (service QuestionService) BulkDeleteQuestions(ctx context.Context, uids []uint32) error {
+	return service.repository.BulkDeleteQuestions(ctx, uids)
 }

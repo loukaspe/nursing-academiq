@@ -26,9 +26,15 @@ func NewGetQuestionByCourseIDHandler(
 	}
 }
 
+type Chapter struct {
+	ID        uint32     `json:"id"`
+	Title     string     `json:"title"`
+	Questions []Question `json:"questions"`
+}
+
 type GetQuestionByCourseIDResponse struct {
-	ErrorMessage string     `json:"errorMessage,omitempty"`
-	Questions    []Question `json:"questions,omitempty"`
+	ErrorMessage string `json:"errorMessage,omitempty"`
+	Course       Course `json:"course,omitempty"`
 }
 
 func (handler *GetQuestionByCourseIDHandler) GetQuestionByCourseIDController(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +57,7 @@ func (handler *GetQuestionByCourseIDHandler) GetQuestionByCourseIDController(w h
 		return
 	}
 
-	domainQuestions, err := handler.QuestionService.GetQuestionsByCourseID(context.Background(), uint32(courseID))
+	domainCourse, err := handler.QuestionService.GetChapterAndQuestionsByCourseID(context.Background(), uint32(courseID))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
@@ -68,26 +74,35 @@ func (handler *GetQuestionByCourseIDHandler) GetQuestionByCourseIDController(w h
 		return
 	}
 
-	for _, question := range domainQuestions {
-		domainAnswers := make([]Answer, 0, question.NumberOfAnswers)
-		for _, modelAnswer := range question.Answers {
-			answer := &Answer{
-				Text:      modelAnswer.Text,
-				IsCorrect: modelAnswer.IsCorrect,
-			}
-
-			domainAnswers = append(domainAnswers, *answer)
-		}
-
-		response.Questions = append(response.Questions, Question{
-			Text:                   question.Text,
-			Explanation:            question.Explanation,
-			Source:                 question.Source,
-			MultipleCorrectAnswers: question.MultipleCorrectAnswers,
-			NumberOfAnswers:        question.NumberOfAnswers,
-			Answers:                domainAnswers,
-		})
+	course := Course{
+		ID:    domainCourse.ID,
+		Title: domainCourse.Title,
 	}
+
+	for _, domainChapter := range domainCourse.Chapters {
+		chapter := Chapter{
+			ID:    domainChapter.ID,
+			Title: domainChapter.Title,
+		}
+		questions := make([]Question, 0, len(domainChapter.Questions))
+		for _, domainQuestion := range domainChapter.Questions {
+			question := Question{
+				ID:                     domainQuestion.ID,
+				Text:                   domainQuestion.Text,
+				Explanation:            domainQuestion.Explanation,
+				Source:                 domainQuestion.Source,
+				MultipleCorrectAnswers: domainQuestion.MultipleCorrectAnswers,
+				NumberOfAnswers:        domainQuestion.NumberOfAnswers,
+				ChapterID:              uint(domainChapter.ID),
+				CourseID:               uint(domainCourse.ID),
+			}
+			questions = append(questions, question)
+		}
+		chapter.Questions = questions
+		course.Chapters = append(course.Chapters, chapter)
+	}
+
+	response.Course = course
 
 	json.NewEncoder(w).Encode(response)
 	w.WriteHeader(http.StatusOK)

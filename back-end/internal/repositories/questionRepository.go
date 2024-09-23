@@ -59,6 +59,7 @@ func (repo *QuestionRepository) ImportForCourse(
 			modelQuestion.NumberOfAnswers = question.NumberOfAnswers
 			modelQuestion.Answers = modelAnswers
 			modelQuestion.ChapterID = chapter.ID
+			modelQuestion.CourseID = courseID
 
 			err = tx.Create(&modelQuestion).Error
 			if err != nil {
@@ -104,31 +105,42 @@ func (repo *QuestionRepository) CreateQuestion(
 	return modelQuestion.ID, err
 }
 
-func (repo *QuestionRepository) GetQuestionsByCourseID(
+func (repo *QuestionRepository) GetChapterAndQuestionsByCourseID(
 	ctx context.Context,
 	courseID uint32,
-) ([]domain.Question, error) {
+) (domain.Course, error) {
 	var err error
 	var modelCourse Course
 
 	err = repo.db.WithContext(ctx).
-		Preload("Quizs.Questions").
+		Preload("Chapters.Questions").
 		First(&modelCourse, courseID).Error
 
 	if err == gorm.ErrRecordNotFound {
-		return []domain.Question{}, apierrors.DataNotFoundErrorWrapper{
+		return domain.Course{}, apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
 			OriginalError:      errors.New("courseID " + strconv.Itoa(int(courseID)) + " not found"),
 		}
 	}
 	if err != nil {
-		return []domain.Question{}, err
+		return domain.Course{}, err
 	}
 
+	domainCourse := domain.Course{
+		ID:          uint32(modelCourse.ID),
+		Title:       modelCourse.Title,
+		Description: modelCourse.Description,
+	}
+	domainChapters := make([]domain.Chapter, 0, len(modelCourse.Chapters))
 	domainQuestions := make([]domain.Question, 0)
 
-	for _, modelQuiz := range modelCourse.Quizs {
-		for _, modelQuestion := range modelQuiz.Questions {
+	for _, modelChapter := range modelCourse.Chapters {
+		domainChapter := domain.Chapter{
+			ID:    uint32(modelChapter.ID),
+			Title: modelChapter.Title,
+		}
+
+		for _, modelQuestion := range modelChapter.Questions {
 			domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
 			for _, modelAnswer := range modelQuestion.Answers {
 				domainAnswer := &domain.Answer{
@@ -140,6 +152,7 @@ func (repo *QuestionRepository) GetQuestionsByCourseID(
 			}
 
 			domainQuestion := &domain.Question{
+				ID:                     uint32(modelQuestion.ID),
 				Text:                   modelQuestion.Text,
 				Explanation:            modelQuestion.Explanation,
 				Source:                 modelQuestion.Source,
@@ -153,9 +166,14 @@ func (repo *QuestionRepository) GetQuestionsByCourseID(
 
 			domainQuestions = append(domainQuestions, *domainQuestion)
 		}
+
+		domainChapter.Questions = domainQuestions
+		domainChapters = append(domainChapters, domainChapter)
 	}
 
-	return domainQuestions, err
+	domainCourse.Chapters = domainChapters
+
+	return domainCourse, err
 }
 
 func (repo *QuestionRepository) UpdateQuestion(
@@ -179,10 +197,10 @@ func (repo *QuestionRepository) UpdateQuestion(
 	modelQuestion.Text = question.Text
 	modelQuestion.Explanation = question.Explanation
 	modelQuestion.Source = question.Source
-	modelQuestion.MultipleCorrectAnswers = question.MultipleCorrectAnswers
-	modelQuestion.NumberOfAnswers = question.NumberOfAnswers
-	modelQuestion.CourseID = uint(question.Course.ID)
-	modelQuestion.ChapterID = uint(question.Chapter.ID)
+	//modelQuestion.MultipleCorrectAnswers = question.MultipleCorrectAnswers
+	//modelQuestion.NumberOfAnswers = question.NumberOfAnswers
+	//modelQuestion.CourseID = uint(question.Course.ID)
+	//modelQuestion.ChapterID = uint(question.Chapter.ID)
 	err = repo.db.WithContext(ctx).Save(&modelQuestion).Error
 
 	return err
@@ -201,6 +219,30 @@ func (repo *QuestionRepository) DeleteQuestion(
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
 			OriginalError:      errors.New("questionID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	return db.Error
+}
+
+func (repo *QuestionRepository) BulkDeleteQuestions(
+	ctx context.Context,
+	uids []uint32,
+) error {
+	questionsToBeDeleted := make([]Question, 0, len(uids))
+	for _, uid := range uids {
+		question := Question{}
+		question.ID = uint(uid)
+		questionsToBeDeleted = append(questionsToBeDeleted, question)
+	}
+
+	db := repo.db.WithContext(ctx).Model(&Question{}).
+		Delete(questionsToBeDeleted)
+
+	if db.Error == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("question not found"),
 		}
 	}
 
@@ -242,6 +284,7 @@ func (repo *QuestionRepository) GetQuestion(
 	}
 
 	return &domain.Question{
+		ID:                     uint32(modelQuestion.ID),
 		Text:                   modelQuestion.Text,
 		Explanation:            modelQuestion.Explanation,
 		Source:                 modelQuestion.Source,
@@ -290,6 +333,7 @@ func (repo *QuestionRepository) GetQuestions(
 		}
 
 		domainQuestions = append(domainQuestions, domain.Question{
+			ID:                     uint32(modelQuestion.ID),
 			Text:                   modelQuestion.Text,
 			Explanation:            modelQuestion.Explanation,
 			Source:                 modelQuestion.Source,

@@ -32,6 +32,7 @@ type Answer struct {
 }
 
 type Question struct {
+	ID                     uint32
 	Text                   string
 	Explanation            string
 	Source                 string
@@ -43,8 +44,9 @@ type Question struct {
 }
 
 type Course struct {
-	ID    uint32
-	Title string
+	ID       uint32
+	Title    string
+	Chapters []Chapter
 }
 
 type GetQuestionResponse struct {
@@ -100,6 +102,7 @@ func (handler *GetQuestionHandler) GetQuestionController(w http.ResponseWriter, 
 	}
 
 	response.Question = &Question{
+		ID:                     domainQuestion.ID,
 		Text:                   domainQuestion.Text,
 		Explanation:            domainQuestion.Explanation,
 		Source:                 domainQuestion.Source,

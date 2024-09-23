@@ -159,6 +159,7 @@ func (s *Server) initializeRoutes() {
 	getQuestionByCourseIDHandler := question.NewGetQuestionByCourseIDHandler(questionsService, s.logger)
 	updateQuestionHandler := question.NewUpdateQuestionHandler(questionsService, s.logger)
 	deleteQuestionHandler := question.NewDeleteQuestionHandler(questionsService, s.logger)
+	bulkDeleteQuestionsHandler := question.NewBulkDeleteQuestionHandler(questionsService, s.logger)
 	createQuestionHandler := question.NewCreateQuestionHandler(questionsService, s.logger)
 
 	protectedJWT.HandleFunc("/questions", createQuestionHandler.CreateQuestionController).Methods("POST")
@@ -170,6 +171,8 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", deleteQuestionHandler.DeleteQuestionController).Methods("DELETE")
 	protectedJWT.HandleFunc("/questions/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/questions/bulk", bulkDeleteQuestionsHandler.BulkDeleteQuestionController).Methods("POST")
+	protectedJWT.HandleFunc("/questions/bulk", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// TODO change to jwt since only tutors can
 	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", importQuestionHandler.ImportQuestionController).Methods("POST")
