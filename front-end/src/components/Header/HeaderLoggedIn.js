@@ -32,6 +32,9 @@ const HeaderLoggedIn = () => {
                         <li>
                             <Link className="link" to="/questions/import">Import</Link>
                         </li>
+                        <li>
+                            <Link className="link" to="courses/1/questions/manage">Manage</Link>
+                        </li>
                     </ul>
                     <ul className="ul myAccountMenu">
                         <li>

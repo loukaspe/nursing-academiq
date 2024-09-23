@@ -24,6 +24,9 @@ import EditChapter from "./components/Chapter/EditChapter";
 import CreateChapter from "./components/Chapter/CreateChapter";
 import EditQuiz from "./components/Quiz/EditQuiz";
 import CreateQuiz from "./components/Quiz/CreateQuiz";
+import QuestionsManager from "./components/Questions/QuestionsManager";
+import EditQuestion from "./components/Questions/EditQuestion";
+import CreateQuestion from "./components/Questions/CreateQuestion";
 
 const cookies = new Cookies();
 
@@ -152,6 +155,38 @@ const App = () => {
                             />
                         }
                     />
+                    <Route
+                        path="questions/import"
+                        element={
+                            <ProtectedRoutes>
+                                <CsvImport/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/questions/manage"
+                        element={
+                            <ProtectedRoutes>
+                                <QuestionsManager/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/chapters/:chapterID/questions/:id/edit"
+                        element={
+                            <ProtectedRoutes>
+                                <EditQuestion/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/chapters/:chapterID/questions/create"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuestion/>
+                            </ProtectedRoutes>
+                        }
+                    />
                     {/* User */}
                     <Route
                         path="profile"
@@ -166,14 +201,6 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <ChangePassword/>
-                            </ProtectedRoutes>
-                        }
-                    />
-                    <Route
-                        path="questions/import"
-                        element={
-                            <ProtectedRoutes>
-                                <CsvImport/>
                             </ProtectedRoutes>
                         }
                     />
