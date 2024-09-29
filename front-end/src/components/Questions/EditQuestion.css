@@ -1,76 +1,188 @@
-.edit-question-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.editQuestionPageContainer {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
 }
 
-.edit-question-container {
-    width: 40%;
-    padding: 2em;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+.editQuestionPageInfo {
+    display: flex;
+    flex-grow: 1;
     align-items: center;
 }
 
-.edit-question-title {
+.editQuestionPageTitle {
     color: var(--dark-color);
-    padding-bottom: 0.5em;
-    /*padding-top: 1em;*/
-    font-size: 2rem;
-    border-bottom: 1px solid var(--dark-color);
+    font-size: 1.5rem;
+    padding: 0.5em;
     font-weight: bold;
 }
 
-.edit-question-form-row {
+.editQuestionPageChapterSection {
+    flex: 0 0 10%;
     display: flex;
     align-items: center;
-    margin-bottom: 1em;
-    justify-content: center;
 }
 
-.edit-question-form-row label {
-    width: 100%;
-    margin-right: 10px;
+.editQuestionPageChapterSection label {
     color: var(--brand-dark-color);
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-    font-size: 1.5rem;
-    flex: 1;
+    font-weight: bold;
+    margin-right: 10px;
 }
 
-.edit-question-form-row input {
-    flex: 2;
-    padding: 1em;
+.editQuestionPageChapterSection select {
+    margin-left: 10px;
+    padding: 0.3rem;
+    font-weight: bold;
+    border-color: var(--dark-grey-color);
+    color: var(--dark-grey-color);
+    border-radius: 5px;
 }
 
-.edit-question-error-row {
+.editQuestionPageQuestionSection {
+    flex: 0 0 10%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+.editQuestionPageQuestionSection label {
+    color: var(--brand-dark-color);
+    font-weight: bold;
+}
+
+.editQuestionPageQuestionSectionLabelSpanText {
+    color: var(--dark-grey-color);
+    font-weight: normal;
+}
+
+.editQuestionPageQuestionSection input {
+    margin-top: 0.5rem;
     width: 100%;
-    color: var(--error-color);
-    padding-bottom: 0.5em;
-    font-size: 1rem;
-    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--dark-grey-color);
+    border-radius: 5px;
 }
 
-.edit-question-success-row {
-    width: 100%;
-    color: var(--positive-color);
-    padding-bottom: 0.5em;
-    font-size: 1rem;
-    flex: 1;
+.editQuestionPageAnswersMetadataSection {
+    flex: 1 0 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2em;
 }
 
-.edit-question-submit {
-    color: var(--light-color);
-    background-color: var(--dark-color);
-    font-size: 1rem;
+.editQuestionPageAnswersSection {
+    flex: 1;
+    border-right: 1px solid var(--brand-color);
+    padding: 2em;
+}
+
+.editQuestionPageAnswersHeader {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.editQuestionPageAnswersHeader span {
+    flex: 1;
+    text-align: left;
+    color: var(--brand-dark-color);
+    margin-bottom: 1em;
+}
+
+.editQuestionPageAnswersHeader span:first-child {
+    flex: 3;
+}
+
+.editQuestionPageAnswersHeader span:last-child {
+    flex: 1;
+    text-align: right;
+}
+
+.editQuestionPageAnswerRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.editQuestionPageAnswerLabelAndInput {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.editQuestionPageAnswerLabelAndInput label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--brand-dark-color);
+}
+
+.editQuestionPageAnswerLabelAndInput input {
+    /*width: 90%;*/
+    padding: 0.3rem;
+    border: 1px solid var(--dark-grey-color);
+    border-radius: 5px;
+}
+
+.editQuestionPageCheckbox {
+    margin-top: 1em;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.editQuestionPageCenteredButton {
     display: flex;
     justify-content: center;
-    /*align-items: center;*/
-    border-radius: 50px;
-    padding: 1rem;
+}
+
+.editQuestionPageButton {
+    background-color: var(--brand-color);
+    color: var(--light-color);
     border: none;
-    font-weight: bold;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
     cursor: pointer;
-    margin: 0;
+    margin: 2em 0.5em 0.5em;
+}
+
+.editQuestionPageMetadataSection {
+    flex: 1;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 40px;
+}
+
+.editQuestionPageMetadataSection input {
+    margin-bottom: 2em;
+    padding: 0.3rem;
+    border: 1px solid var(--dark-grey-color);
+    border-radius: 5px;
+}
+
+.editQuestionPageMetadataSection label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--brand-dark-color);
+}
+
+.editQuestionPageActionButtons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.editQuestionPageDeleteButton {
+    background-color: var(--error-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 2em 0.5em 0.5em;
 }

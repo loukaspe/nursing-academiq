@@ -1,121 +1,129 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import {useNavigate, useParams} from "react-router-dom";
-import "./EditQuestion.css";
+import React, { useState } from 'react';
+import './EditQuestion.css';
+import {Link, useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenToSquare} from "@fortawesome/free-solid-svg-icons"; // Import the CSS file
 
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
-const EditQuestion = ({}) => {
-    const [text, setText] = useState('');
+const EditQuestion = () => {
+    // Move chapters to state with two random strings as initial values
+    const [chapters] = useState(['Chapter 1', 'Chapter 2']);
+    const [selectedChapter, setSelectedChapter] = useState('');
+    const [questionText, setQuestionText] = useState('');
+    const [answers, setAnswers] = useState([{ text: '', isCorrect: false }, { text: '', isCorrect: false }]);
     const [explanation, setExplanation] = useState('');
     const [source, setSource] = useState('');
-    const [error, setError] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const params = useParams();
-    let questionID = params.id;
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchQuestion = async () => {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/${questionID}`
-
-            try {
-                const response = await axios.get(apiUrl, {
-                    headers: {
-                        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-                    },
-                });
-                setText(response.data.question.Text);
-                setExplanation(response.data.question.Explanation);
-                setSource(response.data.question.Source);
-            } catch (error) {
-                console.error('Error fetching the question data', error);
-            }
-        };
-
-        fetchQuestion();
-    }, [questionID]);
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setIsSubmitting(true);
-
-        if (text.trim() === '' || explanation.trim() === '' || source.trim() === '') {
-            setError('Παρακαλώ συμπληρώστε κείμενο, εξήγηση και πηγή ερώτησης.');
-            return;
-        }
-
-        try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/${questionID}`
-
-            await axios.put(apiUrl, {
-                    text: text,
-                    explanation: explanation,
-                    source: source,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                });
-
-            navigate(-1)
-        } catch (error) {
-            console.error('Error updating the question', error);
-            setError('Υπήρξε πρόβλημα κατά την επεξαργασία της Ερώτησης. Παρακαλώ δοκιμάστε ξανά.');
-        }
-        setIsSubmitting(false);
+    const handleChapterChange = (e) => setSelectedChapter(e.target.value);
+    const handleQuestionTextChange = (e) => setQuestionText(e.target.value);
+    const handleAnswerChange = (index, field, value) => {
+        const updatedAnswers = [...answers];
+        updatedAnswers[index][field] = value;
+        setAnswers(updatedAnswers);
+    };
+    const addAnswer = () => setAnswers([...answers, { text: '', isCorrect: false }]);
+    const removeAnswer = (index) => setAnswers(answers.filter((_, i) => i !== index));
+    const handleExplanationChange = (e) => setExplanation(e.target.value);
+    const handleSourceChange = (e) => setSource(e.target.value);
+    const handleSave = () => {
+        // Save logic here
+        console.log('Question Saved');
+    };
+    const handleDelete = () => {
+        // Delete logic here
+        console.log('Question Deleted');
     };
 
     return (
-        <div className="edit-question-center">
-            <div className="edit-question-container">
-                <h2 className="edit-question-text">Επεξεργασία Ερώτησης</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="edit-question-form-row">
-                        <label htmlFor="text">Κείμενο:</label>
-                        <input
-                            type="text"
-                            id="text"
-                            name="text"
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
+        <div className="editQuestionPageContainer">
+
+            <div className="editQuestionPageInfo">
+                <span className="editQuestionPageTitle">Διαχείριση Ερώτησης</span>
+                <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+            </div>
+            <div className="editQuestionPageChapterSection">
+                <label htmlFor="chapter-select">Θεματική Ενότητα:</label>
+                <select
+                    id="chapter-select"
+                    value={selectedChapter}
+                    onChange={handleChapterChange}
+                >
+                    <option value="">Επιλέξτε Ενότητα</option>
+                    {chapters.map((chapter, index) => (
+                        <option key={index} value={chapter}>{chapter}</option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="editQuestionPageQuestionSection">
+                <label htmlFor="question-text">
+                    Εκφώνηση <span className="editQuestionPageQuestionSectionLabelSpanText">(εώς 500 χαρακτήρες)</span>
+                </label>
+                <input
+                    id="question-text"
+                    type="text"
+                    value={questionText}
+                    onChange={handleQuestionTextChange}
+                    maxLength={500}
+                />
+            </div>
+            
+            <div className="editQuestionPageAnswersMetadataSection">
+                <div className="editQuestionPageAnswersSection">
+                    <div className="editQuestionPageAnswersHeader">
+                        <span>Απαντήσεις</span>
+                        <span>Σωστό/Λάθος</span>
                     </div>
-                    <div className="edit-question-form-row">
-                        <label htmlFor="explanation">Εξήγηση:</label>
-                        <input
-                            type="text"
-                            id="explanation"
-                            name="explanation"
-                            value={explanation}
-                            onChange={(e) => setExplanation(e.target.value)}
-                        />
+                    
+                    {answers.map((answer, index) => (
+                        <div key={index} className="editQuestionPageAnswerRow">
+                            <div className="editQuestionPageAnswerLabelAndInput">
+                                <label htmlFor={`answer-text-${index}`}>Απάντηση {index + 1}</label>
+                                <input
+                                    id={`answer-text-${index}`}
+                                    type="text"
+                                    value={answer.text}
+                                    onChange={(e) => handleAnswerChange(index, 'text', e.target.value)}
+                                />
+                            </div>
+                            <label className="editQuestionPageCheckbox">
+                                <input
+                                    type="checkbox"
+                                    checked={answer.isCorrect}
+                                    onChange={(e) => handleAnswerChange(index, 'isCorrect', e.target.checked)}
+                                />
+                            </label>
+                        </div>
+                    ))}
+
+                    <div className="editQuestionPageCenteredButton">
+                        <button className="editQuestionPageButton" onClick={addAnswer}>+ Προσθήκη Απάντησης</button>
                     </div>
-                    <div className="edit-question-form-row">
-                        <label htmlFor="explanation">Πηγή:</label>
-                        <input
-                            type="text"
-                            id="source"
-                            name="source"
-                            value={source}
-                            onChange={(e) => setSource(e.target.value)}
-                        />
+                </div>
+                <div className="editQuestionPageMetadataSection">
+                    <label htmlFor="explanation-input">Επεξήγηση</label>
+                    <input
+                        id="explanation-input"
+                        type="text"
+                        value={explanation}
+                        onChange={handleExplanationChange}
+                    />
+                    <label htmlFor="source-input">Πηγή</label>
+                    <input
+                        id="source-input"
+                        type="text"
+                        value={source}
+                        onChange={handleSourceChange}
+                    />
+                    <div className="editQuestionPageActionButtons">
+                        <button onClick={handleDelete} className="editQuestionPageDeleteButton">Διαγραφή</button>
+                        <button onClick={handleSave} className="editQuestionPageButton">Αποθήκευση</button>
                     </div>
-                    <div className="edit-question-form-row">
-                        <button type="submit" className="edit-question-submit" disabled={isSubmitting}>
-                            Υποβολή
-                        </button>
-                    </div>
-                    {error && <div className="edit-question-error-row">{error}</div>}
-                </form>
+                </div>
             </div>
         </div>
-    )
-        ;
+    );
 };
 
-export default EditQuestion;
+export default EditQuestion
