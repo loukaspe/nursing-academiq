@@ -40,9 +40,9 @@ type Quiz struct {
 
 type Question struct {
 	gorm.Model
-	Text        string `gorm:"not null;"`
-	Explanation string `gorm:"not null;"`
-	//Chapter                *Chapter
+	Text                   string `gorm:"not null;"`
+	Explanation            string `gorm:"not null;"`
+	Chapter                *Chapter
 	ChapterID              uint
 	CourseID               uint
 	Source                 string `gorm:"not null;"`

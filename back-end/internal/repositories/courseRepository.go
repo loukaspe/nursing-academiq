@@ -137,6 +137,47 @@ func (repo *CourseRepository) GetExtendedCourse(
 	}, err
 }
 
+func (repo *CourseRepository) GetCourseChapters(
+	ctx context.Context,
+	uid uint32,
+) (*domain.Course, error) {
+	var err error
+	var modelCourse *Course
+
+	err = repo.db.WithContext(ctx).
+		Preload("Chapters").
+		Model(Course{}).
+		Where("id = ?", uid).
+		Take(&modelCourse).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return &domain.Course{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courseID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return &domain.Course{}, err
+	}
+
+	var domainChapters []domain.Chapter
+
+	for _, modelChapter := range modelCourse.Chapters {
+		domainChapters = append(domainChapters, domain.Chapter{
+			ID:          uint32(modelChapter.ID),
+			Title:       modelChapter.Title,
+			Description: modelChapter.Description,
+		})
+	}
+
+	return &domain.Course{
+		ID:          uint32(modelCourse.ID),
+		Title:       modelCourse.Title,
+		Description: modelCourse.Description,
+		Chapters:    domainChapters,
+	}, err
+}
+
 func (repo *CourseRepository) GetCourses(
 	ctx context.Context,
 ) ([]domain.Course, error) {

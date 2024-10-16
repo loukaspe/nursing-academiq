@@ -8,6 +8,7 @@ import (
 type CourseRepositoryInterface interface {
 	GetCourse(ctx context.Context, uid uint32) (*domain.Course, error)
 	GetExtendedCourse(ctx context.Context, uid uint32) (*domain.Course, error)
+	GetCourseChapters(ctx context.Context, uid uint32) (*domain.Course, error)
 	GetCourses(ctx context.Context) ([]domain.Course, error)
 	GetCourseByTutorID(ctx context.Context, tutorID uint32) ([]domain.Course, error)
 	CreateCourse(context.Context, *domain.Course, uint) (uint, error)

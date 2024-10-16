@@ -39,6 +39,7 @@ type Question struct {
 	MultipleCorrectAnswers bool
 	NumberOfAnswers        int
 	Answers                []Answer
+	Chapter                Chapter
 	ChapterID              uint
 	CourseID               uint
 }
@@ -109,6 +110,11 @@ func (handler *GetQuestionHandler) GetQuestionController(w http.ResponseWriter, 
 		MultipleCorrectAnswers: domainQuestion.MultipleCorrectAnswers,
 		NumberOfAnswers:        domainQuestion.NumberOfAnswers,
 		Answers:                domainAnswers,
+		Chapter: Chapter{
+			ID:    uint32(uint(domainQuestion.Chapter.ID)),
+			Title: domainQuestion.Chapter.Title,
+		},
+		CourseID: uint(domainQuestion.Course.ID),
 	}
 
 	json.NewEncoder(w).Encode(response)

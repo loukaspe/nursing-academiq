@@ -91,6 +91,15 @@ func (repo *QuestionRepository) CreateQuestion(
 ) (uint, error) {
 	var err error
 
+	modelAnswers := make([]Answer, 0)
+	for _, answer := range question.Answers {
+		modelAnswer := Answer{}
+		modelAnswer.Text = answer.Text
+		modelAnswer.IsCorrect = answer.IsCorrect
+
+		modelAnswers = append(modelAnswers, modelAnswer)
+	}
+
 	modelQuestion := Question{}
 	modelQuestion.Text = question.Text
 	modelQuestion.Explanation = question.Explanation
@@ -99,6 +108,7 @@ func (repo *QuestionRepository) CreateQuestion(
 	modelQuestion.NumberOfAnswers = question.NumberOfAnswers
 	modelQuestion.CourseID = uint(question.Course.ID)
 	modelQuestion.ChapterID = uint(question.Chapter.ID)
+	modelQuestion.Answers = modelAnswers
 
 	err = repo.db.WithContext(ctx).Create(&modelQuestion).Error
 
@@ -183,7 +193,7 @@ func (repo *QuestionRepository) UpdateQuestion(
 ) error {
 	modelQuestion := &Question{}
 
-	err := repo.db.WithContext(ctx).Model(&Question{}).First(modelQuestion).Where("id = ?", uid).Error
+	err := repo.db.WithContext(ctx).Model(&Question{}).Where("id = ?", uid).First(modelQuestion).Error
 	if err == gorm.ErrRecordNotFound {
 		return apierrors.DataNotFoundErrorWrapper{
 			ReturnedStatusCode: http.StatusNotFound,
@@ -194,13 +204,38 @@ func (repo *QuestionRepository) UpdateQuestion(
 		return err
 	}
 
+	// Remove previous answers to add the new ones
+	err = repo.db.WithContext(ctx).Model(&Answer{}).Where("question_id = ?", modelQuestion.ID).Delete(&Answer{}).Error
+	if err == gorm.ErrRecordNotFound {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("questionID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+	if err != nil {
+		return err
+	}
+
+	modelAnswers := make([]Answer, 0)
+	for _, answer := range question.Answers {
+		modelAnswer := Answer{}
+		modelAnswer.Text = answer.Text
+		modelAnswer.IsCorrect = answer.IsCorrect
+		modelAnswer.QuestionID = modelQuestion.ID
+
+		modelAnswers = append(modelAnswers, modelAnswer)
+	}
+
+	modelQuestion.Text = question.Text
 	modelQuestion.Text = question.Text
 	modelQuestion.Explanation = question.Explanation
 	modelQuestion.Source = question.Source
-	//modelQuestion.MultipleCorrectAnswers = question.MultipleCorrectAnswers
-	//modelQuestion.NumberOfAnswers = question.NumberOfAnswers
-	//modelQuestion.CourseID = uint(question.Course.ID)
-	//modelQuestion.ChapterID = uint(question.Chapter.ID)
+	modelQuestion.MultipleCorrectAnswers = question.MultipleCorrectAnswers
+	modelQuestion.NumberOfAnswers = question.NumberOfAnswers
+	modelQuestion.CourseID = uint(question.Course.ID)
+	modelQuestion.ChapterID = uint(question.Chapter.ID)
+	modelQuestion.Answers = modelAnswers
+
 	err = repo.db.WithContext(ctx).Save(&modelQuestion).Error
 
 	return err
@@ -260,6 +295,7 @@ func (repo *QuestionRepository) GetQuestion(
 		//Preload("Tutor").
 		Model(Question{}).
 		Preload("Answers").
+		Preload("Chapter").
 		Where("id = ?", uid).
 		Take(&modelQuestion).Error
 
@@ -292,7 +328,8 @@ func (repo *QuestionRepository) GetQuestion(
 		NumberOfAnswers:        modelQuestion.NumberOfAnswers,
 		Answers:                domainAnswers,
 		Chapter: &domain.Chapter{
-			ID: uint32(modelQuestion.ChapterID),
+			ID:    uint32(modelQuestion.ChapterID),
+			Title: modelQuestion.Chapter.Title,
 		},
 		Course: &domain.Course{
 			ID: uint32(modelQuestion.CourseID),

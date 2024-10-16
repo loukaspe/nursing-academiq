@@ -83,6 +83,7 @@ func (s *Server) initializeRoutes() {
 
 	getCourseHandler := course.NewGetCourseHandler(courseService, s.logger)
 	getExtendedCourseHandler := course.NewGetExtendedCourseHandler(courseService, s.logger)
+	getCourseChaptersHandler := course.NewGetCourseChaptersHandler(courseService, s.logger)
 	getCoursesHandler := course.NewGetCoursesHandler(courseService, s.logger)
 	getCourseByTutorIDHandler := course.NewGetCourseByTutorIDHandler(courseService, s.logger)
 	createCourseHandler := course.NewCreateCourseHandler(courseService, s.logger)
@@ -95,6 +96,8 @@ func (s *Server) initializeRoutes() {
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/extended", getExtendedCourseHandler.GetExtendedCourseController).Methods("GET")
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/extended", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/chapters", getCourseChaptersHandler.GetCourseChaptersController).Methods("GET")
+	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/chapters", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/courses", getCoursesHandler.GetCoursesController).Methods("GET")
 	protectedApiKey.HandleFunc("/courses", optionsHandlerForCors).Methods(http.MethodOptions)
 	// Wanted to do a PATCH but did not work with CORS

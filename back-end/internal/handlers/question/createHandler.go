@@ -9,10 +9,6 @@ import (
 	"net/http"
 )
 
-type QuestionRequest struct {
-	Question Question `json:""`
-}
-
 type CreateQuestionResponse struct {
 	CreatedQuestionID uint   `json:"insertedID"`
 	ErrorMessage      string `json:"errorMessage,omitempty"`
@@ -51,10 +47,8 @@ func (handler *CreateQuestionHandler) CreateQuestionController(w http.ResponseWr
 		return
 	}
 
-	questionRequest := request.Question
-
-	domainAnswers := make([]domain.Answer, 0, len(questionRequest.Answers))
-	for _, answer := range questionRequest.Answers {
+	domainAnswers := make([]domain.Answer, 0, len(request.Answers))
+	for _, answer := range request.Answers {
 		domainAnswers = append(domainAnswers, domain.Answer{
 			Text:      answer.Text,
 			IsCorrect: answer.IsCorrect,
@@ -62,14 +56,14 @@ func (handler *CreateQuestionHandler) CreateQuestionController(w http.ResponseWr
 	}
 
 	domainQuestion := &domain.Question{
-		Text:                   questionRequest.Text,
-		Explanation:            questionRequest.Explanation,
-		Source:                 questionRequest.Source,
-		MultipleCorrectAnswers: questionRequest.MultipleCorrectAnswers,
-		NumberOfAnswers:        questionRequest.NumberOfAnswers,
+		Text:                   request.Text,
+		Explanation:            request.Explanation,
+		Source:                 request.Source,
+		MultipleCorrectAnswers: request.MultipleCorrectAnswers,
+		NumberOfAnswers:        request.NumberOfAnswers,
 		Answers:                domainAnswers,
-		Course:                 &domain.Course{ID: uint32(questionRequest.CourseID)},
-		Chapter:                &domain.Chapter{ID: uint32(questionRequest.ChapterID)},
+		Course:                 &domain.Course{ID: uint32(request.CourseID)},
+		Chapter:                &domain.Chapter{ID: uint32(request.ChapterID)},
 	}
 
 	uid, err := handler.QuestionService.CreateQuestion(context.Background(), domainQuestion)

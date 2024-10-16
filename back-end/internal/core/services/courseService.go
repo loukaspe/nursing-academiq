@@ -22,6 +22,10 @@ func (service CourseService) GetExtendedCourse(ctx context.Context, uid uint32) 
 	return service.repository.GetExtendedCourse(ctx, uid)
 }
 
+func (service CourseService) GetCourseChapters(ctx context.Context, uid uint32) (*domain.Course, error) {
+	return service.repository.GetCourseChapters(ctx, uid)
+}
+
 func (service CourseService) GetCourses(ctx context.Context) ([]domain.Course, error) {
 	return service.repository.GetCourses(ctx)
 }
