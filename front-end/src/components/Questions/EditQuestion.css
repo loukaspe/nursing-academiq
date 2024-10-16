@@ -149,6 +149,10 @@
     margin: 2em 0.5em 0.5em;
 }
 
+.editQuestionPageButton:disabled {
+    background-color: var(--dark-grey-color);
+}
+
 .editQuestionPageMetadataSection {
     flex: 1;
     padding: 2em;
@@ -185,4 +189,12 @@
     font-size: 1.2rem;
     cursor: pointer;
     margin: 2em 0.5em 0.5em;
+}
+
+.editQuestionErrorRow {
+    width: 100%;
+    color: var(--error-color);
+    padding-bottom: 0.5em;
+    font-size: 1rem;
+    flex: 1;
 }

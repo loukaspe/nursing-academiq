@@ -33,8 +33,12 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="/questions/import">Import</Link>
                         </li>
                         <li>
+                            {/*TODO: remove hardcoded 1*/}
                             <Link className="link" to="courses/1/questions/manage">Manage</Link>
                         </li>
+                        {/*<li>*/}
+                        {/*    <Link className="link" to="test">Test</Link>*/}
+                        {/*</li>*/}
                     </ul>
                     <ul className="ul myAccountMenu">
                         <li>
