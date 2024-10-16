@@ -198,3 +198,12 @@
     font-size: 1rem;
     flex: 1;
 }
+
+.editQuestionPageDeleteAnswerButton {
+    color: var(--error-color);
+    background-color: white;
+    border: none;
+    padding: 2em 1em 1em;
+    margin-left: 10px;
+    cursor: pointer;
+}

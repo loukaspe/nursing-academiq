@@ -195,6 +195,14 @@ const EditQuestion = () => {
                                     onChange={(e) => handleAnswerChange(index, 'IsCorrect', e.target.checked)}
                                 />
                             </label>
+                            {answers.length > 2 && (
+                                <button
+                                    className="editQuestionPageDeleteAnswerButton"
+                                    onClick={() => removeAnswer(index)}
+                                >
+                                    Αφαίρεση
+                                </button>
+                            )}
                         </div>
                     ))}
 
