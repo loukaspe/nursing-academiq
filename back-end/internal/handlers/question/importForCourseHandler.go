@@ -3,10 +3,11 @@ package question
 import (
 	"context"
 	"encoding/csv"
-	"fmt"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
+	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"net/http"
@@ -14,23 +15,37 @@ import (
 	"strings"
 )
 
+// Text, Chapter, NumberOfAnswers, Explanation, Source, Answer1, IsCorrect1, Answer2, IsCorrect2, Answer3, IsCorrect3, Answer4, IsCorrect4, Answer5, IsCorrect5, Answer6, IsCorrect6, Answer7, IsCorrect7, Answer8, IsCorrect8, Link
+const CSVColumns = 22
+
+var CSVHeaders = []string{"Εκφώνηση", "Κατηγορία", "Πλήθος Απαντήσεων", "Επεξήγηση Λύσης", "Πηγή", "Απάντηση 1", "Ορθότητα 1", "Απάντηση 2", "Ορθότητα 2", "Απάντηση 3", "Ορθότητα 3", "Απάντηση 4", "Ορθότητα 4", "Απάντηση 5", "Ορθότητα 5", "Απάντηση 6", "Ορθότητα 6", "Απάντηση 7", "Ορθότητα 7", "Απάντηση 8", "Ορθότητα 8", "Εικόνα (Σύνδεσμος/Αρχείο)"}
+
 type ImportQuestionHandler struct {
-	QuestionService *services.QuestionService
+	questionService *services.QuestionService
+	chapterService  *services.ChapterService
 	logger          *log.Logger
 }
 
 func NewImportQuestionHandler(
-	service *services.QuestionService,
+	questionService *services.QuestionService,
+	chapterService *services.ChapterService,
 	logger *log.Logger,
 ) *ImportQuestionHandler {
 	return &ImportQuestionHandler{
-		QuestionService: service,
+		questionService: questionService,
+		chapterService:  chapterService,
 		logger:          logger,
 	}
 }
 
+type ImportQuestionRequest struct {
+	CreateNewChapters bool `json:"create_new_chapters"`
+}
+
 func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	var problematicRecords [][]string
 
 	id := mux.Vars(r)["id"]
 	if id == "" {
@@ -48,6 +63,14 @@ func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWr
 	if err != nil {
 		handler.logger.Error("Unable to parse form", err)
 		http.Error(w, "Unable to parse form", http.StatusBadRequest)
+		return
+	}
+
+	requestBody := r.FormValue("jsonData")
+	var request ImportQuestionRequest
+	err = json.Unmarshal([]byte(requestBody), &request)
+	if err != nil {
+		http.Error(w, "Could not parse JSON data", http.StatusBadRequest)
 		return
 	}
 
@@ -81,19 +104,39 @@ func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWr
 			return
 		}
 
+		if len(record) < CSVColumns {
+			problematicRecords = append(problematicRecords, record)
+			continue
+		}
+
+		if record[0] == "" || record[1] == "" || record[2] == "" || record[3] == "" || record[4] == "" || record[5] == "" || record[6] == "" {
+			problematicRecords = append(problematicRecords, record)
+			continue
+		}
+
 		domainQuestion := domain.Question{}
+
 		domainQuestion.Text = record[0]
+
 		domainQuestion.Chapter = &domain.Chapter{}
 		domainQuestion.Chapter.Title = strings.TrimSpace(record[1])
-		domainQuestion.Explanation = record[3]
-		domainQuestion.Source = record[4]
+
+		if request.CreateNewChapters == false {
+			_, err = handler.chapterService.GetChapterByTitle(context.Background(), domainQuestion.Chapter.Title)
+			if _, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
+				problematicRecords = append(problematicRecords, record)
+				continue
+			}
+		}
 
 		domainQuestion.NumberOfAnswers, err = strconv.Atoi(record[2])
 		if err != nil {
-			handler.logger.Error("Error parsing number of answers", err, questionCounter+1)
-			http.Error(w, fmt.Sprintf("Error reading csv file in line %d", questionCounter+1), http.StatusInternalServerError)
-			return
+			problematicRecords = append(problematicRecords, record)
+			continue
 		}
+
+		domainQuestion.Explanation = record[3]
+		domainQuestion.Source = record[4]
 
 		domainAnswers := make([]domain.Answer, 0, domainQuestion.NumberOfAnswers)
 		foundCorrectAnswer := false
@@ -114,13 +157,31 @@ func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWr
 		domainQuestions = append(domainQuestions, domainQuestion)
 	}
 
-	err = handler.QuestionService.ImportForCourse(context.Background(), domainQuestions, uint(courseID))
+	err = handler.questionService.ImportForCourse(context.Background(), domainQuestions, uint(courseID))
 	if err != nil {
 		handler.logger.Error("Error importing questions", err)
 		http.Error(w, "Error importing questions", http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	// If there are problematic rows, return them as a CSV
+	if len(problematicRecords) > 0 {
+		w.Header().Set("Content-Type", "text/csv")
+		w.Header().Set("Content-Disposition", "attachment; filename=\"problematic_questions.csv\"")
+		w.WriteHeader(http.StatusOK)
+		csvWriter := csv.NewWriter(w)
+		defer csvWriter.Flush()
+
+		// Write header
+		csvWriter.Write(CSVHeaders)
+
+		// Write problematic rows
+		for _, row := range problematicRecords {
+			csvWriter.Write(row)
+		}
+		return
+	}
+
+	w.WriteHeader(http.StatusNotFound)
 	return
 }

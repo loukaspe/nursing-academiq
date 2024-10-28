@@ -43,6 +43,15 @@ func (service ChapterService) GetChapter(ctx context.Context, uid uint32) (*doma
 	return domainChapter, nil
 }
 
+func (service ChapterService) GetChapterByTitle(ctx context.Context, title string) (*domain.Chapter, error) {
+	domainChapter, err := service.chapterRepository.GetChapterByTitle(ctx, title)
+	if err != nil {
+		return nil, err
+	}
+
+	return domainChapter, nil
+}
+
 func (service ChapterService) CreateChapter(ctx context.Context, course *domain.Chapter) (uint, error) {
 	return service.chapterRepository.CreateChapter(ctx, course)
 }

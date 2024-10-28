@@ -51,6 +51,39 @@ func (repo *ChapterRepository) GetChapter(
 	}, err
 }
 
+func (repo *ChapterRepository) GetChapterByTitle(
+	ctx context.Context,
+	title string,
+) (*domain.Chapter, error) {
+	var err error
+	var modelChapter *Chapter
+
+	err = repo.db.WithContext(ctx).
+		Preload("Course").
+		Model(Chapter{}).
+		Where("title = ?", title).
+		Take(&modelChapter).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return &domain.Chapter{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("chapterTitle " + title + " not found"),
+		}
+	}
+	if err != nil {
+		return &domain.Chapter{}, err
+	}
+
+	return &domain.Chapter{
+		Title:       modelChapter.Title,
+		Description: modelChapter.Description,
+		Course: &domain.Course{
+			ID:    uint32(modelChapter.CourseID),
+			Title: modelChapter.Course.Title,
+		},
+	}, err
+}
+
 //func (repo *ChapterRepository) GetExtendedChapter(
 //	ctx context.Context,
 //	uid uint32,

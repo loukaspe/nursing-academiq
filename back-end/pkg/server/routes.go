@@ -157,7 +157,7 @@ func (s *Server) initializeRoutes() {
 	questionsRepository := repositories.NewQuestionRepository(s.DB)
 	questionsService := services.NewQuestionService(questionsRepository)
 
-	importQuestionHandler := question.NewImportQuestionHandler(questionsService, s.logger)
+	importQuestionHandler := question.NewImportQuestionHandler(questionsService, chapterService, s.logger)
 	getQuestionHandler := question.NewGetQuestionHandler(questionsService, s.logger)
 	getQuestionByCourseIDHandler := question.NewGetQuestionByCourseIDHandler(questionsService, s.logger)
 	updateQuestionHandler := question.NewUpdateQuestionHandler(questionsService, s.logger)
