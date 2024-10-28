@@ -1,154 +1,124 @@
 @import "../../styles/variables.css";
 
-.quiz-container {
-    width: 80%;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-}
-
-.questionCard {
-    box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
-    max-width: 80%;
-    border-radius: 15px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.progress-line {
+.csvImportPageContainer {
     display: flex;
-    justify-content: space-around;
-    margin: 2em;
+    flex-direction: column;
+    height: 100vh;
 }
 
-.progress-line span {
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    background-color: var(--dark-grey-color);
-    color: var(--light-white-color);
+.csvImportPageHeader {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    flex: 10%;
+}
+
+.csvImportPageInfo {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.csvImportPageImportRow {
+    flex: 40%;
+    display: flex;
     justify-content: center;
-    cursor: pointer;
+    align-items: center;
 }
 
-.progress-line span.completed {
-    background-color: var(--brand-color);
-    color: white;
-}
+.csvImportPageImportBox {
+    background-color: var(--mid-white-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 90%;
+    height: 90%;
+    margin-top: 1em;
 
-.progress-line span.current {
-    background-color: var(--opposite-color);
-    color: white;
-}
-
-hr {
-    border-color: var(--light-color);
-}
-
-.question-section {
-    margin-bottom: 2em;
-}
-
-.question-section h2 {
-    color: var(--dark-color);
-    padding: 1rem;
-    font-size: 1.3rem;
-    font-weight: bolder;
-}
-
-.question-section ul {
-    list-style-type: none;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
-.question-section li {
-    background-color: var(--light-color);
-    color: var(--dark-color);
-    font-size: 1rem;
-    margin: 0.2rem;
-    border-radius: 5px;
-    padding: 1rem;
-    border: none;
-    font-weight: bold;
-    text-align: left;
-    max-width: 60%;
-}
-
-.question-section li a:hover {
-    background-color: var(--opposite-color);
-    cursor: pointer;
-    color: white;
-}
-
-.question-section li.selected {
-    background-color: var(--opposite-color);
-}
-
-.question-section li.correct {
-    border: 3px solid var(--positive-color);
-}
-
-.question-section li.incorrect {
-    border: 3px solid var(--error-color);
-}
-
-.explanation {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: var(--mid-white-color);
-    border-radius: 5px;
-    border: solid 1px var(--dark-grey-color);
-    color: var(--dark-color);
-}
-
-.explanationResult {
-    font-size: 1.5rem;
-}
-
-.explanationResult span.correct {
-    color: var(--positive-color);
-}
-
-.explanationResult span.incorrect {
-    color: var(--error-color);
-}
-
-.explanationCorrectAnswer {
-    font-size: 1rem;
-}
-
-.explanationDetails {
-    font-size: 1.2rem;
-}
-
-.questionButtons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.questionsSimpleButton {
+.csvImportPageChooseFileButton {
+    display: inline-block;
+    color: var(--brand-color);
     background-color: var(--grey-color);
-    color: var(--dark-color);
     font-size: 1rem;
-    margin: 1rem 1rem 1rem 0;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     border-radius: 10px;
     padding: 1rem;
     border: none;
     font-weight: bold;
-    display: flex;
-    gap: 2em;
+    cursor: pointer;
 }
 
-.questionsSubmitButton {
-    color: var(--light-color);
-    background-color: var(--brand-color);
-    font-size: 1rem;
-    margin: 1rem 1rem 1rem auto;
-    border-radius: 10px;
-    padding: 1rem;
-    border: none;
+.csvImportPageMessageRow {
+    flex: 10%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.csvImportPageOptionsRow {
+    flex: 30%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+}
+
+.csvImportPageOptionsColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 33.33%;
+    height: auto;
+    padding: 1rem 0;
+}
+
+.csvImportPageFa {
+    color: var(--mid-white-color);
+    cursor: pointer;
+}
+
+.csvImportPageOptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /*height: 100px;*/
+    gap: 1em;
+    height: auto;
+}
+
+.csvImportPageText {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--brand-color);
     font-weight: bold;
+    text-align: center;
+}
+
+.csvImportPageMessageText {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--brand-dark-color);
+    font-weight: bold;
+    text-align: center;
+}
+
+.csvImportPageButton {
+    margin: 0.5em;
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
 }

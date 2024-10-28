@@ -30,7 +30,7 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="/questions">Questions</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/questions/import">Import</Link>
+                            <Link className="link" to="courses/1/questions/import">Import</Link>
                         </li>
                         <li>
                             {/*TODO: remove hardcoded 1*/}

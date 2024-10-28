@@ -156,7 +156,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="questions/import"
+                        path="courses/:id/questions/import"
                         element={
                             <ProtectedRoutes>
                                 <CsvImport/>
