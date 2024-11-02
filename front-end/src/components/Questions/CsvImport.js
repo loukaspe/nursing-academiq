@@ -79,10 +79,10 @@ const CsvImport = () => {
                 }
             });
 
-            if(response.status === 200) {
+            if (response.status === 200) {
                 var contentType = response.headers.get("content-type")
                 if (contentType === "text/csv" && exportMistakesOption) {
-                    const blob = new Blob([response.data], { type: contentType });
+                    const blob = new Blob([response.data], {type: contentType});
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
@@ -95,7 +95,7 @@ const CsvImport = () => {
                 } else {
                     setMessage('Η εισαγωγή ολοκληρώθηκε μερικώς. Oι λανθασμένες απαντήσεις αγνοήθηκαν.');
                 }
-            } else if(response.status === 204) {
+            } else if (response.status === 204) {
                 setMessage('Η εισαγωγή ολοκληρώθηκε επιτυχώς.');
             }
             console.log('File uploaded successfully.', response);
@@ -103,6 +103,24 @@ const CsvImport = () => {
             console.error('Error uploading the file', error);
             setMessage('Η εισαγωγή απέτυχε. Παρακαλώ δοκιμάστε ξανά.');
         }
+    };
+
+    const downloadExample = () => {
+        const csvRows = [
+            ["Εκφώνηση", "Κατηγορία", "Πλήθος Απαντήσεων", "Επεξήγηση Λύσης", "Πηγή", "Απάντηση 1", "Ορθότητα 1", "Απάντηση 2", "Ορθότητα 2", "Απάντηση 3", "Ορθότητα 3", "Απάντηση 4", "Ορθότητα 4", "Απάντηση 5", "Ορθότητα 5", "Απάντηση 6", "Ορθότητα 6", "Απάντηση 7", "Ορθότητα 7", "Απάντηση 8", "Ορθότητα 8", "Εικόνα(Σύνδεσμος / Αρχείο)"],
+            ["Ποιες από τις παρακάτω κατηγορίες φαρμάκων έχουν αντιυπερτασική δράση;", "Αντιυπερτασικά", 5, "Oι Β- Αδρενεργικοί ανταγωνιστές & τα Διουρητικά έχουν αντιυπερτασική δράση.", "Βασική & Κλινική φαρμακολογία Bertram G. Katzung /  σελ 147", "Β- Αδρενεργικοί ανταγωνιστές", 1, "Β- Αδρενεργικοί αγωνιστές", 0, "Διουρητικά", 1, "Αμινογλυκοσίδες", 0, "Κατεχολαμίνες", 0, "", "", "", "", "", "", ""],
+        ];
+
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], {type: 'text/csv'});
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'example.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     };
 
     return (
@@ -148,12 +166,13 @@ const CsvImport = () => {
                                                                  onChange={handleCreateNewChaptersChange}/>
                             </label>
                             <label className="csvImportPageText">
-                                Εξαγωγή Λαθών σε Αρχείο <input type="checkbox" onChange={handleExportMistakesChange} checked={exportMistakesOption}/>
+                                Εξαγωγή Λαθών σε Αρχείο <input type="checkbox" onChange={handleExportMistakesChange}
+                                                               checked={exportMistakesOption}/>
                             </label>
                         </div>
                     </div>
                     <div className="csvImportPageOptionsColumn">
-                        <button className="csvImportPageButton">
+                        <button className="csvImportPageButton" onClick={downloadExample}>
                             <FontAwesomeIcon icon={faDownload} className="csvImportPageFa"/> Λήψη Προτύπου
                         </button>
                     </div>
