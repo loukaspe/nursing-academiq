@@ -12,8 +12,8 @@ const CsvImport = () => {
     const [courseTitle, setCourseTitle] = useState('');
     const [fileName, setFileName] = useState("");
     const [problematicQuestions, setProblematicQuestions] = useState([]);
-    const [createNewChaptersOption, setCreateNewChaptersOption] = useState(false);
-    const [exportMistakesOption, setExportMistakesOption] = useState(true);
+    const [createNewChaptersOption, setCreateNewChaptersOption] = useState(true);
+    const [exportMistakesOption, setExportMistakesOption] = useState(false);
 
     let navigate = useNavigate();
 
@@ -163,10 +163,12 @@ const CsvImport = () => {
                         <div className="csvImportPageOptions">
                             <label className="csvImportPageText">
                                 Δημιουργία Νέων Θεματικών <input type="checkbox"
-                                                                 onChange={handleCreateNewChaptersChange}/>
+                                                                 onChange={handleCreateNewChaptersChange}
+                                                                 checked={createNewChaptersOption}/>
                             </label>
                             <label className="csvImportPageText">
-                                Εξαγωγή Λαθών σε Αρχείο <input type="checkbox" onChange={handleExportMistakesChange}
+                                Εξαγωγή Λαθών σε Αρχείο <input type="checkbox"
+                                                               onChange={handleExportMistakesChange}
                                                                checked={exportMistakesOption}/>
                             </label>
                         </div>

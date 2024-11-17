@@ -1,5 +1,16 @@
 @import "../../styles/variables.css";
 
+html, body {
+    margin: 0;
+    height: 100%; /* Ensure full height for the viewport */
+}
+
+#root {
+    height: 100%; /* Assuming your app is rendered here */
+    display: flex;
+    flex-direction: column; /* Allow vertical stacking of components */
+}
+
 .courseQuizzesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
@@ -63,6 +74,16 @@
     /*margin-left: 1rem;*/
 }
 
+.courseQuizzesPageCourseDescription {
+    color: var(--dark-grey-color);
+    font-size: 1rem;
+    border-bottom: 0.1em solid var(--brand-dark-color);
+    display: flex;
+    padding: 1em;
+    font-weight: bold;
+    flex: 0 0 auto;
+}
+
 .backButton {
     color: var(--dark-color);
     background-color: var(--grey-color);
@@ -84,4 +105,11 @@
 
 .backButton:hover {
     background-color: var(--brand-color);
+}
+
+.courseQuizzesPageCourseQuizzes {
+    flex: 1;
+    height: 100%;
+    border-left: 0.1em solid var(--brand-dark-color);
+    overflow-y: auto;
 }

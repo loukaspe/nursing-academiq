@@ -94,10 +94,10 @@ const CourseQuizzesList = (props) => {
                     </>
                 }
             </div>
-            <div className="singleCourseDescription">
+            <div className="courseQuizzesPageCourseDescription">
                 <div>{course.description}</div>
             </div>
-            <div className="singleCourseQuizzes">
+            <div className="courseQuizzesPageCourseQuizzes">
                 <div className="singleCoursePageSectionTitle">
                     <SectionTitle title="Quiz Μαθήματος"/>
                 </div>
