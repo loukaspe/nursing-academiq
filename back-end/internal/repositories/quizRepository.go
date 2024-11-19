@@ -130,6 +130,7 @@ func (repo *QuizRepository) GetQuizByTutorID(
 			}
 
 			domainQuizs = append(domainQuizs, domain.Quiz{
+				ID:                uint32(modelQuiz.ID),
 				Title:             modelQuiz.Title,
 				Description:       modelQuiz.Description,
 				Visibility:        modelQuiz.Visibility,
@@ -139,6 +140,7 @@ func (repo *QuizRepository) GetQuizByTutorID(
 				MaxScore:          modelQuiz.MaxScore,
 				NumberOfQuestions: numberOfQuestions,
 				Course: &domain.Course{
+					ID:    uint32(modelCourse.ID),
 					Title: courseName,
 				},
 			})

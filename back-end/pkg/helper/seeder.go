@@ -70,7 +70,7 @@ var tutor2 = repositories.Tutor{
 var course1 = repositories.Course{
 	Title:       "math gen",
 	Description: "mathimatika genikhs",
-	TutorID:     1,
+	TutorID:     2,
 }
 
 var chapter1 = repositories.Chapter{

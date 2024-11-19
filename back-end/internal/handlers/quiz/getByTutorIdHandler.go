@@ -29,6 +29,7 @@ func NewGetQuizByTutorIDHandler(
 type GetQuizByTutorIDResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
 	Quizzes      []struct {
+		ID                int
 		Title             string
 		Description       string
 		Visibility        bool
@@ -39,6 +40,7 @@ type GetQuizByTutorIDResponse struct {
 		MaxScore          int
 		NumberOfQuestions int
 		CourseName        string
+		CourseID          int
 	} `json:"quizzes,omitempty"`
 }
 
@@ -81,6 +83,7 @@ func (handler *GetQuizByTutorIDHandler) GetQuizByTutorIDController(w http.Respon
 
 	for _, quiz := range quizs {
 		response.Quizzes = append(response.Quizzes, struct {
+			ID                int
 			Title             string
 			Description       string
 			Visibility        bool
@@ -91,7 +94,9 @@ func (handler *GetQuizByTutorIDHandler) GetQuizByTutorIDController(w http.Respon
 			MaxScore          int
 			NumberOfQuestions int
 			CourseName        string
+			CourseID          int
 		}{
+			ID:                int(quiz.ID),
 			Title:             quiz.Title,
 			Description:       quiz.Description,
 			Visibility:        quiz.Visibility,
@@ -102,6 +107,7 @@ func (handler *GetQuizByTutorIDHandler) GetQuizByTutorIDController(w http.Respon
 			MaxScore:          quiz.MaxScore,
 			NumberOfQuestions: quiz.NumberOfQuestions,
 			CourseName:        quiz.Course.Title,
+			CourseID:          int(quiz.Course.ID),
 		})
 	}
 
