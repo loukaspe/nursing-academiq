@@ -72,9 +72,9 @@ const LimitedMyQuizzesList = () => {
                                 </div>
                             </div>
                             <div className="quizIcons">
-                                <FontAwesomeIcon icon={faPenToSquare} className="quizIcon" onClick={() => {
-                                    alert("edit")
-                                }}/>
+                                <Link to={`/courses/${item.CourseID}/quizzes/${item.ID}/edit`}>
+                                    <FontAwesomeIcon icon={faPenToSquare} className="quizIcon" />
+                                </Link>
                                 <FontAwesomeIcon icon={faTrashCan} className="quizIcon" onClick={() => {
                                     alert("delete")
                                 }}/>
