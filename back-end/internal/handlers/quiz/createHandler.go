@@ -10,18 +10,16 @@ import (
 )
 
 type QuizRequest struct {
-	Quiz struct {
-		Title             string
-		Description       string
-		Visibility        bool
-		ShowSubset        bool
-		SubsetSize        int
-		NumberOfSessions  int
-		ScoreSum          float32
-		MaxScore          int
-		NumberOfQuestions int
-		CourseID          uint
-	} `json:""`
+	Title       string
+	Description string
+	Visibility  bool
+	ShowSubset  bool
+	SubsetSize  int
+	//NumberOfSessions  int
+	ScoreSum          float32
+	MaxScore          int
+	NumberOfQuestions int
+	CourseID          uint
 }
 
 type CreateQuizResponse struct {
@@ -62,17 +60,15 @@ func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r 
 		return
 	}
 
-	quizRequest := request.Quiz
-
 	domainQuiz := &domain.Quiz{
-		Title:       quizRequest.Title,
-		Description: quizRequest.Description,
-		Visibility:  quizRequest.Visibility,
-		ShowSubset:  quizRequest.ShowSubset,
-		SubsetSize:  quizRequest.SubsetSize,
-		ScoreSum:    quizRequest.ScoreSum,
-		MaxScore:    quizRequest.MaxScore,
-		Course:      &domain.Course{ID: uint32(quizRequest.CourseID)},
+		Title:       request.Title,
+		Description: request.Description,
+		Visibility:  request.Visibility,
+		ShowSubset:  request.ShowSubset,
+		SubsetSize:  request.SubsetSize,
+		ScoreSum:    request.ScoreSum,
+		MaxScore:    request.MaxScore,
+		Course:      &domain.Course{ID: uint32(request.CourseID)},
 	}
 
 	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
