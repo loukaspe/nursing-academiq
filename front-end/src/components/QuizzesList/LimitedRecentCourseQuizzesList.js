@@ -67,7 +67,9 @@ const LimitedRecentCourseQuizzesList = (props) => {
                 <div
                     className={`quizzesButtonContainer ${props.quizzes.length > visibleQuizzes ? 'multiple' : 'single'}`}>
                     {
-                        isTutorSignedIn() && <Link className="myCoursesListButton" to="/my-courses">+ Νέο Quiz</Link>
+                        isTutorSignedIn() &&
+                        <Link className="myCoursesListButton" to={`/courses/${props.courseID}/quizzes/create`}>+ Νέο
+                            Quiz</Link>
                     }
                     {
                         props.quizzes.length > visibleQuizzes &&

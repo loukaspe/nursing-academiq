@@ -108,14 +108,14 @@ const CourseQuizzesList = (props) => {
                                 <div className="quizContent">
                                     <div className="singleQuizTextContainer">
                                         <Link className="singleQuizTitle"
-                                              to={`/courses/${props.courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
+                                              to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
                                         <div className="singleQuizDetails">{item.CourseName}</div>
                                         <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
                                     </div>
                                 </div>
                                 {
                                     isTutorSignedIn() && <div className="quizIcons">
-                                        <Link to={`/courses/${props.courseID}/quizzes/${item.ID}/edit`}>
+                                        <Link to={`/courses/${courseID}/quizzes/${item.ID}/edit`}>
                                             <FontAwesomeIcon icon={faPenToSquare} className="quizIcon"/>
                                         </Link>
                                         <FontAwesomeIcon icon={faTrashCan} className="quizIcon" onClick={() => {
