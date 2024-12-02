@@ -1,0 +1,56 @@
+@import "../../styles/variables.css";
+
+.coursesListModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.coursesListModalContent {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+.coursesListModalContent h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--dark-color);
+}
+
+.coursesListModalContent select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+.coursesListModalContent button {
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.coursesListModalContent button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+

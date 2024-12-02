@@ -131,6 +131,14 @@ const App = () => {
                         }
                     />
                     <Route
+                        path="quizzes/create"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuiz/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
                         path="courses/:courseID/quizzes/:id/edit"
                         element={
                             <ProtectedRoutes>

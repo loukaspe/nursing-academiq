@@ -19,6 +19,7 @@ const EditQuiz = ({}) => {
     const [courseTitle, setCourseTitle] = useState('');
     const [questions, setQuestions] = useState([]);
 
+    // TODO: error handling in form works ?
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -92,7 +93,6 @@ const EditQuiz = ({}) => {
         }
     };
 
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
@@ -110,6 +110,9 @@ const EditQuiz = ({}) => {
                     title: title,
                     description: description,
                     courseID: courseID,
+                    visibility: isVisible,
+                    showSubset: isShowSubsetChecked,
+                    subsetSize: subsetSize,
                 },
                 {
                     headers: {
@@ -151,6 +154,7 @@ const EditQuiz = ({}) => {
                             <input type="text"
                                    value={title}
                                    className="editQuizDetailsRowInputText"
+                                   onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>
                         <div className="editQuizDetailsRowInputGroup">
@@ -158,6 +162,7 @@ const EditQuiz = ({}) => {
                             <input type="text"
                                    value={description}
                                    className="editQuizDetailsRowInputText"
+                                   onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                     </div>
@@ -166,7 +171,8 @@ const EditQuiz = ({}) => {
                         <div className="editQuizCheckboxRow">
                             <label>
                                 Ορατό <input type="checkbox"
-                                             checked={isVisible}/>
+                                             checked={isVisible}
+                                             onChange={handleIsVisibleChange}/>
                             </label>
                             <span> Αριθμός Ερωτήσεων: {questions.length}</span>
                         </div>
@@ -193,7 +199,7 @@ const EditQuiz = ({}) => {
                 </div>
                 <div className="editQuizQuestionsRow">
                     <div className="editQuizQuestionsList">
-                        <div className="editQuizQuestionsListTitle">Questions List</div>
+                        <div className="editQuizQuestionsListTitle">Ερωτήσεις</div>
                         <ul>
                             {questions.map((question, index) => (
                                 <li className="editQuizQuestionsListItem" key={index}>{question.Text}</li>
@@ -202,7 +208,7 @@ const EditQuiz = ({}) => {
                     </div>
 
                     <div className="editQuizButtonsColumn">
-                        <button className="editQuizSaveButton">Αποθήκευση</button>
+                        <button className="editQuizSaveButton" onClick={handleSubmit}>Αποθήκευση</button>
                         <button className="editQuizDeleteButton">Διαγραφή</button>
                     </div>
                 </div>
