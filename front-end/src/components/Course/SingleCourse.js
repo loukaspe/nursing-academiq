@@ -97,10 +97,9 @@ const SingleCourse = () => {
                     isTutorSignedIn()
                     &&
                     <>
-                        <button className="courseButton" onClick={() => {
-                            alert("questions")
-                        }}>Διαχείριση Ερωτήσεων
-                        </button>
+                        <Link className="courseButton" to={`/courses/${courseID}/questions/manage`}>
+                            Διαχείριση Ερωτήσεων
+                        </Link>
                         <button className="courseDangerButton" onClick={() => {
                             deleteCourse()
                         }}>Διαγραφή
