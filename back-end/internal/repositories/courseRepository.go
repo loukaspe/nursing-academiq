@@ -210,6 +210,48 @@ func (repo *CourseRepository) GetCourses(
 	return domainCourses, err
 }
 
+func (repo *CourseRepository) GetMostRecentCourses(
+	ctx context.Context,
+	limit int,
+) ([]domain.Course, error) {
+	var err error
+	var modelCourses []Course
+
+	if limit > 0 {
+		err = repo.db.WithContext(ctx).
+			Order("created_at DESC").
+			Limit(limit).
+			Model(Course{}).
+			Find(&modelCourses).Error
+	} else {
+		err = repo.db.WithContext(ctx).
+			Order("created_at DESC").
+			Model(Course{}).
+			Find(&modelCourses).Error
+	}
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Course{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("courses not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Course{}, err
+	}
+
+	var domainCourses []domain.Course
+	for _, modelCourse := range modelCourses {
+		domainCourses = append(domainCourses, domain.Course{
+			ID:          uint32(modelCourse.ID),
+			Title:       modelCourse.Title,
+			Description: modelCourse.Description,
+		})
+	}
+
+	return domainCourses, err
+}
+
 func (repo *CourseRepository) GetCourseByTutorID(
 	ctx context.Context,
 	tutorID uint32,

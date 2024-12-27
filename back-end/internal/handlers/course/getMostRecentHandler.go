@@ -7,24 +7,25 @@ import (
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"net/http"
+	"strconv"
 )
 
-type GetCoursesHandler struct {
+type GetMostRecentCoursesHandler struct {
 	CourseService *services.CourseService
 	logger        *log.Logger
 }
 
-func NewGetCoursesHandler(
+func NewGetMostRecentCoursesHandler(
 	service *services.CourseService,
 	logger *log.Logger,
-) *GetCoursesHandler {
-	return &GetCoursesHandler{
+) *GetCourseHandler {
+	return &GetCourseHandler{
 		CourseService: service,
 		logger:        logger,
 	}
 }
 
-type GetCoursesResponse struct {
+type GetMostRecentCoursesResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
 	Courses      []struct {
 		ID          uint32 `json:"id"`
@@ -33,16 +34,32 @@ type GetCoursesResponse struct {
 	} `json:"courses,omitempty"`
 }
 
-func (handler *GetCoursesHandler) GetCoursesController(w http.ResponseWriter, r *http.Request) {
+func (handler *GetCourseHandler) GetMostRecentCoursesController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	//var err error
-	response := &GetCoursesResponse{}
+	response := &GetMostRecentCoursesResponse{}
 
-	courses, err := handler.CourseService.GetCourses(context.Background())
+	var limit int
+	var err error
+
+	limitParam := r.URL.Query().Get("limit")
+	if limitParam == "" {
+
+	} else {
+		limit, err = strconv.Atoi(limitParam)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			response.ErrorMessage = "malformed limit"
+			json.NewEncoder(w).Encode(response)
+			return
+		}
+	}
+
+	courses, err := handler.CourseService.GetMostRecentCourses(context.Background(), limit)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
-		}).Debug("Error in getting courses")
+		}).Debug("Error in getting most recent courses")
 
 		w.WriteHeader(dataNotFoundErrorWrapper.ReturnedStatusCode)
 

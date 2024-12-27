@@ -85,6 +85,7 @@ func (s *Server) initializeRoutes() {
 	getExtendedCourseHandler := course.NewGetExtendedCourseHandler(courseService, s.logger)
 	getCourseChaptersHandler := course.NewGetCourseChaptersHandler(courseService, s.logger)
 	getCoursesHandler := course.NewGetCoursesHandler(courseService, s.logger)
+	getMostRecentCoursesHandler := course.NewGetMostRecentCoursesHandler(courseService, s.logger)
 	getCourseByTutorIDHandler := course.NewGetCourseByTutorIDHandler(courseService, s.logger)
 	createCourseHandler := course.NewCreateCourseHandler(courseService, s.logger)
 	deleteCourseHandler := course.NewDeleteCourseHandler(courseService, s.logger)
@@ -100,6 +101,8 @@ func (s *Server) initializeRoutes() {
 	protectedApiKey.HandleFunc("/course/{id:[0-9]+}/chapters", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/courses", getCoursesHandler.GetCoursesController).Methods("GET")
 	protectedApiKey.HandleFunc("/courses", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/courses/recent", getMostRecentCoursesHandler.GetMostRecentCoursesController).Methods("GET")
+	protectedApiKey.HandleFunc("/courses/recent", optionsHandlerForCors).Methods(http.MethodOptions)
 	// Wanted to do a PATCH but did not work with CORS
 	protectedJWT.HandleFunc("/course/{id:[0-9]+}", updateCourseHandler.UpdateCourseController).Methods("PUT")
 	protectedJWT.HandleFunc("/course/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
@@ -114,6 +117,8 @@ func (s *Server) initializeRoutes() {
 	quizService := services.NewQuizService(quizRepository)
 
 	getQuizHandler := quiz.NewGetQuizHandler(quizService, s.logger)
+	getQuizzesHandler := quiz.NewGetQuizzesHandler(quizService, s.logger)
+	getMostRecentQuizzesHandler := quiz.NewGetMostRecentQuizzesHandler(quizService, s.logger)
 	getQuizByTutorIDHandler := quiz.NewGetQuizByTutorIDHandler(quizService, s.logger)
 	getQuizByCourseIDHandler := quiz.NewGetQuizByCourseIDHandler(quizService, s.logger)
 	createQuizHandler := quiz.NewCreateQuizHandler(quizService, s.logger)
@@ -122,6 +127,10 @@ func (s *Server) initializeRoutes() {
 
 	protectedJWT.HandleFunc("/quiz", createQuizHandler.CreateQuizController).Methods("POST")
 	protectedJWT.HandleFunc("/quiz", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/quizzes", getQuizzesHandler.GetQuizzesController).Methods("GET")
+	protectedApiKey.HandleFunc("/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/quizzes/recent", getMostRecentQuizzesHandler.GetMostRecentQuizzesController).Methods("GET")
+	protectedApiKey.HandleFunc("/quizzes/recent", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/quiz/{id:[0-9]+}", getQuizHandler.GetQuizController).Methods("GET")
 	protectedApiKey.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", deleteQuizHandler.DeleteQuizController).Methods("DELETE")

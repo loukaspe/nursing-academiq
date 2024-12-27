@@ -26,6 +26,14 @@ func (service QuizService) GetQuizByCourseID(ctx context.Context, courseID uint3
 	return service.repository.GetQuizByCourseID(ctx, courseID)
 }
 
+func (service QuizService) GetQuizzes(ctx context.Context) ([]domain.Quiz, error) {
+	return service.repository.GetQuizzes(ctx)
+}
+
+func (service QuizService) GetMostRecentQuizzes(ctx context.Context, limit int) ([]domain.Quiz, error) {
+	return service.repository.GetMostRecentQuizzes(ctx, limit)
+}
+
 func (service QuizService) CreateQuiz(ctx context.Context, quiz *domain.Quiz) (uint, error) {
 	return service.repository.CreateQuiz(ctx, quiz)
 }

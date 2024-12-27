@@ -1,6 +1,9 @@
 import React from "react";
 import "./Homepage.css";
 import PageTitle from "../Utilities/PageTitle";
+import LimitedRecentCourseQuizzesList from "../QuizzesList/LimitedRecentCourseQuizzesList";
+import LimitedRecentQuizzesList from "../QuizzesList/LimitedRecentQuizzesList";
+import LimitedRecentCoursesList from "../CoursesList/LimitedRecentCoursesList";
 
 const Homepage = () => {
     return (
@@ -10,10 +13,10 @@ const Homepage = () => {
             </div>
             <div className="homepageContainer">
                 <div className="coursesListContainer">
-                    TI NA DEIKSW 1
+                    <LimitedRecentCoursesList/>
                 </div>
                 <div className="quizListContainer">
-                    TI NA DEIKSW 2
+                    <LimitedRecentQuizzesList/>
                 </div>
             </div>
             <div style={{clear: 'both'}}></div>

@@ -30,6 +30,10 @@ func (service CourseService) GetCourses(ctx context.Context) ([]domain.Course, e
 	return service.repository.GetCourses(ctx)
 }
 
+func (service CourseService) GetMostRecentCourses(ctx context.Context, limit int) ([]domain.Course, error) {
+	return service.repository.GetMostRecentCourses(ctx, limit)
+}
+
 func (service CourseService) GetCourseByTutorID(ctx context.Context, tutorID uint32) ([]domain.Course, error) {
 	return service.repository.GetCourseByTutorID(ctx, tutorID)
 }

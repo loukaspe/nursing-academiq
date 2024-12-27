@@ -222,6 +222,166 @@ func (repo *QuizRepository) GetQuizByCourseID(
 	return domainQuizs, err
 }
 
+func (repo *QuizRepository) GetQuizzes(
+	ctx context.Context,
+) ([]domain.Quiz, error) {
+	var err error
+	var modelQuizzes []Quiz
+
+	err = repo.db.WithContext(ctx).
+		Model(Quiz{}).
+		Preload("Questions.Answers").
+		Preload("Course").
+		Find(&modelQuizzes).Error
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Quiz{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("quizzes not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Quiz{}, err
+	}
+
+	var domainQuizzes []domain.Quiz
+	for _, modelQuiz := range modelQuizzes {
+		domainQuestions := make([]domain.Question, 0, len(modelQuiz.Questions))
+		for _, modelQuestion := range modelQuiz.Questions {
+
+			domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
+			for _, modelAnswer := range modelQuestion.Answers {
+				domainAnswer := &domain.Answer{
+					Text:      modelAnswer.Text,
+					IsCorrect: modelAnswer.IsCorrect,
+				}
+
+				domainAnswers = append(domainAnswers, *domainAnswer)
+			}
+
+			domainQuestion := &domain.Question{
+				ID:                     uint32(modelQuestion.ID),
+				Text:                   modelQuestion.Text,
+				Explanation:            modelQuestion.Explanation,
+				Source:                 modelQuestion.Source,
+				MultipleCorrectAnswers: modelQuestion.MultipleCorrectAnswers,
+				NumberOfAnswers:        modelQuestion.NumberOfAnswers,
+				Answers:                domainAnswers,
+			}
+
+			domainQuestions = append(domainQuestions, *domainQuestion)
+		}
+
+		domainQuiz := &domain.Quiz{
+			ID:                uint32(modelQuiz.ID),
+			Title:             modelQuiz.Title,
+			Description:       modelQuiz.Description,
+			Visibility:        modelQuiz.Visibility,
+			ShowSubset:        modelQuiz.ShowSubset,
+			SubsetSize:        modelQuiz.SubsetSize,
+			ScoreSum:          modelQuiz.ScoreSum,
+			MaxScore:          modelQuiz.MaxScore,
+			NumberOfQuestions: len(modelQuiz.Questions),
+			Questions:         domainQuestions,
+			Course: &domain.Course{
+				ID:          uint32(modelQuiz.CourseID),
+				Title:       modelQuiz.Course.Title,
+				Description: modelQuiz.Course.Description,
+			},
+		}
+
+		domainQuizzes = append(domainQuizzes, *domainQuiz)
+	}
+
+	return domainQuizzes, err
+}
+
+func (repo *QuizRepository) GetMostRecentQuizzes(
+	ctx context.Context,
+	limit int,
+) ([]domain.Quiz, error) {
+	var err error
+	var modelQuizzes []Quiz
+
+	if limit > 0 {
+		err = repo.db.WithContext(ctx).
+			Order("created_at DESC").
+			Limit(limit).
+			Model(Quiz{}).
+			Preload("Questions.Answers").
+			Preload("Course").
+			Find(&modelQuizzes).Error
+	} else {
+		err = repo.db.WithContext(ctx).
+			Order("created_at DESC").
+			Model(Quiz{}).
+			Preload("Questions.Answers").
+			Preload("Course").
+			Find(&modelQuizzes).Error
+	}
+
+	if err == gorm.ErrRecordNotFound {
+		return []domain.Quiz{}, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("quizzes not found"),
+		}
+	}
+	if err != nil {
+		return []domain.Quiz{}, err
+	}
+
+	var domainQuizzes []domain.Quiz
+	for _, modelQuiz := range modelQuizzes {
+		domainQuestions := make([]domain.Question, 0, len(modelQuiz.Questions))
+		for _, modelQuestion := range modelQuiz.Questions {
+
+			domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
+			for _, modelAnswer := range modelQuestion.Answers {
+				domainAnswer := &domain.Answer{
+					Text:      modelAnswer.Text,
+					IsCorrect: modelAnswer.IsCorrect,
+				}
+
+				domainAnswers = append(domainAnswers, *domainAnswer)
+			}
+
+			domainQuestion := &domain.Question{
+				ID:                     uint32(modelQuestion.ID),
+				Text:                   modelQuestion.Text,
+				Explanation:            modelQuestion.Explanation,
+				Source:                 modelQuestion.Source,
+				MultipleCorrectAnswers: modelQuestion.MultipleCorrectAnswers,
+				NumberOfAnswers:        modelQuestion.NumberOfAnswers,
+				Answers:                domainAnswers,
+			}
+
+			domainQuestions = append(domainQuestions, *domainQuestion)
+		}
+
+		domainQuiz := &domain.Quiz{
+			ID:                uint32(modelQuiz.ID),
+			Title:             modelQuiz.Title,
+			Description:       modelQuiz.Description,
+			Visibility:        modelQuiz.Visibility,
+			ShowSubset:        modelQuiz.ShowSubset,
+			SubsetSize:        modelQuiz.SubsetSize,
+			ScoreSum:          modelQuiz.ScoreSum,
+			MaxScore:          modelQuiz.MaxScore,
+			NumberOfQuestions: len(modelQuiz.Questions),
+			Questions:         domainQuestions,
+			Course: &domain.Course{
+				ID:          uint32(modelQuiz.CourseID),
+				Title:       modelQuiz.Course.Title,
+				Description: modelQuiz.Course.Description,
+			},
+		}
+
+		domainQuizzes = append(domainQuizzes, *domainQuiz)
+	}
+
+	return domainQuizzes, err
+}
+
 func (repo *QuizRepository) UpdateQuiz(
 	ctx context.Context,
 	uid uint32,
