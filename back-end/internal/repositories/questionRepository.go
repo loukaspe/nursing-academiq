@@ -142,9 +142,9 @@ func (repo *QuestionRepository) GetChapterAndQuestionsByCourseID(
 		Description: modelCourse.Description,
 	}
 	domainChapters := make([]domain.Chapter, 0, len(modelCourse.Chapters))
-	domainQuestions := make([]domain.Question, 0)
 
 	for _, modelChapter := range modelCourse.Chapters {
+		domainQuestions := make([]domain.Question, 0)
 		domainChapter := domain.Chapter{
 			ID:    uint32(modelChapter.ID),
 			Title: modelChapter.Title,

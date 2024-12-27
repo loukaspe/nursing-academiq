@@ -27,6 +27,7 @@ import CreateQuiz from "./components/Quiz/CreateQuiz";
 import QuestionsManager from "./components/Questions/QuestionsManager";
 import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
+import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
 
 const cookies = new Cookies();
@@ -182,6 +183,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <QuestionsManager/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/:quizID/questions/select"
+                        element={
+                            <ProtectedRoutes>
+                                <QuestionsSelect/>
                             </ProtectedRoutes>
                         }
                     />

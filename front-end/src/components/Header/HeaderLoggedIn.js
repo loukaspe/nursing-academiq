@@ -36,6 +36,10 @@ const HeaderLoggedIn = () => {
                             {/*TODO: remove hardcoded 1*/}
                             <Link className="link" to="courses/1/questions/manage">Manage</Link>
                         </li>
+                        <li>
+                            {/*TODO: remove hardcoded 1*/}
+                            <Link className="link" to="courses/1/quizzes/1/questions/select">Select</Link>
+                        </li>
                         {/*<li>*/}
                         {/*    <Link className="link" to="test">Test</Link>*/}
                         {/*</li>*/}

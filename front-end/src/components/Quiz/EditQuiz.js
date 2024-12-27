@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import "./EditQuiz.css";
 
 import Cookies from "universal-cookie";
@@ -141,10 +141,9 @@ const EditQuiz = ({}) => {
                             <span className="singleChapterQuizzesPageChapterName">Επεξεργασία Quiz</span>
                             <button className="editQuizHeaderButton" onClick={() => navigate(-1)}>Πίσω</button>
                         </div>
-                        <button className="editQuizHeaderButton" onClick={() => {
-                            alert("questions")
-                        }}>Επιλογή Ερωτήσεων
-                        </button>
+                        <Link className="editQuizHeaderButton" to={`/courses/${courseID}/quizzes/${quizID}/questions/select`}>
+                            Επιλογή Ερωτήσεων
+                        </Link>
                     </div>
                 </div>
                 <div className="editQuizDetailsRow">
@@ -197,6 +196,7 @@ const EditQuiz = ({}) => {
                         </div>
                     </div>
                 </div>
+                {error && <div className="editQuestionErrorRow">{error}</div>}
                 <div className="editQuizQuestionsRow">
                     <div className="editQuizQuestionsList">
                         <div className="editQuizQuestionsListTitle">Ερωτήσεις</div>

@@ -95,6 +95,7 @@ func (handler *GetQuestionByCourseIDHandler) GetQuestionByCourseIDController(w h
 				NumberOfAnswers:        domainQuestion.NumberOfAnswers,
 				ChapterID:              uint(domainChapter.ID),
 				CourseID:               uint(domainCourse.ID),
+				Chapter:                Chapter{Title: domainChapter.Title},
 			}
 			questions = append(questions, question)
 		}

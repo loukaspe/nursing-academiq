@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
@@ -57,6 +58,7 @@ func (repo *QuizRepository) GetQuiz(
 		}
 
 		domainQuestion := &domain.Question{
+			ID:                     uint32(modelQuestion.ID),
 			Text:                   modelQuestion.Text,
 			Explanation:            modelQuestion.Explanation,
 			Source:                 modelQuestion.Source,
@@ -68,19 +70,8 @@ func (repo *QuizRepository) GetQuiz(
 		domainQuestions = append(domainQuestions, *domainQuestion)
 	}
 
-	// TODO: preload Tutor if needed
-	//domainUser := domain.User{
-	//	Username:    modelQuiz.User.Username,
-	//	Password:    modelQuiz.User.Password,
-	//	FirstName:   modelQuiz.User.FirstName,
-	//	LastName:    modelQuiz.User.LastName,
-	//	Email:       modelQuiz.User.Email,
-	//	BirthDate:   modelQuiz.User.BirthDate,
-	//	PhoneNumber: modelQuiz.User.PhoneNumber,
-	//	Photo:       modelQuiz.User.Photo,
-	//}
-
 	return &domain.Quiz{
+		ID:                uint32(modelQuiz.ID),
 		Title:             modelQuiz.Title,
 		Description:       modelQuiz.Description,
 		Visibility:        modelQuiz.Visibility,
@@ -409,6 +400,46 @@ func (repo *QuizRepository) UpdateQuiz(
 	err = repo.db.WithContext(ctx).Save(&modelQuiz).Error
 
 	return err
+}
+
+func (repo *QuizRepository) UpdateQuizQuestions(
+	ctx context.Context,
+	uid uint32,
+	questionsIDS []uint32,
+) error {
+	var quiz Quiz
+	if err := repo.db.WithContext(ctx).Preload("Questions").First(&quiz, uid).Error; err != nil {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New("quizID " + strconv.Itoa(int(uid)) + " not found"),
+		}
+	}
+
+	if len(questionsIDS) == 0 && len(quiz.Questions) == 0 {
+		return nil
+	}
+
+	if len(questionsIDS) == 0 {
+		if err := repo.db.WithContext(ctx).Model(&quiz).Association("Questions").Clear().Error; err != nil {
+			return fmt.Errorf("could not update questions for quiz with ID %d: %w", questionsIDS, err)
+		}
+
+		return nil
+	}
+
+	var questions []*Question
+	if err := repo.db.WithContext(ctx).Find(&questions, questionsIDS).Error; err != nil {
+		return apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      errors.New(fmt.Sprintf("questionIDs %v not found", questionsIDS)),
+		}
+	}
+
+	if err := repo.db.WithContext(ctx).Model(&quiz).Association("Questions").Replace(questions); err != nil {
+		return fmt.Errorf("could not update questions for quiz with ID %d: %w", questionsIDS, err)
+	}
+
+	return nil
 }
 
 func (repo *QuizRepository) DeleteQuiz(

@@ -32,6 +32,7 @@ type Answer struct {
 }
 
 type Question struct {
+	ID                     uint32
 	Text                   string
 	Explanation            string
 	Source                 string
@@ -46,6 +47,7 @@ type Course struct {
 }
 
 type QuizResponse struct {
+	ID                uint32
 	Title             string
 	Description       string
 	Visibility        bool
@@ -114,6 +116,7 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 		}
 
 		question := &Question{
+			ID:                     domainQuestion.ID,
 			Text:                   domainQuestion.Text,
 			Explanation:            domainQuestion.Explanation,
 			Source:                 domainQuestion.Source,
@@ -126,6 +129,7 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 	}
 
 	response.Quiz = &QuizResponse{
+		ID:          quiz.ID,
 		Title:       quiz.Title,
 		Description: quiz.Description,
 		Visibility:  quiz.Visibility,

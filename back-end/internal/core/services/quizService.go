@@ -42,6 +42,10 @@ func (service QuizService) UpdateQuiz(ctx context.Context, uid uint32, quiz *dom
 	return service.repository.UpdateQuiz(ctx, uid, quiz)
 }
 
+func (service QuizService) UpdateQuizQuestions(ctx context.Context, uid uint32, questionsIDs []uint32) error {
+	return service.repository.UpdateQuizQuestions(ctx, uid, questionsIDs)
+}
+
 func (service QuizService) DeleteQuiz(ctx context.Context, uid uint32) error {
 	return service.repository.DeleteQuiz(ctx, uid)
 }

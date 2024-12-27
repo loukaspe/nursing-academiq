@@ -124,6 +124,7 @@ func (s *Server) initializeRoutes() {
 	createQuizHandler := quiz.NewCreateQuizHandler(quizService, s.logger)
 	deleteQuizHandler := quiz.NewDeleteQuizHandler(quizService, s.logger)
 	updateQuizHandler := quiz.NewUpdateQuizHandler(quizService, s.logger)
+	updateQuizQuestionsHandler := quiz.NewUpdateQuizQuestionsHandler(quizService, s.logger)
 
 	protectedJWT.HandleFunc("/quiz", createQuizHandler.CreateQuizController).Methods("POST")
 	protectedJWT.HandleFunc("/quiz", optionsHandlerForCors).Methods(http.MethodOptions)
@@ -137,6 +138,8 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", updateQuizHandler.UpdateQuizController).Methods("PUT")
 	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}/questions", updateQuizQuestionsHandler.UpdateQuizQuestionsController).Methods("POST")
+	protectedJWT.HandleFunc("/quiz/{id:[0-9]+}/questions", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", getQuizByTutorIDHandler.GetQuizByTutorIDController).Methods("GET")
 	protectedJWT.HandleFunc("/tutor/{id:[0-9]+}/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
