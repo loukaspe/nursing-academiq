@@ -24,11 +24,12 @@ import EditChapter from "./components/Chapter/EditChapter";
 import CreateChapter from "./components/Chapter/CreateChapter";
 import EditQuiz from "./components/Quiz/EditQuiz";
 import CreateQuiz from "./components/Quiz/CreateQuiz";
-import QuestionsManager from "./components/Questions/QuestionsManager";
+import CourseQuestionsManager from "./components/Questions/CourseQuestionsManager";
 import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
 import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
+import QuestionsManager from "./components/Questions/QuestionsManager";
 
 const cookies = new Cookies();
 
@@ -179,10 +180,18 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="courses/:courseID/questions/manage"
+                        path="questions/manage"
                         element={
                             <ProtectedRoutes>
                                 <QuestionsManager/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/questions/manage"
+                        element={
+                            <ProtectedRoutes>
+                                <CourseQuestionsManager/>
                             </ProtectedRoutes>
                         }
                     />

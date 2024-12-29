@@ -1,0 +1,170 @@
+@import "../../styles/variables.css";
+
+.questionsManagerPageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*padding: 10px 0;*/
+}
+
+.questionsManagerPageInfo {
+    /*display: flex;*/
+    /*flex-grow: 1;*/
+    /*align-items: center;*/
+    /*display: inline;*/
+    /*border-bottom: 1px solid var(--dark-color);*/
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.questionsManagerPageTitle {
+    /*display: inline;*/
+    /*width:70%;*/
+    color: var(--dark-color);
+
+    font-size: 1.5rem;
+    padding: 0.5em;
+    font-weight: bold;
+
+    margin-right: 1rem;
+}
+
+.questionsManagerButton {
+    margin: 0.5em;
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.questionsManagerSubtitle {
+    /*height: 40%;*/
+    color: var(--dark-grey-color);
+    font-size: 1rem;
+    border-bottom: 0.1em solid var(--brand-dark-color);
+    display: flex;
+    padding: 1em;
+    font-weight: bold;
+    /*text-align: center;*/
+}
+
+.questionsChaptersContainer {
+    display: flex;
+    height: 50vh;
+}
+
+.questionsSection {
+    width: 70%;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+
+.questionsList {
+    max-height: 100%;
+    overflow-y: auto;
+    /*padding-right: 10px; */
+}
+
+.chaptersSection {
+    width: 30%;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.questionRow {
+    display: flex;
+    justify-content: space-between;
+    /*align-items: center;*/
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.questionCheckboxContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.questionText {
+    flex: 1;
+    /*justify-content: flex-start;*/
+    float: left;
+}
+
+.questionCheckbox {
+    width: 2em;
+    flex: 1;
+}
+
+.questionIcon {
+    color: var(--brand-color);
+    cursor: pointer;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.questionsIcon {
+    cursor: pointer;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.chapterRow {
+    display: flex;
+    justify-content: space-between;
+    /*align-items: center;*/
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.5rem;
+}
+
+.questionsChaptersButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2em;
+    /*width: 300px;*/
+}
+
+.questionsChaptersLeftButtons {
+    display: flex;
+    gap: 10px;
+    margin-left: 2em;
+}
+
+.questionsChaptersRightButton {
+    margin-left: auto;
+    margin-right: 2em;
+    background-color: var(--error-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.questionsChaptersRightButton:disabled {
+    background-color: var(--dark-grey-color);
+}
+
+.questionsChaptersButton {
+    margin: 0.5em;
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.questionsChaptersButton:disabled {
+    background-color: var(--dark-grey-color);
+}

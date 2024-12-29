@@ -33,8 +33,7 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="courses/1/questions/import">Import</Link>
                         </li>
                         <li>
-                            {/*TODO: remove hardcoded 1*/}
-                            <Link className="link" to="courses/1/questions/manage">Manage</Link>
+                            <Link className="link" to="questions/manage">Manage</Link>
                         </li>
                         <li>
                             {/*TODO: remove hardcoded 1*/}
