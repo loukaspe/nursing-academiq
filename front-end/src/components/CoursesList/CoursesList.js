@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./CoursesList.css";
-import Cookies from "universal-cookie";
 import {Link} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
-
-const cookies = new Cookies();
 
 const CoursesList = () => {
     const [courses, setCourses] = useState([]);
@@ -34,7 +31,7 @@ const CoursesList = () => {
                 }
 
                 if (result.courses === undefined) {
-                    throw Error("error getting courses for student");
+                    throw Error("error getting courses list");
                 }
                 setCourses(result.courses);
             } catch (error) {
@@ -48,13 +45,8 @@ const CoursesList = () => {
     return (
         <React.Fragment>
             <Breadcrumb actualPath="/courses" namePath="Μαθήματα"/>
-            <ul className="coursesList">
+            <div className="coursesList">
                 <div className="coursesListTitle">Κατάλογος Μαθημάτων</div>
-                <div className="headerContainer">
-                    <div className="singleCourseTextContainer">
-                    </div>
-                    <div style={{clear: 'both'}}></div>
-                </div>
                 {courses.map((item) => {
                     return (
                         <div className="singleCourseContainer">
@@ -66,7 +58,7 @@ const CoursesList = () => {
                         </div>
                     );
                 })}
-            </ul>
+            </div>
         </React.Fragment>
     );
 };
