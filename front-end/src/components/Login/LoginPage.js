@@ -8,10 +8,10 @@ const LoginPage = (props) => {
         return (
             <>
                 <div className="loginPageContainer">
-                    <div className="formContainer">
+                    <div className="logoContainer">
                         <Logo/>
                     </div>
-                    <div className="logoContainer">
+                    <div className="formContainer">
                         <LoginForm/>
                     </div>
                 </div>

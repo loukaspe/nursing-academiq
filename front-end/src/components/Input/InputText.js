@@ -5,12 +5,15 @@ import "./InputText.css";
 const InputText = (props) => {
     return (
         <>
-            <label htmlFor={props.id}>{props.label}</label><br/>
+            <label htmlFor={props.id}>
+                {props.label}
+            </label>
+            <br/>
             <input
                 id={props.id}
                 type="text"
                 placeholder={props.placeholder}
-                className="appInput"
+                className={props.className ? props.className : "appInput"}
                 onChange={props.onChangeHandler}
             /> <br/>
         </>

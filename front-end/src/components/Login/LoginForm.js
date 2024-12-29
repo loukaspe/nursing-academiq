@@ -99,7 +99,7 @@ const LoginForm = (props) => {
 
         return (
             <div className="loginForm">
-                <h1>Σύνδεση Χρήστη</h1>
+                <h1 className="loginFormTitle">Σύνδεση Χρήστη</h1>
                 <hr/>
                 <form onSubmit={onSubmitHandler}>
                     <InputText
@@ -107,12 +107,14 @@ const LoginForm = (props) => {
                         label="Όνομα Χρήστη"
                         id="username_input"
                         onChangeHandler={onUsernameChangeHandler}
+                        className="loginFormInput"
                     />
                     <InputText
                         placeholder=""
                         label="Κωδικός"
                         id="password_input"
                         onChangeHandler={onPasswordChangeHandler}
+                        className="loginFormInput"
                     />
                     <button className="submitButton" type="submit">Σύνδεση</button>
                 </form>

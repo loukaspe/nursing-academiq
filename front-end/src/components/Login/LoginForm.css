@@ -4,11 +4,27 @@
     /*width: 40%;*/
     /*height: 40%;*/
     padding: 1em 2em;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 1.2rem;
     border: 1px solid var(--brand-color);
     background-color: var(--mid-white-color);
     border-radius: 15px
+}
+
+.loginFormTitle {
+    text-align: center;
+}
+
+.loginFormInput {
+    width: 80%;
+    padding: 1em 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+    font-size: 1.2rem;
+    border:1px solid var(--brand-color);
+    background-color: var(--light-white-color);
+    border-radius: 15px;
 }
 
 .submitButton {
