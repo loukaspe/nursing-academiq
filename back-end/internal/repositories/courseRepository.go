@@ -185,6 +185,7 @@ func (repo *CourseRepository) GetCourses(
 	var modelCourses []Course
 
 	err = repo.db.WithContext(ctx).
+		Preload("Questions").
 		Model(Course{}).
 		Find(&modelCourses).Error
 
@@ -201,9 +202,10 @@ func (repo *CourseRepository) GetCourses(
 	var domainCourses []domain.Course
 	for _, modelCourse := range modelCourses {
 		domainCourses = append(domainCourses, domain.Course{
-			ID:          uint32(modelCourse.ID),
-			Title:       modelCourse.Title,
-			Description: modelCourse.Description,
+			ID:                uint32(modelCourse.ID),
+			Title:             modelCourse.Title,
+			Description:       modelCourse.Description,
+			NumberOfQuestions: len(modelCourse.Questions),
 		})
 	}
 

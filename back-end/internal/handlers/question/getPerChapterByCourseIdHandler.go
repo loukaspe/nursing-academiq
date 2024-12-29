@@ -75,8 +75,9 @@ func (handler *GetQuestionByCourseIDHandler) GetQuestionByCourseIDController(w h
 	}
 
 	course := Course{
-		ID:    domainCourse.ID,
-		Title: domainCourse.Title,
+		ID:                domainCourse.ID,
+		Title:             domainCourse.Title,
+		NumberOfQuestions: domainCourse.NumberOfQuestions,
 	}
 
 	for _, domainChapter := range domainCourse.Chapters {

@@ -12,6 +12,7 @@ type Course struct {
 	Tutor       Tutor
 	Chapters    []Chapter
 	Quizs       []Quiz
+	Questions   []Question
 }
 
 type Chapter struct {

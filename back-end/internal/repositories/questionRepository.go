@@ -123,6 +123,7 @@ func (repo *QuestionRepository) GetChapterAndQuestionsByCourseID(
 	var modelCourse Course
 
 	err = repo.db.WithContext(ctx).
+		Preload("Questions").
 		Preload("Chapters.Questions").
 		First(&modelCourse, courseID).Error
 
@@ -137,9 +138,10 @@ func (repo *QuestionRepository) GetChapterAndQuestionsByCourseID(
 	}
 
 	domainCourse := domain.Course{
-		ID:          uint32(modelCourse.ID),
-		Title:       modelCourse.Title,
-		Description: modelCourse.Description,
+		ID:                uint32(modelCourse.ID),
+		Title:             modelCourse.Title,
+		Description:       modelCourse.Description,
+		NumberOfQuestions: len(modelCourse.Questions),
 	}
 	domainChapters := make([]domain.Chapter, 0, len(modelCourse.Chapters))
 

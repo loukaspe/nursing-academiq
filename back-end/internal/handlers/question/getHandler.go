@@ -45,9 +45,10 @@ type Question struct {
 }
 
 type Course struct {
-	ID       uint32
-	Title    string
-	Chapters []Chapter
+	ID                uint32
+	Title             string
+	Chapters          []Chapter
+	NumberOfQuestions int
 }
 
 type GetQuestionResponse struct {
