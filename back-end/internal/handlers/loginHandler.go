@@ -10,43 +10,45 @@ import (
 	"net/http"
 )
 
-type JwtClaimsHandler struct {
+type LoginHandler struct {
 	jwtService   *services.JwtService
 	loginService *services.LoginService
 	logger       *log.Logger
 }
 
-func NewJwtClaimsHandler(
+func NewLoginHandler(
 	jwtService *services.JwtService,
 	loginService *services.LoginService,
 	logger *log.Logger,
-) *JwtClaimsHandler {
-	return &JwtClaimsHandler{
+) *LoginHandler {
+	return &LoginHandler{
 		jwtService:   jwtService,
 		loginService: loginService,
 		logger:       logger,
 	}
 }
 
-type JwtRequest struct {
+type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type JwtResponse struct {
-	Token        string `json:"token"`
+type LoginResponse struct {
+	AccessToken string `json:"access_token"`
+	//RefreshToken string `json:"refresh_token"`
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
-func (handler *JwtClaimsHandler) JwtTokenController(w http.ResponseWriter, r *http.Request) {
+func (handler *LoginHandler) LoginController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	//TODO: in all handlers add r.Context() instead of context.Background()
 
-	var request JwtRequest
-	var response JwtResponse
+	var request LoginRequest
+	var response LoginResponse
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		handler.logger.Error("Error in creating jwt token - request decode",
+		handler.logger.Error("Error in login - request decode",
 			map[string]interface{}{
 				"errorMessage": err.Error(),
 			})
@@ -91,25 +93,42 @@ func (handler *JwtClaimsHandler) JwtTokenController(w http.ResponseWriter, r *ht
 		UserID: userID,
 	}
 
-	result, err := handler.jwtService.CreateJwtTokenService(jwtSubject)
+	accessToken, err := handler.jwtService.CreateAccessJwtToken(jwtSubject)
 	if err != nil {
-		response.ErrorMessage = "error during creation of the token"
+		response.ErrorMessage = "error during creation of the access token"
 
 		handler.JsonResponse(w, http.StatusInternalServerError, &response)
 
 		return
 	}
 
-	response.Token = result
+	refreshToken, err := handler.jwtService.CreateRefreshJwtToken(jwtSubject)
+	if err != nil {
+		response.ErrorMessage = "error during creation of the refresh token"
+
+		handler.JsonResponse(w, http.StatusInternalServerError, &response)
+
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refreshToken",
+		Value:    refreshToken,
+		HttpOnly: true,
+		Secure:   true, // Ensure this is true in production
+		Path:     "/",
+	})
+
+	response.AccessToken = accessToken
 	handler.JsonResponse(w, http.StatusOK, &response)
 
 	return
 }
 
-func (handler *JwtClaimsHandler) JsonResponse(
+func (handler *LoginHandler) JsonResponse(
 	w http.ResponseWriter,
 	statusCode int,
-	response *JwtResponse,
+	response *LoginResponse,
 ) {
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(response)

@@ -27,7 +27,8 @@ func (s *Server) initializeRoutes() {
 
 	// auth
 	jwtMechanism := auth.NewAuthMechanism(
-		os.Getenv("JWT_SECRET_KEY"),
+		os.Getenv("JWT_ACCESS_SECRET_KEY"),
+		os.Getenv("JWT_REFRESH_SECRET_KEY"),
 		os.Getenv("JWT_SIGNING_METHOD"),
 	)
 	jwtService := services.NewJwtService(jwtMechanism)
@@ -36,8 +37,10 @@ func (s *Server) initializeRoutes() {
 
 	userRepository := repositories.NewUserRepository(s.DB)
 	loginService := services.NewLoginService(userRepository)
+	userService := services.NewUserService(userRepository)
 
-	jwtHandler := handlers.NewJwtClaimsHandler(jwtService, loginService, s.logger)
+	loginHandler := handlers.NewLoginHandler(jwtService, loginService, s.logger)
+	refreshTokenHandler := handlers.NewRefreshTokenHandler(jwtService, userService, s.logger)
 
 	protectedJWT := s.router.PathPrefix("/").Subrouter()
 	protectedJWT.Use(authMiddleware.JWTAuthenticationMW)
@@ -45,15 +48,19 @@ func (s *Server) initializeRoutes() {
 	protectedApiKey := s.router.PathPrefix("/").Subrouter()
 	protectedApiKey.Use(authMiddleware.APIKeyAuthenticationMW)
 
-	protectedApiKey.HandleFunc("/login", jwtHandler.JwtTokenController).Methods(http.MethodPost)
+	protectedApiKey.HandleFunc("/login", loginHandler.LoginController).Methods(http.MethodPost)
 	protectedApiKey.HandleFunc(
 		"/login",
 		optionsHandlerForCors,
 	).Methods(http.MethodOptions)
 
-	// user
-	userService := services.NewUserService(userRepository)
+	protectedApiKey.HandleFunc("/refresh-token", refreshTokenHandler.RefreshTokenController).Methods(http.MethodPost)
+	protectedApiKey.HandleFunc(
+		"/refresh-token",
+		optionsHandlerForCors,
+	).Methods(http.MethodOptions)
 
+	// user
 	changeUserPasswordHandler := user.NewChangeUserPasswordHandler(userService, s.logger)
 
 	protectedJWT.HandleFunc("/user/{id:[0-9]+}/change_password", changeUserPasswordHandler.ChangeUserPasswordController).Methods("POST")

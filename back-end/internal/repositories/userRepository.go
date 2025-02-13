@@ -72,6 +72,42 @@ func (repo *UserRepository) Login(
 	}, modelUser.ID, err
 }
 
+func (repo *UserRepository) GetUserByUsername(ctx context.Context, username string) (*domain.User, error) {
+	var err error
+	var modelUser *User
+
+	err = repo.db.WithContext(ctx).
+		Model(User{}).
+		Where("username = ?", username).
+		Take(&modelUser).Error
+	if err != nil {
+		return &domain.User{}, err
+	}
+
+	var modelTutor Tutor
+
+	repo.db.WithContext(ctx).
+		Where("user_id = ?", modelUser.ID).
+		First(&modelTutor)
+
+	var userType string
+	var specificID uint
+
+	userType = "tutor"
+	specificID = modelTutor.ID
+
+	return &domain.User{
+		ID:         modelUser.ID,
+		Username:   modelUser.Username,
+		Password:   modelUser.Password,
+		FirstName:  modelUser.FirstName,
+		LastName:   modelUser.LastName,
+		Email:      modelUser.Email,
+		UserType:   userType,
+		SpecificID: specificID,
+	}, err
+}
+
 func (repo *UserRepository) ChangeUserPassword(
 	ctx context.Context,
 	uid uint32,

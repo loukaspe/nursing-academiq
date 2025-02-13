@@ -13,16 +13,32 @@ func NewJwtService(domain domain.JwtClaimsInterface) *JwtService {
 	return &JwtService{jwtDomain: domain}
 }
 
-func (j *JwtService) CreateJwtTokenService(user *domain.JwtSubject) (string, error) {
-	tokenValue, err := j.jwtDomain.CreateToken(user.User.Username, user)
+func (j *JwtService) CreateAccessJwtToken(user *domain.JwtSubject) (string, error) {
+	tokenValue, err := j.jwtDomain.CreateAccessToken(user.User.Username, user)
 	if err != nil {
 		return "", err
 	}
 	return tokenValue, nil
 }
 
-func (j *JwtService) ClaimsFromJwtTokenService(token string) (jwt.MapClaims, error) {
-	claims, err := j.jwtDomain.GetClaimsFromToken(token)
+func (j *JwtService) CreateRefreshJwtToken(user *domain.JwtSubject) (string, error) {
+	tokenValue, err := j.jwtDomain.CreateRefreshToken(user.User.Username, nil)
+	if err != nil {
+		return "", err
+	}
+	return tokenValue, nil
+}
+
+func (j *JwtService) AccessClaimsFromJwtToken(token string) (jwt.MapClaims, error) {
+	claims, err := j.jwtDomain.GetClaimsFromAccessToken(token)
+	if err != nil {
+		return nil, err
+	}
+	return claims, nil
+}
+
+func (j *JwtService) RefreshClaimsFromJwtToken(token string) (jwt.MapClaims, error) {
+	claims, err := j.jwtDomain.GetClaimsFromRefreshToken(token)
 	if err != nil {
 		return nil, err
 	}

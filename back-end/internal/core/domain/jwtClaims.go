@@ -16,7 +16,9 @@ type JwtSubject struct {
 }
 
 type JwtClaimsInterface interface {
-	CreateToken(sub string, userInfo interface{}) (string, error)
-	GetClaimsFromToken(tokenString string) (jwt.MapClaims, error)
-	SetJWTClaimsContext(ctx context.Context, claims jwt.MapClaims) context.Context
+	CreateAccessToken(sub string, userInfo interface{}) (string, error)
+	CreateRefreshToken(sub string, userInfo interface{}) (string, error)
+	GetClaimsFromAccessToken(tokenString string) (jwt.MapClaims, error)
+	GetClaimsFromRefreshToken(tokenString string) (jwt.MapClaims, error)
+	SetAccessJWTClaimsContext(ctx context.Context, claims jwt.MapClaims) context.Context
 }

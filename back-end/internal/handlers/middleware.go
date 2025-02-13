@@ -18,6 +18,7 @@ type AuthenticationMechanismInterface interface {
 func NewAuthenticationMw(claims domain.JwtClaimsInterface, apiKey string) *AuthenticationMw {
 	return &AuthenticationMw{claimsDomain: claims, apiKey: apiKey}
 }
+
 func (a *AuthenticationMw) JWTAuthenticationMW(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
@@ -28,12 +29,12 @@ func (a *AuthenticationMw) JWTAuthenticationMW(next http.Handler) http.Handler {
 
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
-		claims, err := a.claimsDomain.GetClaimsFromToken(tokenString)
+		claims, err := a.claimsDomain.GetClaimsFromAccessToken(tokenString)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-		r = r.WithContext(a.claimsDomain.SetJWTClaimsContext(r.Context(), claims))
+		r = r.WithContext(a.claimsDomain.SetAccessJWTClaimsContext(r.Context(), claims))
 		next.ServeHTTP(w, r)
 	})
 }
