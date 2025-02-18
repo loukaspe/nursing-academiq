@@ -6,6 +6,7 @@ import (
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	log "github.com/sirupsen/logrus"
 	"net/http"
+	"time"
 )
 
 type RefreshTokenHandler struct {
@@ -49,6 +50,12 @@ func (handler *RefreshTokenHandler) RefreshTokenController(w http.ResponseWriter
 	claims, err := handler.jwtService.RefreshClaimsFromJwtToken(refreshToken)
 	if err != nil {
 		http.Error(w, "Invalid refresh token", http.StatusUnauthorized)
+		return
+	}
+
+	exp := int64(claims["exp"].(float64))
+	if time.Now().Unix() > exp {
+		http.Error(w, "Expired refresh token", http.StatusUnauthorized)
 		return
 	}
 

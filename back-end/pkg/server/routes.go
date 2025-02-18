@@ -197,8 +197,8 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/questions/bulk", optionsHandlerForCors).Methods(http.MethodOptions)
 
 	// TODO change to jwt since only tutors can
-	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", importQuestionHandler.ImportQuestionController).Methods("POST")
-	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions/import", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedJWT.HandleFunc("/courses/{id:[0-9]+}/questions/import", importQuestionHandler.ImportQuestionController).Methods("POST")
+	protectedJWT.HandleFunc("/courses/{id:[0-9]+}/questions/import", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions", getQuestionByCourseIDHandler.GetQuestionByCourseIDController).Methods("GET")
 	protectedApiKey.HandleFunc("/courses/{id:[0-9]+}/questions", optionsHandlerForCors).Methods(http.MethodOptions)
 
