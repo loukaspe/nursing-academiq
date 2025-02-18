@@ -6,7 +6,7 @@ import HomepageLoggedOut from "./HomepageLoggedOut";
 const cookies = new Cookies();
 
 const Homepage = () => {
-    const token = cookies.get("token");
+    const token = cookies.get("access_token");
     return token ? <HomepageLoggedIn/> : <HomepageLoggedOut/>;
 };
 

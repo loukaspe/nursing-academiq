@@ -3,11 +3,11 @@ import "./QuestionsSelect.css";
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFileExport, faFileImport, faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
-const cookies = new Cookies();
 const QuestionsSelect = () => {
     const [chapters, setChapters] = useState([]);
     const [selectedChaptersIDs, setSelectedChaptersIDs] = useState([]);
@@ -105,18 +105,12 @@ const QuestionsSelect = () => {
         event.preventDefault();
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${quizID}/questions`
+            let apiUrl = `/quiz/${quizID}/questions`
 
-            await axios.post(apiUrl, {
-                    questionsIDs: selectedQuestions.map((question) => question.ID),
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                });
+            await api.post(apiUrl, {
+                questionsIDs: selectedQuestions.map((question) => question.ID),
+            });
 
-            // window.location.href = `/courses/${courseID}/quizzes/${quizID}`;
             navigate(-1)
         } catch (error) {
             console.error('Error updating the quiz questions', error);
@@ -130,11 +124,7 @@ const QuestionsSelect = () => {
         if (window.confirm(confirmMessage)) {
             let apiUrl = process.env.REACT_APP_API_URL + `/questions/${question.ID}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl,)
                 .then(() => {
                     setQuestions((prevQuestions) => prevQuestions.filter(q => q.ID !== question.ID));
                 })
@@ -190,7 +180,8 @@ const QuestionsSelect = () => {
                                         />
                                     </span>
                                 </div>
-                                <div className="questionSelectChapterName">Θεματική Ενότητα: {question.Chapter.title}</div>
+                                <div className="questionSelectChapterName">Θεματική
+                                    Ενότητα: {question.Chapter.title}</div>
                             </div>
 
                         ))}

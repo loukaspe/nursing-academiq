@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import axios from 'axios';
 import "./EditCourse.css";
 
 import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
+
 const CreateCourse = () => {
     let userCookie = cookies.get("user");
     let specificID = userCookie.specificID;
@@ -19,27 +20,21 @@ const CreateCourse = () => {
         event.preventDefault();
         setIsSubmitting(true);
 
-        // Basic validation
         if (title.trim() === '' || description.trim() === '') {
             setError('Παρακαλώ συμπληρώστε τίτλο και περιγραφή μαθήματος.');
             return;
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/course`
+            let apiUrl = `/course`
 
-            await axios.post(apiUrl, {
-                    course: {
-                        title: title,
-                        description: description,
-                        tutorID: specificID,
-                    }
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                }).then((response) => {
+            await api.post(apiUrl, {
+                course: {
+                    title: title,
+                    description: description,
+                    tutorID: specificID,
+                }
+            }).then((response) => {
                 console.log(response.data);
                 setCourseID(response.data.insertedID);
             }).then(() => {

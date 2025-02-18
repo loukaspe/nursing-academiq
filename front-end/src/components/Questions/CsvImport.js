@@ -4,14 +4,14 @@ import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDownload, faPenToSquare, faUpload} from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "../Utilities/Breadcrumb";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import api from "../Utilities/APICaller";
 
 const CsvImport = () => {
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
     const [courseTitle, setCourseTitle] = useState('');
     const [fileName, setFileName] = useState("");
-    const [problematicQuestions, setProblematicQuestions] = useState([]);
     const [createNewChaptersOption, setCreateNewChaptersOption] = useState(true);
     const [exportMistakesOption, setExportMistakesOption] = useState(false);
 
@@ -69,13 +69,12 @@ const CsvImport = () => {
 
         // TODO: take course ID for real
         let courseID = 1;
-        let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions/import`
+        let apiUrl = `/courses/${courseID}/questions/import`
 
         try {
-            const response = await axios.post(apiUrl, formData, {
+            const response = await api.post(apiUrl, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
                 }
             });
 

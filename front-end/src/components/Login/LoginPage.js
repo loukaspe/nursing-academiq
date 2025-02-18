@@ -3,8 +3,7 @@ import "./LoginPage.css";
 import LoginForm from "./LoginForm";
 import Logo from "../Logo/Logo";
 
-
-const LoginPage = (props) => {
+const LoginPage = () => {
         return (
             <>
                 <div className="loginPageContainer">

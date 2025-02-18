@@ -7,6 +7,7 @@ import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -19,7 +20,7 @@ const ChapterQuizzesList = (props) => {
     let chapterID = params.chapterID;
     let courseID = params.courseID;
 
-    const token = cookies.get("token");
+    const token = cookies.get("access_token");
 
     const isTutorSignedIn = () => {
         return !!token;
@@ -62,13 +63,9 @@ const ChapterQuizzesList = (props) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${id}`
+            let apiUrl = `/chapter/${id}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl)
                 .then(() => {
                     window.location.href = `/courses/${courseID}/chapters`;
                 })
@@ -82,13 +79,9 @@ const ChapterQuizzesList = (props) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${id}`
+            let apiUrl = `/quiz/${id}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl)
                 .then(() => {
                     window.location.href = `/courses/${courseID}/chapters`;
                 })

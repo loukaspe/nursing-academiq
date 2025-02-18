@@ -4,6 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -51,28 +52,23 @@ const EditQuestion = () => {
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/${questionID}`
+            let apiUrl = `/questions/${questionID}`
 
             let multipleCorrectAnswers = answers.filter(answer => answer.IsCorrect).length > 1;
 
             let filteredAnswers = answers.filter(answer => answer.Text.trim() !== '');
             setAnswers(filteredAnswers)
 
-            await axios.put(apiUrl, {
-                    text: questionText,
-                    explanation: explanation,
-                    source: source,
-                    multipleCorrectAnswers: multipleCorrectAnswers,
-                    numberOfAnswers: answers.length,
-                    answers: filteredAnswers,
-                    courseID: parseInt(courseID),
-                    chapterID: chapters.find(chapter => chapter.Title === selectedChapter).ID
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                });
+            await api.put(apiUrl, {
+                text: questionText,
+                explanation: explanation,
+                source: source,
+                multipleCorrectAnswers: multipleCorrectAnswers,
+                numberOfAnswers: answers.length,
+                answers: filteredAnswers,
+                courseID: parseInt(courseID),
+                chapterID: chapters.find(chapter => chapter.Title === selectedChapter).ID
+            });
 
             setIsSubmitting(false);
             alert("Η Ερώτηση άλλαξε με επιτυχία.");
@@ -83,14 +79,9 @@ const EditQuestion = () => {
     };
     const handleDelete = async () => {
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/${questionID}`
+            let apiUrl = `/questions/${questionID}`
 
-            await axios.delete(apiUrl,
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                });
+            await api.delete(apiUrl);
             navigate(-1);
         } catch (error) {
             console.error('Error deleting the question', error);

@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import "./MyCoursesList.css";
 import Cookies from "universal-cookie";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -14,35 +13,26 @@ const MyCoursesList = () => {
         const fetchTutorCourses = async () => {
             let userCookie = cookies.get("user");
             let specificID = userCookie.specificID;
-
-            console.log(specificID);
-
-            let apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/courses`;
+            
+            let apiUrl = `/tutor/${specificID}/courses`;
 
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                    credentials: 'include',
-                });
-                const result = await response.json();
+                const response = await api.get(apiUrl);
+                
                 // TODO if 401 show unauthorized
                 // TODO if 500 show server error
                 if (response.status === 500) {
-                    throw Error(result.message);
+                    throw Error(response.data.message);
                 }
 
                 if (response.status === 401) {
                     throw Error("unauthorized: 401");
                 }
 
-                if (result.courses === undefined) {
-                    throw Error("error getting courses for student");
+                if (response.data.courses === undefined) {
+                    throw Error("error getting courses for tutor");
                 }
-                setCourses(result.courses);
+                setCourses(response.data.courses);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -59,7 +49,6 @@ const MyCoursesList = () => {
                 {courses.map((item) => {
                     return (
                         <div className="mySingleCourseContainer">
-                            {/*<FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>*/}
                             <div className="mySingleCourseTextContainer">
                                 <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
                                 <div className="mySingleCourseDetails">{item.description}</div>

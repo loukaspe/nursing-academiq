@@ -5,9 +5,8 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileExport, faFileImport, faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
-const cookies = new Cookies();
 const CourseQuestionsManager = () => {
     const [chapters, setChapters] = useState([]);
     const [selectedChaptersIDs, setSelectedChaptersIDs] = useState([]);
@@ -40,7 +39,6 @@ const CourseQuestionsManager = () => {
             },
         })
             .then(response => {
-                console.log(response.data);
                 if (response.data.course) {
                     setCourse(response.data.course);
                 }
@@ -97,16 +95,11 @@ const CourseQuestionsManager = () => {
         const confirmDelete = window.confirm(`Είστε σίγουρος/η ότι θέλετε να διαγράψετε ${numToDelete} ερώτηση/εις;`);
 
         if (confirmDelete) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/bulk`
+            let apiUrl = `/questions/bulk`
 
-            axios.post(apiUrl,
+            api.post(apiUrl,
                 {
                     IDs: selectedQuestions.map(q => q.ID),
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
                 })
                 .then(() => {
                     setQuestions((prevQuestions) => prevQuestions.filter(q => !selectedQuestions.includes(q)));
@@ -122,13 +115,9 @@ const CourseQuestionsManager = () => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ερώτηση ${question.Text};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions/${question.ID}`
+            let apiUrl = `/questions/${question.ID}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl)
                 .then(() => {
                     setQuestions((prevQuestions) => prevQuestions.filter(q => q.ID !== question.ID));
                 })
@@ -210,7 +199,7 @@ const CourseQuestionsManager = () => {
                     </Link>
                     <Link
                         className="questionsChaptersButton"
-                        to={`/questions/import`}>
+                        to={`/courses/${courseID}/questions/import`}>
                         <FontAwesomeIcon icon={faFileImport} className="questionsIcon"/> Εισαγωγή Αρχείου
                     </Link>
                     <button

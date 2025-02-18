@@ -6,14 +6,12 @@ import {jwtDecode} from 'jwt-decode'
 
 const cookies = new Cookies();
 
-const LoginForm = (props) => {
-        // const [credentials, setCredentials] = useState({username: '', password: ''})
-        // const [jwtToken, setJwtToken] = useState("");
-
+const LoginForm = () => {
         const [usernameInput, setUsernameInput] = useState("");
         const [passwordInput, setPasswordInput] = useState("");
 
         async function login(username, password) {
+            const apiUrl = process.env.REACT_APP_API_URL + "/login";
             let requestData = {username: username, password: password};
 
             const response = await fetch(apiUrl, {
@@ -36,10 +34,9 @@ const LoginForm = (props) => {
                 throw Error("unauthorized: 401");
             }
 
-            if (result.token === undefined) {
+            if (result.access_token === undefined) {
                 throw Error("unauthorized: no token");
             }
-
 
             cookies.set(
                 "result",
@@ -48,12 +45,11 @@ const LoginForm = (props) => {
                     path: "/",
                 }
             );
-            cookies.set("token", result.token, {
+            cookies.set("access_token", result.access_token, {
                 path: "/",
             });
 
-            const userInfo = jwtDecode(result.token).UserInfo;
-            console.log(userInfo)
+            const userInfo = jwtDecode(result.access_token).UserInfo;
             cookies.set(
                 "user",
                 {
@@ -69,12 +65,9 @@ const LoginForm = (props) => {
             window.location.href = "/";
         }
 
-        const apiUrl = process.env.REACT_APP_API_URL + "/login";
-
         const onSubmitHandler = (event) => {
             event.preventDefault();
 
-            // for empty submit
             if (usernameInput.trim().length <= 0)
                 return;
             setUsernameInput('')
@@ -82,8 +75,6 @@ const LoginForm = (props) => {
             if (passwordInput.trim().length <= 0)
                 return;
             setPasswordInput('')
-
-            // setCredentials({username: usernameInput, password: passwordInput})
 
             login(usernameInput, passwordInput)
                 .catch(error => console.log(error))

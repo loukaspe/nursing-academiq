@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import "./MyCoursesList.css";
-import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
@@ -34,7 +33,7 @@ const LimitedRecentCoursesList = () => {
                 }
 
                 if (result.courses === undefined) {
-                    throw Error("error getting courses for student");
+                    throw Error("error getting courses for tutor");
                 }
                 setCourses(result.courses);
             } catch (error) {

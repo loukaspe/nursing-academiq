@@ -7,7 +7,6 @@ const CoursesListModal = ({onCourseSelect, isOpen}) => {
 
 
     useEffect(() => {
-        console.log("anoiksaaa " + isOpen);
         const fetchCourses = async () => {
             let apiUrl = process.env.REACT_APP_API_URL + `/courses`;
 

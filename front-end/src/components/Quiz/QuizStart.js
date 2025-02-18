@@ -3,7 +3,6 @@ import "./QuizStart.css";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
 
-
 const QuizStart = () => {
     const [quiz, setQuiz] = useState({});
     const [course, setCourse] = useState({});
@@ -60,7 +59,6 @@ const QuizStart = () => {
     };
 
     return (
-
         <React.Fragment>
             <Breadcrumb
                 actualPath={`/courses/${courseID}/quizzes/${quizID}`}
@@ -78,9 +76,6 @@ const QuizStart = () => {
                             <Link className="quizSmallButton"
                                   to={`/courses/${courseID}/quizzes/${quizID}/complete`}>Έναρξη</Link>
                         </div>
-                        {/*<div className="quizButtonsRow">*/}
-                        {/*    <button className="quizLargeButton">Button</button>*/}
-                        {/*</div>*/}
                     </div>
                 </div>
             </div>

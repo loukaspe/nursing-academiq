@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./QuizzesList.css";
-import Cookies from "universal-cookie";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
-import axios from "axios";
 
 const LimitedRecentQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -34,7 +30,7 @@ const LimitedRecentQuizzesList = () => {
             }
 
             if (result.quizzes === undefined) {
-                throw Error("error getting quizzes for student");
+                throw Error("error getting quizzes for tutor");
             }
             setQuizzes(result.quizzes);
         } catch (error) {

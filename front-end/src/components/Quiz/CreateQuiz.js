@@ -6,6 +6,7 @@ import "./EditQuiz.css";
 import Cookies from "universal-cookie";
 import CoursesListModal from "../CoursesList/CoursesListModal";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -98,20 +99,15 @@ const CreateQuiz = () => {
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz`
+            let apiUrl = `/quiz`
 
-            await axios.post(apiUrl, {
+            await api.post(apiUrl, {
                     Title: title,
                     Description: description,
                     CourseID: parseInt(selectedCourseID),
                     Visibility: isVisible,
                     ShowSubset: isShowSubsetChecked,
                     SubsetSize: subsetSize,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
                 });
 
             window.location.href = `/courses/${selectedCourseID}/quizzes/`;

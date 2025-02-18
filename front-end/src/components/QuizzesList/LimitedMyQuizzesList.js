@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
-import axios from "axios";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -16,32 +16,24 @@ const LimitedMyQuizzesList = () => {
         let userCookie = cookies.get("user");
         let specificID = userCookie.specificID;
 
-        let apiUrl = process.env.REACT_APP_API_URL + `/tutor/${specificID}/quizzes`;
+        let apiUrl = `/tutor/${specificID}/quizzes`;
 
         try {
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-                credentials: 'include',
-            });
-            const result = await response.json();
+            const response = await api.get(apiUrl,);
             // TODO if 401 show unauthorized
             // TODO if 500 show server error
             if (response.status === 500) {
-                throw Error(result.message);
+                throw Error(response.data.message);
             }
 
             if (response.status === 401) {
                 throw Error("unauthorized: 401");
             }
 
-            if (result.quizzes === undefined) {
-                throw Error("error getting quizzes for student");
+            if (response.data.quizzes === undefined) {
+                throw Error("error getting quizzes for tutor");
             }
-            setQuizzes(result.quizzes);
+            setQuizzes(response.data.quizzes);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -55,13 +47,9 @@ const LimitedMyQuizzesList = () => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${id}`
+            let apiUrl = `/quiz/${id}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            }).then(
+            api.delete(apiUrl, ).then(
                 () => {
                     fetchUserQuizzes()
                 }

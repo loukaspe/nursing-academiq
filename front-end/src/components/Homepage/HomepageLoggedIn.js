@@ -4,7 +4,6 @@ import PageTitle from "../Utilities/PageTitle";
 import LimitedMyCoursesList from "../CoursesList/LimitedMyCoursesList";
 import LimitedMyQuizzesList from "../QuizzesList/LimitedMyQuizzesList";
 
-
 const Homepage = () => {
     return (
         <>

@@ -10,6 +10,7 @@ import LimitedRecentCourseChaptersList from "../ChaptersList/LimitedCourseChapte
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -18,7 +19,7 @@ const SingleCourse = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [chapters, setChapters] = useState([]);
 
-    const token = cookies.get("token");
+    const token = cookies.get("access_token");
 
     const isTutorSignedIn = () => {
         return !!token;
@@ -61,13 +62,9 @@ const SingleCourse = () => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το μάθημα ${course.title};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}`
+            let apiUrl = `/course/${courseID}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl)
                 .then(() => {
                     window.location.href = "/courses";
                 })

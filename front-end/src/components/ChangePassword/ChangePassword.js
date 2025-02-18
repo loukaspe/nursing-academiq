@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import './ChangePassword.css';
-import axios from "axios"; // Import CSS file for styling
 
 import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 const ChangePassword = () => {
@@ -48,22 +48,21 @@ const ChangePassword = () => {
             let userCookie = cookies.get("user");
             let userID = userCookie.id;
 
-            let apiUrl = process.env.REACT_APP_API_URL + `/user/${userID}/change_password`;
+            let apiUrl = `/user/${userID}/change_password`;
+            
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                    body: JSON.stringify({
-                        old_password: formData.oldPassword,
-                        new_password: formData.newPassword,
-                    }),
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    setApiError(errorData.message || 'Αποτυχία αλλαγής κωδικού: ελέγξτε τα στοιχεία σας και προσπαθήστε ξανά');
+                const response = await api.post(
+                    apiUrl,
+                    JSON.stringify({
+                            old_password: formData.oldPassword,
+                            new_password: formData.newPassword,
+                        }
+                    ))
+
+                console.log('Response:', response);
+
+                if (response.status !== 200) {
+                    setApiError(response.data.message || 'Αποτυχία αλλαγής κωδικού: ελέγξτε τα στοιχεία σας και προσπαθήστε ξανά');
                     setSuccessMessage('');
                 } else {
                     console.log('Password changed successfully!');

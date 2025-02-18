@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, {useState} from 'react';
 import {useParams} from "react-router-dom";
 import "./EditChapter.css";
 
-import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
-const cookies = new Cookies();
 const CreateChapter = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -28,25 +26,18 @@ const CreateChapter = () => {
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/chapter`
+            let apiUrl = `/chapter`
 
-            await axios.post(apiUrl, {
-                    title: title,
-                    description: description,
-                    courseID: parseInt(courseID),
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                }).then((response) => {
+            await api.post(apiUrl, {
+                title: title,
+                description: description,
+                courseID: parseInt(courseID),
+            }).then((response) => {
                 console.log(response.data);
                 setChapterID(response.data.insertedID);
             }).then(() => {
                 window.location.href = `/courses/${courseID}/chapters`;
             });
-
-
         } catch (error) {
             console.error('Error creating the chapter', error);
             setError('Υπήρξε πρόβλημα κατά την δημιουργία της Ενότητας. Παρακαλώ δοκιμάστε ξανά.');

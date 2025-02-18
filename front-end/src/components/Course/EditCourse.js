@@ -3,9 +3,8 @@ import axios from 'axios';
 import {useParams} from "react-router-dom";
 import "./EditCourse.css";
 
-import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
-const cookies = new Cookies();
 const EditCourse = ({courseId}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -39,23 +38,17 @@ const EditCourse = ({courseId}) => {
         event.preventDefault();
         setIsSubmitting(true);
 
-        // Basic validation
         if (title.trim() === '' || description.trim() === '') {
             setError('Παρακαλώ συμπληρώστε τίτλο και περιγραφή μαθήματος.');
             return;
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}`
+            let apiUrl = `/course/${courseID}`
 
-            await axios.put(apiUrl, {
+            await api.put(apiUrl, {
                     title: title,
                     description: description
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
                 });
 
             window.location.href = `/courses/${courseID}`;

@@ -3,7 +3,6 @@ import "./QuestionsWrapper.css";
 import Result from "./Result";
 import {useParams} from "react-router-dom";
 
-
 const QuestionsWrapper = () => {
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -68,7 +67,7 @@ const QuestionsWrapper = () => {
     const handleSubmit = () => {
 
         const unansweredCount = questions.length - Object.keys(selectedAnswers).length;
-        const confirmMessage = `You have ${unansweredCount} unanswered questions. Are you sure you want to submit?`;
+        const confirmMessage = `Έχετε ${unansweredCount} αναπάντητες ερωτήσεις. Θέλετε να προχωρήσετε ;`;
 
         if (window.confirm(confirmMessage)) {
             questions.forEach((question, index) => {

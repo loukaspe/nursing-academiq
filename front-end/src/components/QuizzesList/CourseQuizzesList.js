@@ -4,10 +4,10 @@ import Cookies from "universal-cookie";
 import {Link, useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
-import {useHistory} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
@@ -20,7 +20,7 @@ const CourseQuizzesList = (props) => {
 
     let navigate = useNavigate();
 
-    const token = cookies.get("token");
+    const token = cookies.get("access_token");
 
     const isTutorSignedIn = () => {
         return !!token;
@@ -56,13 +56,9 @@ const CourseQuizzesList = (props) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;
 
         if (window.confirm(confirmMessage)) {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${id}`
+            let apiUrl = `/quiz/${id}`
 
-            axios.delete(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${cookies.get("token")}`,
-                },
-            })
+            api.delete(apiUrl)
                 .then(() => {
                     window.location.href = `/courses/${courseID}/quizzes`;
                 })
@@ -90,7 +86,6 @@ const CourseQuizzesList = (props) => {
                         <Link className="courseButton" to={`/courses/${courseID}/quizzes/create`}>
                             + Προσθήκη Quiz
                         </Link>
-
                     </>
                 }
             </div>

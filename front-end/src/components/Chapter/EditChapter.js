@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import "./EditChapter.css";
 
 import Cookies from "universal-cookie";
+import api from "../Utilities/APICaller";
 
-const cookies = new Cookies();
+
 const EditChapter = ({}) => {
+    let navigate = useNavigate();
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [courseID, setCourseID] = useState('');
@@ -50,17 +53,13 @@ const EditChapter = ({}) => {
         try {
             let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${chapterID}`
 
-            await axios.put(apiUrl, {
-                    title: title,
-                    description: description
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
-                });
+            await api.put(apiUrl, {
+                title: title,
+                description: description
+            });
 
-            window.location.href = `/courses/${courseID}/chapters/${chapterID}/quizzes`;
+            // window.location.href = `/courses/${courseID}/chapters/${chapterID}/quizzes`;
+            navigate(-1)
         } catch (error) {
             console.error('Error updating the chapter', error);
             setError('Υπήρξε πρόβλημα κατά την επεξαργασία του Μαθήματος. Παρακαλώ δοκιμάστε ξανά.');
@@ -102,8 +101,7 @@ const EditChapter = ({}) => {
                 </form>
             </div>
         </div>
-    )
-        ;
+    );
 };
 
 export default EditChapter;

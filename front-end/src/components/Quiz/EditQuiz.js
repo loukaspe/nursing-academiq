@@ -5,6 +5,7 @@ import "./EditQuiz.css";
 
 import Cookies from "universal-cookie";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 const EditQuiz = ({}) => {
@@ -104,20 +105,15 @@ const EditQuiz = ({}) => {
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${quizID}`
+            let apiUrl = `/quiz/${quizID}`
 
-            await axios.put(apiUrl, {
+            await api.put(apiUrl, {
                     title: title,
                     description: description,
                     courseID: courseID,
                     visibility: isVisible,
                     showSubset: isShowSubsetChecked,
                     subsetSize: subsetSize,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
                 });
 
             window.location.href = `/courses/${courseID}/quizzes/`;

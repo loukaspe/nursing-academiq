@@ -29,7 +29,6 @@ import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
 import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
-import QuestionsManager from "./components/Questions/QuestionsManager";
 
 const cookies = new Cookies();
 
@@ -180,14 +179,6 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="questions/manage"
-                        element={
-                            <ProtectedRoutes>
-                                <QuestionsManager/>
-                            </ProtectedRoutes>
-                        }
-                    />
-                    <Route
                         path="courses/:courseID/questions/manage"
                         element={
                             <ProtectedRoutes>
@@ -258,7 +249,7 @@ function NotFound() {
 }
 
 function Logout() {
-    cookies.remove("token", {path: "/"});
+    cookies.remove("access_token", {path: "/"});
     cookies.remove("result", {path: "/"});
     cookies.remove("user", {path: "/"});
     window.location.href = "/";

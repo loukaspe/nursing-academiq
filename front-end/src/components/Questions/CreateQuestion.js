@@ -3,9 +3,7 @@ import './EditQuestion.css';
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
+import api from "../Utilities/APICaller";
 
 const CreateQuestion = () => {
     const [chapters, setChapters] = useState([]);
@@ -21,9 +19,7 @@ const CreateQuestion = () => {
 
     const params = useParams();
 
-    let questionID = params.id;
     let courseID = params.courseID;
-    let chapterID = params.chapterID;
 
     const handleChapterChange = (e) => setSelectedChapter(e.target.value);
     const handleQuestionTextChange = (e) => setQuestionText(e.target.value);
@@ -33,7 +29,6 @@ const CreateQuestion = () => {
         setAnswers(updatedAnswers);
     };
     const addAnswer = () => setAnswers([...answers, {Text: '', IsCorrect: false}]);
-    const removeAnswer = (index) => setAnswers(answers.filter((_, i) => i !== index));
     const handleExplanationChange = (e) => setExplanation(e.target.value);
     const handleSourceChange = (e) => setSource(e.target.value);
     const handleSave = async (event) => {
@@ -53,14 +48,14 @@ const CreateQuestion = () => {
         }
 
         try {
-            let apiUrl = process.env.REACT_APP_API_URL + `/questions`
+            let apiUrl = `/questions`
 
             let multipleCorrectAnswers = answers.filter(answer => answer.IsCorrect).length > 1;
 
             let filteredAnswers = answers.filter(answer => answer.Text.trim() !== '');
             setAnswers(filteredAnswers)
 
-            await axios.post(apiUrl, {
+            await api.post(apiUrl, {
                     text: questionText,
                     explanation: explanation,
                     source: source,
@@ -69,11 +64,6 @@ const CreateQuestion = () => {
                     answers: filteredAnswers,
                     courseID: parseInt(courseID),
                     chapterID: chapters.find(chapter => chapter.Title === selectedChapter).ID
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.get("token")}`,
-                    },
                 });
 
             setIsSubmitting(false);

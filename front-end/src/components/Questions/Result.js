@@ -5,11 +5,11 @@ const Result = ({score, questions, restartHandler}) => {
     return (
         <div className="resultWrapper">
             <div className="finalScore">
-                You scored {score} out of {questions.length}
+                Απαντήσατε σωστά σε {score} από τις {questions.length} ερωτήσεις.
             </div>
 
             <button onClick={restartHandler} className="restart">
-                RESTART{" "}
+                Επανάληψη{" "}
             </button>
         </div>
     );
