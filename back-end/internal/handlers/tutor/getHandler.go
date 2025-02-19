@@ -26,6 +26,19 @@ func NewGetTutorHandler(
 	}
 }
 
+type TutorRequest struct {
+	Tutor struct {
+		Username     string `json:"username"`
+		Password     string `json:"password"`
+		FirstName    string `json:"first_name"`
+		LastName     string `json:"last_name"`
+		Email        string `json:"email"`
+		BirthDate    string `json:"birth_date"`
+		PhoneNumber  string `json:"phone_number"`
+		AcademicRank string `json:"academic_rank"`
+	} `json:""`
+}
+
 type GetTutorResponse struct {
 	ErrorMessage string        `json:"errorMessage,omitempty"`
 	Tutor        *TutorRequest `json:"tutor,omitempty"`
@@ -77,7 +90,6 @@ func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *htt
 			Email        string `json:"email"`
 			BirthDate    string `json:"birth_date"`
 			PhoneNumber  string `json:"phone_number"`
-			Photo        string `json:"photo"`
 			AcademicRank string `json:"academic_rank"`
 		}{
 			Username:     tutor.Username,
@@ -87,7 +99,6 @@ func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *htt
 			Email:        tutor.Email,
 			BirthDate:    tutor.BirthDate.String(),
 			PhoneNumber:  tutor.PhoneNumber,
-			Photo:        tutor.Photo,
 			AcademicRank: tutor.AcademicRank,
 		},
 	}

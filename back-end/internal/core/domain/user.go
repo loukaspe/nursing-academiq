@@ -11,7 +11,6 @@ type User struct {
 	Email       string
 	BirthDate   time.Time
 	PhoneNumber string
-	Photo       string
 	UserType    string
 	SpecificID  uint
 }

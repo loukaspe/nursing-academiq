@@ -90,7 +90,6 @@ func (handler *UpdateTutorHandler) UpdateTutorController(w http.ResponseWriter, 
 		Email:       tutorRequest.Email,
 		BirthDate:   birthDate,
 		PhoneNumber: tutorRequest.PhoneNumber,
-		Photo:       tutorRequest.Photo,
 	}
 
 	domainTutor := &domain.Tutor{

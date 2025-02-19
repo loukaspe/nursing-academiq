@@ -9,7 +9,6 @@ Content-Type: application/json
   "email": "email10@email.com",
   "birth_date": "11-04-1998",
   "phone_number": "6986888141",
-  "photo": "phototest"
 }
 
 ###

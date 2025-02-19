@@ -50,7 +50,6 @@ func (repo *CourseRepository) GetCourse(
 	//	Email:       modelCourse.User.Email,
 	//	BirthDate:   modelCourse.User.BirthDate,
 	//	PhoneNumber: modelCourse.User.PhoneNumber,
-	//	Photo:       modelCourse.User.Photo,
 	//}
 
 	return &domain.Course{

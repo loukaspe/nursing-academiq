@@ -25,28 +25,15 @@ func NewCreateTutorHandler(
 	}
 }
 
-type TutorRequest struct {
-	// in:body
-	Tutor struct {
-		// Required: true
-		Username string `json:"username"`
-		// Required: true
-		Password string `json:"password"`
-		// Required: true
-		FirstName string `json:"first_name"`
-		// Required: true
-		LastName string `json:"last_name"`
-		// Required: true
-		Email string `json:"email"`
-		// Required: true
-		BirthDate string `json:"birth_date"`
-		// Required: true
-		PhoneNumber string `json:"phone_number"`
-		// Required: true
-		Photo string `json:"photo"`
-		// Required: true
-		AcademicRank string `json:"academic_rank"`
-	} `json:""`
+type CreateTutorRequest struct {
+	Username     string `json:"username"`
+	Password     string `json:"password"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Email        string `json:"email"`
+	BirthDate    string `json:"birth_date"`
+	PhoneNumber  string `json:"phone_number"`
+	AcademicRank string `json:"academic_rank"`
 }
 
 type CreateTutorResponse struct {
@@ -58,7 +45,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 	w.Header().Set("Content-Type", "application/json")
 
 	response := &CreateTutorResponse{}
-	request := &TutorRequest{}
+	request := &CreateTutorRequest{}
 
 	err := json.NewDecoder(r.Body).Decode(request)
 	if err != nil {
@@ -72,9 +59,7 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		return
 	}
 
-	tutorRequest := request.Tutor
-
-	birthDate, err := time.Parse("01-02-2006", tutorRequest.BirthDate)
+	birthDate, err := time.Parse("01-02-2006", request.BirthDate)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
@@ -87,19 +72,18 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 	}
 
 	domainUser := &domain.User{
-		Username:    tutorRequest.Username,
-		Password:    tutorRequest.Password,
-		FirstName:   tutorRequest.FirstName,
-		LastName:    tutorRequest.LastName,
-		Email:       tutorRequest.Email,
+		Username:    request.Username,
+		Password:    request.Password,
+		FirstName:   request.FirstName,
+		LastName:    request.LastName,
+		Email:       request.Email,
 		BirthDate:   birthDate,
-		PhoneNumber: tutorRequest.PhoneNumber,
-		Photo:       tutorRequest.Photo,
+		PhoneNumber: request.PhoneNumber,
 	}
 
 	domainTutor := &domain.Tutor{
 		User:         *domainUser,
-		AcademicRank: tutorRequest.AcademicRank,
+		AcademicRank: request.AcademicRank,
 	}
 
 	uid, err := handler.TutorService.CreateTutor(context.Background(), domainTutor)
