@@ -29,6 +29,7 @@ import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
 import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
+import CreateTutor from "./components/Tutor/CreateTutor";
 
 const cookies = new Cookies();
 
@@ -224,6 +225,14 @@ const App = () => {
                         element={
                             <ProtectedRoutes>
                                 <ChangePassword/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="create-tutor"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateTutor/>
                             </ProtectedRoutes>
                         }
                     />

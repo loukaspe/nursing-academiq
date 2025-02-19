@@ -24,7 +24,6 @@ const EditQuestion = () => {
 
     let questionID = params.id;
     let courseID = params.courseID;
-    let chapterID = params.chapterID;
 
     const handleChapterChange = (e) => setSelectedChapter(e.target.value);
     const handleQuestionTextChange = (e) => setQuestionText(e.target.value);
