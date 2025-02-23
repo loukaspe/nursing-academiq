@@ -50,7 +50,8 @@ func getDB() *gorm.DB {
 		log.Fatal("database migration error", err)
 	}
 
-	helper.LoadFakeData(db)
+	helper.PrepareDB(db)
+	//helper.LoadFakeData(db)
 
 	return db
 }

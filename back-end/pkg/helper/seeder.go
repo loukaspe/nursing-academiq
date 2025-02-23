@@ -303,6 +303,17 @@ func LoadFakeData(db *gorm.DB) {
 	CreateQuizzes(db)
 }
 
+func PrepareDB(db *gorm.DB) {
+	DropTables(db)
+	CreateAdminUser(db)
+	CreateAdminTutor(db)
+	CreateCoursesTable(db)
+	CreateChaptersTable(db)
+	CreateQuestionsTable(db)
+	CreateAnswersTable(db)
+	CreateQuizzesTable(db)
+}
+
 func CreateUsers(db *gorm.DB) {
 	var err error
 	err = db.Debug().AutoMigrate(&repositories.User{})
@@ -322,6 +333,32 @@ func CreateUsers(db *gorm.DB) {
 	}
 }
 
+func CreateAdminUser(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.User{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
+	}
+
+	admin := repositories.User{
+		Username:  "loukas",
+		Password:  "loukastest",
+		FirstName: "Loukas",
+		LastName:  "Peteinaris",
+		Email:     "loukas@email.com",
+	}
+
+	err = admin.BeforeSave()
+	if err != nil {
+		log.Fatalf("cannot hash in seed users table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.User{}).Create(&admin).Error
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
+	}
+
+}
+
 func CreateTutors(db *gorm.DB) {
 	var err error
 	err = db.Debug().AutoMigrate(&repositories.Tutor{})
@@ -334,6 +371,24 @@ func CreateTutors(db *gorm.DB) {
 		log.Fatalf("cannot seed tutors table: %v", err)
 	}
 	err = db.Debug().Model(&repositories.Tutor{}).Create(&tutor2).Error
+	if err != nil {
+		log.Fatalf("cannot seed tutors table: %v", err)
+	}
+}
+
+func CreateAdminTutor(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Tutor{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
+	}
+
+	var admin = repositories.Tutor{
+		UserID:       1,
+		AcademicRank: "Admin",
+	}
+
+	err = db.Debug().Model(&repositories.Tutor{}).Create(&admin).Error
 	if err != nil {
 		log.Fatalf("cannot seed tutors table: %v", err)
 	}
@@ -368,6 +423,14 @@ func CreateCourses(db *gorm.DB) {
 	}
 }
 
+func CreateCoursesTable(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Course{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
+	}
+}
+
 func CreateChapters(db *gorm.DB) {
 	var err error
 	err = db.Debug().AutoMigrate(&repositories.Chapter{})
@@ -389,6 +452,14 @@ func CreateChapters(db *gorm.DB) {
 	}
 }
 
+func CreateChaptersTable(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Chapter{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
+	}
+}
+
 func CreateQuestions(db *gorm.DB) {
 	var err error
 	err = db.Debug().AutoMigrate(&repositories.Question{})
@@ -407,6 +478,14 @@ func CreateQuestions(db *gorm.DB) {
 	err = db.Debug().Model(&repositories.Question{}).Create(&question3).Error
 	if err != nil {
 		log.Fatalf("cannot seed questions table: %v", err)
+	}
+}
+
+func CreateQuestionsTable(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Question{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
 	}
 }
 
@@ -440,6 +519,14 @@ func CreateAnswers(db *gorm.DB) {
 	err = db.Debug().Model(&repositories.Answer{}).Create(&answer6).Error
 	if err != nil {
 		log.Fatalf("cannot seed answers table: %v", err)
+	}
+}
+
+func CreateAnswersTable(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Answer{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
 	}
 }
 
@@ -477,6 +564,14 @@ func CreateQuizzes(db *gorm.DB) {
 	err = db.Debug().Model(&repositories.Quiz{}).Create(&quiz23).Error
 	if err != nil {
 		log.Fatalf("cannot seed quizs table: %v", err)
+	}
+}
+
+func CreateQuizzesTable(db *gorm.DB) {
+	var err error
+	err = db.Debug().AutoMigrate(&repositories.Quiz{})
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
 	}
 }
 
