@@ -146,9 +146,10 @@ const CourseQuestionsManager = () => {
             <div className="questionsChaptersContainer">
                 <div className="questionsSection">
                     <div className="questionsList">
-                        {questions.map((question, index) => (
-                            <div key={index} className="questionRow">
-                                <div>
+                        {questions.length > 0 ? (
+                            questions.map((question, index) => (
+                                <div key={index} className="questionRow">
+                                    <div>
                                     <span>
                                         <input
                                             className="questionCheckbox"
@@ -157,12 +158,12 @@ const CourseQuestionsManager = () => {
                                             checked={selectedQuestions.includes(question)}
                                         />
                                     </span>
-                                    <span>
+                                        <span>
                                         {question.Text}
                                     </span>
 
-                                </div>
-                                <span className="questionCheckboxContainer">
+                                    </div>
+                                    <span className="questionCheckboxContainer">
                                     <Link
                                         to={`/courses/${courseID}/chapters/${question.ChapterID}/questions/${question.ID}/edit`}>
                                         <FontAwesomeIcon icon={faPenToSquare} className="questionIcon"/>
@@ -171,22 +172,29 @@ const CourseQuestionsManager = () => {
                                         deleteQuestion(question)
                                     }}/>
                                 </span>
-                            </div>
-                        ))}
+                                </div>
+                            ))
+                        ) : (
+                            <div className="questionSelectDetails">Δεν υπάρχουν διαθέσιμες ερωτήσεις.</div>
+                        )}
                     </div>
                 </div>
                 <div className="chaptersSection">
                     <h2 className="questionsManagerPageTitle">Θεματικές Ενότητες</h2>
-                    {chapters.map((chapter) => (
-                        <div key={chapter.id} className="chapterRow">
-                            <span>{chapter.title}</span>
-                            <input
-                                type="checkbox"
-                                onChange={() => handleChapterCheckbox(chapter.id)}
-                                checked={selectedChaptersIDs.includes(chapter.id)}
-                            />
-                        </div>
-                    ))}
+                    {chapters.length > 0 ? (
+                        chapters.map((chapter) => (
+                            <div key={chapter.id} className="chapterRow">
+                                <span>{chapter.title}</span>
+                                <input
+                                    type="checkbox"
+                                    onChange={() => handleChapterCheckbox(chapter.id)}
+                                    checked={selectedChaptersIDs.includes(chapter.id)}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
+                    )}
                 </div>
             </div>
             <div className="questionsChaptersButtonContainer">

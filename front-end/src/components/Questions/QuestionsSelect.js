@@ -153,10 +153,11 @@ const QuestionsSelect = () => {
             <div className="questionsSelectChaptersContainer">
                 <div className="questionsSection">
                     <div className="questionsList">
-                        {questions.map((question, index) => (
-                            <div key={index} className="questionSelectRow">
-                                <div className="questionSelectRowTop">
-                                    <div className="questionSelectDetails">
+                        {questions.length > 0 ? (
+                            questions.map((question, index) => (
+                                <div key={index} className="questionSelectRow">
+                                    <div className="questionSelectRowTop">
+                                        <div className="questionSelectDetails">
                                         <span>
                                             <input
                                                 className="questionSelectCheckbox"
@@ -165,9 +166,9 @@ const QuestionsSelect = () => {
                                                 checked={selectedQuestions.includes(question)}
                                             />
                                         </span>
-                                        <span>{question.Text}</span>
-                                    </div>
-                                    <span className="questionSelectCheckboxContainer">
+                                            <span>{question.Text}</span>
+                                        </div>
+                                        <span className="questionSelectCheckboxContainer">
                                         <Link
                                             to={`/courses/${courseID}/chapters/${question.ChapterID}/questions/${question.ID}/edit`}
                                         >
@@ -179,26 +180,33 @@ const QuestionsSelect = () => {
                                             onClick={() => deleteQuestion(question)}
                                         />
                                     </span>
+                                    </div>
+                                    <div className="questionSelectChapterName">Θεματική
+                                        Ενότητα: {question.Chapter.title}</div>
                                 </div>
-                                <div className="questionSelectChapterName">Θεματική
-                                    Ενότητα: {question.Chapter.title}</div>
-                            </div>
 
-                        ))}
+                            ))
+                        ) : (
+                            <div className="questionSelectDetails">Δεν υπάρχουν διαθέσιμες ερωτήσεις.</div>
+                        ) }
                     </div>
                 </div>
                 <div className="chaptersSection">
                     <h2 className="questionsSelectPageTitle">Θεματικές Ενότητες</h2>
-                    {chapters.map((chapter) => (
-                        <div key={chapter.id} className="chapterRow">
-                            <span>{chapter.title}</span>
-                            <input
-                                type="checkbox"
-                                onChange={() => handleChapterCheckbox(chapter.id)}
-                                checked={selectedChaptersIDs.includes(chapter.id)}
-                            />
-                        </div>
-                    ))}
+                    {chapters.length > 0 ? (
+                        chapters.map((chapter) => (
+                            <div key={chapter.id} className="chapterRow">
+                                <span>{chapter.title}</span>
+                                <input
+                                    type="checkbox"
+                                    onChange={() => handleChapterCheckbox(chapter.id)}
+                                    checked={selectedChaptersIDs.includes(chapter.id)}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
+                    )}
                 </div>
             </div>
             {error && <div className="questionsSelectErrorRow">{error}</div>}

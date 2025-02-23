@@ -63,27 +63,31 @@ const LimitedMyQuizzesList = () => {
         <React.Fragment>
             <ul className="limitedQuizzesList">
                 <div className="quizzesListTitle">Τα Quiz Μου</div>
-                {quizzes.slice(0, visibleQuizzes).map((item) => {
-                    return (
-                        <div className="singleQuizContainer">
-                            <div className="quizContent">
-                                <div className="singleQuizTextContainer">
-                                    <div className="singleQuizTitle">{item.Title}</div>
-                                    <div className="singleQuizDetails">{item.CourseName}</div>
-                                    <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                {quizzes.length > 0 ? (
+                    quizzes.slice(0, visibleQuizzes).map((item) => {
+                        return (
+                            <div className="singleQuizContainer">
+                                <div className="quizContent">
+                                    <div className="singleQuizTextContainer">
+                                        <div className="singleQuizTitle">{item.Title}</div>
+                                        <div className="singleQuizDetails">{item.CourseName}</div>
+                                        <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                                    </div>
+                                </div>
+                                <div className="quizIcons">
+                                    <Link to={`/courses/${item.CourseID}/quizzes/${item.ID}/edit`}>
+                                        <FontAwesomeIcon icon={faPenToSquare} className="quizIcon"/>
+                                    </Link>
+                                    <FontAwesomeIcon icon={faTrashCan} className="quizIcon" onClick={() => {
+                                        deleteQuiz(item.ID, item.Title, item.CourseID)
+                                    }}/>
                                 </div>
                             </div>
-                            <div className="quizIcons">
-                                <Link to={`/courses/${item.CourseID}/quizzes/${item.ID}/edit`}>
-                                    <FontAwesomeIcon icon={faPenToSquare} className="quizIcon"/>
-                                </Link>
-                                <FontAwesomeIcon icon={faTrashCan} className="quizIcon" onClick={() => {
-                                    deleteQuiz(item.ID, item.Title, item.CourseID)
-                                }}/>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="singleQuizTitle">Δεν υπάρχουν διαθέσιμα quiz.</div>
+                )}
                 <div className={`quizzesButtonContainer ${quizzes.length > visibleQuizzes ? 'multiple' : 'single'}`}>
                     <Link className="myQuizzesListButton" to="/quizzes/create">+ Δημιουργία Quiz</Link>
                     {

@@ -46,16 +46,20 @@ const MyCoursesList = () => {
             <div className="myCoursesListTitle">Διαχείριση Μαθημάτων</div>
             <ul className="myCoursesList">
                 <div className="myCoursesListSubTitle">Επιλογή Μαθήματος</div>
-                {courses.map((item) => {
-                    return (
-                        <div className="mySingleCourseContainer">
-                            <div className="mySingleCourseTextContainer">
-                                <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
-                                <div className="mySingleCourseDetails">{item.description}</div>
+                {courses.length > 0 ? (
+                    courses.map((item) => {
+                        return (
+                            <div className="mySingleCourseContainer">
+                                <div className="mySingleCourseTextContainer">
+                                    <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
+                                    <div className="mySingleCourseDetails">{item.description}</div>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμα μαθήματα.</div>
+                )}
                 <Link className="registerButton" to="/courses/create">+ Δημιουργία Μαθήματος</Link>
             </ul>
         </React.Fragment>

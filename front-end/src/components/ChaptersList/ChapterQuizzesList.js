@@ -130,33 +130,37 @@ const ChapterQuizzesList = (props) => {
                     <SectionTitle title="Quiz Ενότητας"/>
                 </div>
                 <ul className="chapterQuizzesList">
-                    {quizzes.map((item) => {
-                        return (
-                            <div className="chaptersSingleQuizContainer">
-                                <div className="singleQuizRowContainer">
-                                    <Link className="singleQuizTitle"
-                                          to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
-                                    {
-                                        isTutorSignedIn() && <div className="chapterIcons">
+                    {quizzes.length > 0 ? (
+                        quizzes.map((item) => {
+                            return (
+                                <div className="chaptersSingleQuizContainer">
+                                    <div className="singleQuizRowContainer">
+                                        <Link className="singleQuizTitle"
+                                              to={`/courses/${courseID}/quizzes/${item.ID}`}>{item.Title}</Link>
+                                        {
+                                            isTutorSignedIn() && <div className="chapterIcons">
 
-                                            <Link to={`/courses/${props.courseID}/quizzes/${item.ID}/edit`}>
-                                                <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
-                                            </Link>
-                                            <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
-                                                deleteQuiz(item.ID, item.Title)
-                                            }}/>
-                                        </div>
-                                    }
+                                                <Link to={`/courses/${props.courseID}/quizzes/${item.ID}/edit`}>
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                                </Link>
+                                                <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
+                                                    deleteQuiz(item.ID, item.Title)
+                                                }}/>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className="singleQuizRowContainer">
+                                        <div className="singleQuizDetails">{item.Description}</div>
+                                    </div>
+                                    <div className="singleQuizRowContainer">
+                                        <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
+                                    </div>
                                 </div>
-                                <div className="singleQuizRowContainer">
-                                    <div className="singleQuizDetails">{item.Description}</div>
-                                </div>
-                                <div className="singleQuizRowContainer">
-                                    <div className="singleQuizDetails">{item.NumberOfQuestions} Ερωτήσεις</div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    ) : (
+                        <div className="singleQuizTitle">Δεν υπάρχουν διαθέσιμα quiz.</div>
+                    )}
                 </ul>
             </div>
         </React.Fragment>

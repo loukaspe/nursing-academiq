@@ -36,30 +36,34 @@ const LimitedCourseChaptersList = (props) => {
     return (
         <React.Fragment>
             <ul className="chaptersList">
-                {props.chapters.slice(0, visibleChapters).map((item) => {
-                    return (
-                        <div className="singleChapterContainer">
-                            <div className="singleChapterRowContainer">
-                                <Link className="singleChapterTitle"
-                                      to={`/courses/${props.courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
-                                {
-                                    isTutorSignedIn() && <div className="chapterIcons">
+                {props.chapters.length > 0 ? (
+                    props.chapters.slice(0, visibleChapters).map((item) => {
+                        return (
+                            <div className="singleChapterContainer">
+                                <div className="singleChapterRowContainer">
+                                    <Link className="singleChapterTitle"
+                                          to={`/courses/${props.courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                    {
+                                        isTutorSignedIn() && <div className="chapterIcons">
 
-                                        <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
-                                            <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
-                                        </Link>
-                                        <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
-                                            deleteChapter(item.ID, item.Title)
-                                        }}/>
-                                    </div>
-                                }
+                                            <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
+                                                <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                            </Link>
+                                            <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
+                                                deleteChapter(item.ID, item.Title)
+                                            }}/>
+                                        </div>
+                                    }
+                                </div>
+                                <div className="singleChapterRowContainer">
+                                    <div className="singleChapterDetails">{item.Description}</div>
+                                </div>
                             </div>
-                            <div className="singleChapterRowContainer">
-                                <div className="singleChapterDetails">{item.Description}</div>
-                            </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="singleChapterTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
+                )}
                 <div
                     className={`quizzesButtonContainer ${props.chapters.length > visibleChapters ? 'multiple' : 'single'}`}>
                     {

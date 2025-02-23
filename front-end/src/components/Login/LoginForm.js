@@ -3,6 +3,7 @@ import "./LoginForm.css";
 import InputText from "../Input/InputText";
 import Cookies from "universal-cookie";
 import {jwtDecode} from 'jwt-decode'
+import InputPassword from "../Input/InputPassword";
 
 const cookies = new Cookies();
 
@@ -100,7 +101,7 @@ const LoginForm = () => {
                         onChangeHandler={onUsernameChangeHandler}
                         className="loginFormInput"
                     />
-                    <InputText
+                    <InputPassword
                         placeholder=""
                         label="Κωδικός"
                         id="password_input"

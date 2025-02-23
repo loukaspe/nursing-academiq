@@ -89,30 +89,34 @@ const CourseChaptersList = (props) => {
                     <SectionTitle title="Θεματικές Ενότητες"/>
                 </div>
                 <ul className="courseChaptersList">
-                    {chapters.map((item) => {
-                        return (
-                            <div className="singleChapterContainer">
-                                <div className="singleChapterRowContainer">
-                                    <Link className="singleChapterTitle"
-                                          to={`/courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
-                                    {
-                                        isTutorSignedIn() && <div className="chapterIcons">
+                    {chapters.length > 0 ? (
+                        chapters.map((item) => {
+                            return (
+                                <div className="singleChapterContainer">
+                                    <div className="singleChapterRowContainer">
+                                        <Link className="singleChapterTitle"
+                                              to={`/courses/${courseID}/chapters/${item.ID}/quizzes`}>{item.Title}</Link>
+                                        {
+                                            isTutorSignedIn() && <div className="chapterIcons">
 
-                                            <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
-                                                <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
-                                            </Link>
-                                            <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
-                                                deleteChapter(item.ID, item.Title)
-                                            }}/>
-                                        </div>
-                                    }
+                                                <Link to={`/courses/${props.courseID}/chapters/${item.ID}/edit`}>
+                                                    <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
+                                                </Link>
+                                                <FontAwesomeIcon icon={faTrashCan} className="chapterIcon" onClick={() => {
+                                                    deleteChapter(item.ID, item.Title)
+                                                }}/>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className="singleChapterRowContainer">
+                                        <div className="singleChapterDetails">{item.Description}</div>
+                                    </div>
                                 </div>
-                                <div className="singleChapterRowContainer">
-                                    <div className="singleChapterDetails">{item.Description}</div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    ) : (
+                        <div className="singleChapterTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
+                    )}
                 </ul>
             </div>
         </React.Fragment>

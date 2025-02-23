@@ -47,18 +47,22 @@ const LimitedRecentCoursesList = () => {
     return (
         <React.Fragment>
             <ul className="limitedMyCoursesList">
-                <div className="myCoursesListTitle">Πρόσφατα Μαθήματά</div>
-                {courses.slice(0, visibleCourses).map((item) => {
-                    return (
-                        <div className="mySingleCourseContainer">
-                            <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
-                            <div className="mySingleCourseTextContainer">
-                                <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
-                                <div className="mySingleCourseDetails">{item.description}</div>
+                <div className="myCoursesListTitle">Πρόσφατα Μαθήματα</div>
+                {courses.length > 0 ? (
+                    courses.slice(0, visibleCourses).map((item) => {
+                        return (
+                            <div className="mySingleCourseContainer">
+                                <FontAwesomeIcon icon={faBookmark} className="bookmarkIcon"/>
+                                <div className="mySingleCourseTextContainer">
+                                    <Link className="mySingleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
+                                    <div className="mySingleCourseDetails">{item.description}</div>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμα μαθήματα.</div>
+                )}
                 <div className={`coursesButtonContainer ${courses.length > visibleCourses ? 'multiple' : 'single'}`}>
                     {
                         courses.length > visibleCourses

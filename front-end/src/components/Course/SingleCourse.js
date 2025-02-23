@@ -41,6 +41,7 @@ const SingleCourse = () => {
             },
         })
             .then(response => {
+                console.log(response.data);
                 if (response.data) {
                     setCourse(response.data);
                 }

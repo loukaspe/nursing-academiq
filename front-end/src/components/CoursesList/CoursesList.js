@@ -47,17 +47,21 @@ const CoursesList = () => {
             <Breadcrumb actualPath="/courses" namePath="Μαθήματα"/>
             <div className="coursesList">
                 <div className="coursesListTitle">Κατάλογος Μαθημάτων</div>
-                {courses.map((item) => {
-                    return (
-                        <div className="singleCourseContainer">
-                            <div className="singleCourseTextContainer">
-                                <Link className="singleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
-                                <div className="singleCourseDetails">{item.description}</div>
+                {courses.length > 0 ? (
+                    courses.map((item) => {
+                        return (
+                            <div className="singleCourseContainer">
+                                <div className="singleCourseTextContainer">
+                                    <Link className="singleCourseTitle" to={`/courses/${item.id}`}>{item.title}</Link>
+                                    <div className="singleCourseDetails">{item.description}</div>
+                                </div>
+                                <div style={{clear: 'both'}}></div>
                             </div>
-                            <div style={{clear: 'both'}}></div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="singleCourseTitle">Δεν υπάρχουν διαθέσιμα μαθήματα.</div>
+                )}
             </div>
         </React.Fragment>
     );

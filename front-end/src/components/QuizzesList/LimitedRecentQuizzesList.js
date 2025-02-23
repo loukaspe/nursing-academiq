@@ -46,19 +46,23 @@ const LimitedRecentQuizzesList = () => {
         <React.Fragment>
             <ul className="limitedQuizzesList">
                 <div className="quizzesListTitle">Πρόσφατα Quizzes</div>
-                {quizzes.slice(0, visibleQuizzes).map((item) => {
-                    return (
-                        <div className="singleQuizContainer">
-                            <div className="quizContent">
-                                <div className="singleQuizTextContainer">
-                                    <div className="singleQuizTitle">{item.Title}</div>
-                                    <div className="singleQuizDetails">{item.CourseName}</div>
-                                    <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                {quizzes.length > 0  ? (
+                    quizzes.slice(0, visibleQuizzes).map((item) => {
+                        return (
+                            <div className="singleQuizContainer">
+                                <div className="quizContent">
+                                    <div className="singleQuizTextContainer">
+                                        <div className="singleQuizTitle">{item.Title}</div>
+                                        <div className="singleQuizDetails">{item.CourseName}</div>
+                                        <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                ) : (
+                    <div className="singleQuizTitle">Δεν υπάρχουν διαθέσιμα quiz.</div>
+                )}
                 <div className={`quizzesButtonContainer ${quizzes.length > visibleQuizzes ? 'multiple' : 'single'}`}>
                     {
                         quizzes.length > visibleQuizzes
