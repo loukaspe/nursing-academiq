@@ -86,5 +86,6 @@ func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r 
 	response.CreatedQuizID = uid
 
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
 	return
 }

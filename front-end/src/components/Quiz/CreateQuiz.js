@@ -101,23 +101,29 @@ const CreateQuiz = () => {
         try {
             let apiUrl = `/quiz`
 
-            await api.post(apiUrl, {
-                    Title: title,
-                    Description: description,
-                    CourseID: parseInt(selectedCourseID),
-                    Visibility: isVisible,
-                    ShowSubset: isShowSubsetChecked,
-                    SubsetSize: subsetSize,
-                });
+            const response = await api.post(apiUrl, {
+                Title: title,
+                Description: description,
+                CourseID: parseInt(selectedCourseID),
+                Visibility: isVisible,
+                ShowSubset: isShowSubsetChecked,
+                SubsetSize: subsetSize,
+            });
 
-            window.location.href = `/courses/${selectedCourseID}/quizzes/`;
+
+            if (response.status === 201 && response.data.insertedID) {
+                const newQuizID = response.data.insertedID;
+
+                window.location.href = `/courses/${selectedCourseID}/quizzes/${newQuizID}/questions/select`;
+            } else {
+                console.error("Quiz creation failed, unexpected response:", response);
+            }
         } catch (error) {
             console.error('Error creating the quiz', error);
             setError('Υπήρξε πρόβλημα κατά την δημιουργία του quiz. Παρακαλώ δοκιμάστε ξανά.');
         }
         setIsSubmitting(false);
     };
-
 
 
     return (
@@ -138,10 +144,6 @@ const CreateQuiz = () => {
                             <span className="singleChapterQuizzesPageChapterName">Δημιουργία Quiz</span>
                             <button className="editQuizHeaderButton" onClick={() => navigate(-1)}>Πίσω</button>
                         </div>
-                        {/*TODO: change karfi 2*/}
-                        <Link className="editQuizHeaderButton" to={`/courses/${selectedCourseID}/quizzes/2/questions/select`}>
-                            Επιλογή Ερωτήσεων
-                        </Link>
                     </div>
                 </div>
                 <div className="editQuizDetailsRow">
@@ -205,7 +207,8 @@ const CreateQuiz = () => {
                     </div>
 
                     <div className="editQuizButtonsColumn">
-                        <button className="editQuizSaveButton" onClick={handleSubmit}>Αποθήκευση</button>
+                        <button className="editQuizSaveButton" onClick={handleSubmit}>Αποθήκευση και Επιλογή Ερωτήσεων
+                        </button>
                         <button className="editQuizDeleteButton">Διαγραφή</button>
                     </div>
                 </div>
