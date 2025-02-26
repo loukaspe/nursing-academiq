@@ -16,7 +16,7 @@ const HeaderLoggedOut = () => {
                             <Link className="link" to="/courses">Κατάλογος Μαθημάτων</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/questions">Questions</Link>
+                            <Link className="link" to="/quizzes">Διαθέσιμα Quiz</Link>
                         </li>
                     </ul>
                     <ul className="ul myAccountMenu">

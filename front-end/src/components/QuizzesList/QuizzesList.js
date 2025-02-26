@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./QuizzesList.css";
 import {Link} from "react-router-dom";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const QuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -43,6 +44,8 @@ const QuizzesList = () => {
 
     return (
         <React.Fragment>
+            <Breadcrumb actualPath={`/quizzes`}
+                        namePath={`/Quizzes`}/>
             <ul className="quizzesList">
                 <div className="quizzesListTitle">Τα Quiz Μου</div>
                 {quizzes.length > 0 ? (
