@@ -14,6 +14,7 @@ const InputPassword = (props) => {
                 placeholder={props.placeholder}
                 className={props.className ? props.className : "appInput"}
                 onChange={props.onChangeHandler}
+                value={props.value}
             /> <br/>
         </>
     );

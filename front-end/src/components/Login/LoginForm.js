@@ -2,53 +2,52 @@ import React, {useState} from "react";
 import "./LoginForm.css";
 import InputText from "../Input/InputText";
 import Cookies from "universal-cookie";
-import {jwtDecode} from 'jwt-decode'
+import {jwtDecode} from "jwt-decode";
 import InputPassword from "../Input/InputPassword";
 
 const cookies = new Cookies();
 
 const LoginForm = () => {
-        const [usernameInput, setUsernameInput] = useState("");
-        const [passwordInput, setPasswordInput] = useState("");
+    const [usernameInput, setUsernameInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-        async function login(username, password) {
-            const apiUrl = process.env.REACT_APP_API_URL + "/login";
-            let requestData = {username: username, password: password};
+    const login = async (username, password) => {
+        setError("");
+        setLoading(true);
+
+        try {
+            const apiUrl = `${process.env.REACT_APP_API_URL}/login`;
+            const requestData = {username, password};
 
             const response = await fetch(apiUrl, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify(requestData),
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`,
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
                 },
-                credentials: 'include',
+                credentials: "include",
             });
+
             const result = await response.json();
-            // TODO if 401 show unauthorized
-            // TODO if 500 show server error
-            if (response.status === 500) {
-                throw Error(result.message);
-            }
 
             if (response.status === 401) {
-                throw Error("unauthorized: 401");
+                setPasswordInput("");
+                throw new Error("Λάθος όνομα χρήστη ή κωδικός.");
             }
 
-            if (result.access_token === undefined) {
-                throw Error("unauthorized: no token");
+            if (!response.ok) {
+                throw new Error(result.error || `Σφάλμα: ${response.status}`);
             }
 
-            cookies.set(
-                "result",
-                result,
-                {
-                    path: "/",
-                }
-            );
-            cookies.set("access_token", result.access_token, {
-                path: "/",
-            });
+            if (!result.access_token) {
+                throw new Error("Unauthorized: No token received");
+            }
+
+            cookies.set("result", result, {path: "/"});
+            cookies.set("access_token", result.access_token, {path: "/"});
 
             const userInfo = jwtDecode(result.access_token).UserInfo;
             cookies.set(
@@ -56,63 +55,64 @@ const LoginForm = () => {
                 {
                     id: userInfo.UserID,
                     type: userInfo.User.UserType,
-                    specificID: userInfo.User.SpecificID
+                    specificID: userInfo.User.SpecificID,
                 },
-                {
-                    path: "/",
-                }
+                {path: "/"}
             );
 
             window.location.href = "/";
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+
+        if (!usernameInput.trim()) {
+            setError("Το όνομα χρήστη είναι υποχρεωτικό.");
+            return;
         }
 
-        const onSubmitHandler = (event) => {
-            event.preventDefault();
+        if (!passwordInput.trim()) {
+            setError("Ο κωδικός είναι υποχρεωτικός.");
+            return;
+        }
 
-            if (usernameInput.trim().length <= 0)
-                return;
-            setUsernameInput('')
+        login(usernameInput, passwordInput);
+    };
 
-            if (passwordInput.trim().length <= 0)
-                return;
-            setPasswordInput('')
-
-            login(usernameInput, passwordInput)
-                .catch(error => console.log(error))
-        };
-
-        const onUsernameChangeHandler = (event) => {
-            setUsernameInput(event.target.value)
-        };
-
-        const onPasswordChangeHandler = (event) => {
-            setPasswordInput(event.target.value)
-        };
-
-        return (
-            <div className="loginForm">
-                <h1 className="loginFormTitle">Σύνδεση Χρήστη</h1>
-                <hr/>
-                <form onSubmit={onSubmitHandler}>
-                    <InputText
-                        placeholder=""
-                        label="Όνομα Χρήστη"
-                        id="username_input"
-                        onChangeHandler={onUsernameChangeHandler}
-                        className="loginFormInput"
-                    />
-                    <InputPassword
-                        placeholder=""
-                        label="Κωδικός"
-                        id="password_input"
-                        onChangeHandler={onPasswordChangeHandler}
-                        className="loginFormInput"
-                    />
-                    <button className="submitButton" type="submit">Σύνδεση</button>
-                </form>
-            </div>
-        );
-    }
-;
+    return (
+        <div className="loginForm">
+            <h1 className="loginFormTitle">Σύνδεση Χρήστη</h1>
+            <hr/>
+            {error && <p className="loginErrorMessage">{error}</p>}
+            <form onSubmit={onSubmitHandler}>
+                <InputText
+                    label="Όνομα Χρήστη"
+                    id="username_input"
+                    onChangeHandler={(e) => setUsernameInput(e.target.value)}
+                    className="loginFormInput"
+                    value={usernameInput}
+                />
+                <InputPassword
+                    label="Κωδικός"
+                    id="password_input"
+                    onChangeHandler={(e) => {
+                        setPasswordInput(e.target.value);
+                        setError("")
+                    }}
+                    className="loginFormInput"
+                    value={passwordInput}
+                />
+                <button className="submitButton" type="submit" disabled={loading}>
+                    {loading ? "Σύνδεση..." : "Σύνδεση"}
+                </button>
+            </form>
+        </div>
+    );
+};
 
 export default LoginForm;

@@ -8,7 +8,7 @@
     font-size: 1.2rem;
     border: 1px solid var(--brand-color);
     background-color: var(--mid-white-color);
-    border-radius: 15px
+    border-radius: 15px;
 }
 
 .loginFormTitle {
@@ -28,7 +28,6 @@
 }
 
 .submitButton {
-    margin-top: 1em;
     background-color: var(--brand-color);
     color: var(--light-color);
     border: none;
@@ -36,6 +35,15 @@
     padding: 0.5em 1em;
     font-size: 1.2rem;
     cursor: pointer;
+    margin: 1em auto 0 auto; /* Centers the button */
+    display: block;
+}
+
+.loginErrorMessage {
+    color: var(--error-color);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 h1 {

@@ -34,7 +34,7 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	AccessToken string `json:"access_token"`
+	AccessToken string `json:"access_token,omitempty"`
 	//RefreshToken string `json:"refresh_token"`
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
@@ -74,7 +74,8 @@ func (handler *LoginHandler) LoginController(w http.ResponseWriter, r *http.Requ
 			"errorMessage": loginErrorWrapper.Unwrap().Error(),
 		}).Debug("Error in login")
 
-		w.WriteHeader(loginErrorWrapper.ReturnedStatusCode)
+		response.ErrorMessage = "invalid credentials"
+		handler.JsonResponse(w, loginErrorWrapper.ReturnedStatusCode, &response)
 
 		return
 	}
