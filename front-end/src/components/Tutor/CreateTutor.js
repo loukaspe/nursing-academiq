@@ -93,6 +93,12 @@ const CreateTutor = () => {
                         />
                     </div>
                     <div className="create-tutor-form-row">
+                        <p>     </p>
+                        <div className="create-tutor-note">
+                            *Ο κωδικός μπορεί να αλλάξει αργότερα απο το Προφίλ του νέου χρήστη
+                        </div>
+                    </div>
+                    <div className="create-tutor-form-row">
                         <label htmlFor="firstName">Όνομα:</label>
                         <input
                             type="text"
