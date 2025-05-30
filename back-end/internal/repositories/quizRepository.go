@@ -27,7 +27,6 @@ func (repo *QuizRepository) GetQuiz(
 	var modelQuiz *Quiz
 
 	err = repo.db.WithContext(ctx).
-		//Preload("Tutor").
 		Model(Quiz{}).
 		Preload("Questions.Answers").
 		Preload("Course").
@@ -150,6 +149,7 @@ func (repo *QuizRepository) GetQuizByCourseID(
 
 	err = repo.db.WithContext(ctx).
 		Preload("Quizs.Questions").
+		Where("visibility = ?", true).
 		First(&modelCourse, courseID).Error
 
 	if err == gorm.ErrRecordNotFound {
@@ -221,6 +221,7 @@ func (repo *QuizRepository) GetQuizzes(
 
 	err = repo.db.WithContext(ctx).
 		Model(Quiz{}).
+		Where("visibility = ?", true).
 		Preload("Questions.Answers").
 		Preload("Course").
 		Find(&modelQuizzes).Error
@@ -299,6 +300,7 @@ func (repo *QuizRepository) GetMostRecentQuizzes(
 			Order("created_at DESC").
 			Limit(limit).
 			Model(Quiz{}).
+			Where("visibility = ?", true).
 			Preload("Questions.Answers").
 			Preload("Course").
 			Find(&modelQuizzes).Error
@@ -306,6 +308,7 @@ func (repo *QuizRepository) GetMostRecentQuizzes(
 		err = repo.db.WithContext(ctx).
 			Order("created_at DESC").
 			Model(Quiz{}).
+			Where("visibility = ?", true).
 			Preload("Questions.Answers").
 			Preload("Course").
 			Find(&modelQuizzes).Error
