@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -34,14 +33,12 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	AccessToken string `json:"access_token,omitempty"`
-	//RefreshToken string `json:"refresh_token"`
+	AccessToken  string `json:"access_token,omitempty"`
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
 
 func (handler *LoginHandler) LoginController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//TODO: in all handlers add r.Context() instead of context.Background()
 
 	var request LoginRequest
 	var response LoginResponse
@@ -68,7 +65,7 @@ func (handler *LoginHandler) LoginController(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	loginUserResponse, userID, err := handler.loginService.Login(context.Background(), request.Username, request.Password)
+	loginUserResponse, userID, err := handler.loginService.Login(r.Context(), request.Username, request.Password)
 	if loginErrorWrapper, ok := err.(*apierrors.LoginError); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": loginErrorWrapper.Unwrap().Error(),
@@ -116,7 +113,7 @@ func (handler *LoginHandler) LoginController(w http.ResponseWriter, r *http.Requ
 		Name:     "refreshToken",
 		Value:    refreshToken,
 		HttpOnly: true,
-		Secure:   true, // Ensure this is true in production
+		Secure:   true,
 		Path:     "/",
 	})
 
@@ -135,9 +132,9 @@ func (handler *LoginHandler) JsonResponse(
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		response.ErrorMessage = "error in adding user favourite asset - json response"
+		response.ErrorMessage = "error in logging in - json response"
 
-		handler.logger.Error("Error in adding user favourite asset - json response",
+		handler.logger.Error("Error in logging in - json response",
 			map[string]interface{}{
 				"errorMessage": err.Error(),
 			})
