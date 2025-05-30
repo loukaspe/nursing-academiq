@@ -74,15 +74,6 @@ func (repo *QuestionRepository) ImportForCourse(
 	if err != nil {
 		return err
 	}
-
-	// TODO remove fake quiz create
-	modelQuiz := Quiz{}
-	modelQuiz.Title = "Test Quiz"
-	modelQuiz.Description = "This is just a test quiz"
-	modelQuiz.CourseID = courseID
-	modelQuiz.Questions = modelQuestions
-
-	return repo.db.WithContext(ctx).Create(&modelQuiz).Error
 }
 
 func (repo *QuestionRepository) CreateQuestion(
