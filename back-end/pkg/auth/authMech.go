@@ -31,7 +31,7 @@ func NewAuthMechanism(
 }
 func (j *AuthMechanism) CreateAccessToken(sub string, userInfo interface{}) (string, error) {
 	token := jwt.New(jwt.GetSigningMethod(j.signingMethod))
-	expiration := time.Now().Add(time.Minute)
+	expiration := time.Now().Add(time.Hour)
 	token.Claims = &domain.JwtClaims{
 		&jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiration),
@@ -47,8 +47,7 @@ func (j *AuthMechanism) CreateAccessToken(sub string, userInfo interface{}) (str
 }
 
 func (j *AuthMechanism) CreateRefreshToken(sub string, userInfo interface{}) (string, error) {
-	//const weekTime = time.Hour * 24 * 7
-	const weekTime = time.Hour * 1
+	const weekTime = time.Hour * 24 * 7
 
 	token := jwt.New(jwt.GetSigningMethod(j.signingMethod))
 	expiration := time.Now().Add(weekTime)
