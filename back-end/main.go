@@ -57,7 +57,7 @@ func getDB() *gorm.DB {
 }
 
 func loadEnv() {
-	err := godotenv.Load("./config/.env")
+	err := godotenv.Load("./.env")
 	if err != nil {
 		log.Fatalf("Error getting env, not comming through %v", err)
 	}
