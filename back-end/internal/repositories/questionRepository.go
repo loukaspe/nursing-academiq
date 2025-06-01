@@ -71,9 +71,7 @@ func (repo *QuestionRepository) ImportForCourse(
 		return nil
 	})
 
-	if err != nil {
-		return err
-	}
+	return err
 }
 
 func (repo *QuestionRepository) CreateQuestion(
