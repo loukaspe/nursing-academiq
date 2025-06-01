@@ -205,7 +205,7 @@ func (s *Server) initializeRoutes() {
 	s.router.Use(mux.CORSMethodMiddleware(s.router))
 
 	//// TODO fix allowed origns
-	corsOrigins := gorillaHandlers.AllowedOrigins([]string{"http://localhost:3000", "https://https://nursing-academiq.vercel.app/"})
+	corsOrigins := gorillaHandlers.AllowedOrigins([]string{"http://localhost:3000", "https://nursing-academiq.vercel.app"})
 	corsMethods := gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
 	corsHeaders := gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
 	corsCredentials := gorillaHandlers.AllowCredentials()
