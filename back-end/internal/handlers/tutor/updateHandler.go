@@ -1,7 +1,6 @@
 package tutor
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
@@ -97,7 +96,7 @@ func (handler *UpdateTutorHandler) UpdateTutorController(w http.ResponseWriter, 
 		AcademicRank: tutorRequest.AcademicRank,
 	}
 
-	err = handler.TutorService.UpdateTutor(context.Background(), uint32(uid), domainTutor)
+	err = handler.TutorService.UpdateTutor(r.Context(), uint32(uid), domainTutor)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

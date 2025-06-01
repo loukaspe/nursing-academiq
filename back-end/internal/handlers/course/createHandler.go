@@ -1,7 +1,6 @@
 package course
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -64,7 +63,7 @@ func (handler *CreateCourseHandler) CreateCourseController(w http.ResponseWriter
 		Description: courseRequest.Description,
 	}
 
-	uid, err := handler.CourseService.CreateCourse(context.Background(), domainCourse, courseRequest.TutorID)
+	uid, err := handler.CourseService.CreateCourse(r.Context(), domainCourse, courseRequest.TutorID)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

@@ -1,7 +1,6 @@
 package quiz
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
@@ -31,10 +30,10 @@ type GetQuizzesResponse struct {
 
 func (handler *GetQuizzesHandler) GetQuizzesController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//var err error
+
 	response := &GetQuizzesResponse{}
 
-	quizzes, err := handler.QuizService.GetQuizzes(context.Background())
+	quizzes, err := handler.QuizService.GetQuizzes(r.Context())
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

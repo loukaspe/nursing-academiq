@@ -1,7 +1,6 @@
 package question
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -66,7 +65,7 @@ func (handler *CreateQuestionHandler) CreateQuestionController(w http.ResponseWr
 		Chapter:                &domain.Chapter{ID: uint32(request.ChapterID)},
 	}
 
-	uid, err := handler.QuestionService.CreateQuestion(context.Background(), domainQuestion)
+	uid, err := handler.QuestionService.CreateQuestion(r.Context(), domainQuestion)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

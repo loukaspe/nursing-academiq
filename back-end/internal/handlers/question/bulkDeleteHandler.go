@@ -1,7 +1,6 @@
 package question
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
@@ -51,7 +50,7 @@ func (handler *BulkDeleteQuestionHandler) BulkDeleteQuestionController(w http.Re
 		return
 	}
 
-	err = handler.QuestionService.BulkDeleteQuestions(context.Background(), request.IDs)
+	err = handler.QuestionService.BulkDeleteQuestions(r.Context(), request.IDs)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

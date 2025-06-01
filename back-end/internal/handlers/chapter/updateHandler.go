@@ -1,7 +1,6 @@
 package chapter
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
@@ -75,7 +74,7 @@ func (handler *UpdateChapterHandler) UpdateChapterController(w http.ResponseWrit
 		Description: *request.Description,
 	}
 
-	err = handler.ChapterService.UpdateChapter(context.Background(), uint32(uid), domainChapter)
+	err = handler.ChapterService.UpdateChapter(r.Context(), uint32(uid), domainChapter)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

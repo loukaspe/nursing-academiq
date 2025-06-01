@@ -1,7 +1,6 @@
 package question
 
 import (
-	"context"
 	"encoding/csv"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -122,7 +121,7 @@ func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWr
 		domainQuestion.Chapter.Title = strings.TrimSpace(record[1])
 
 		if request.CreateNewChapters == false {
-			_, err = handler.chapterService.GetChapterByTitle(context.Background(), domainQuestion.Chapter.Title)
+			_, err = handler.chapterService.GetChapterByTitle(r.Context(), domainQuestion.Chapter.Title)
 			if _, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 				problematicRecords = append(problematicRecords, record)
 				continue
@@ -157,7 +156,7 @@ func (handler *ImportQuestionHandler) ImportQuestionController(w http.ResponseWr
 		domainQuestions = append(domainQuestions, domainQuestion)
 	}
 
-	err = handler.questionService.ImportForCourse(context.Background(), domainQuestions, uint(courseID))
+	err = handler.questionService.ImportForCourse(r.Context(), domainQuestions, uint(courseID))
 	if err != nil {
 		handler.logger.Error("Error importing questions", err)
 		http.Error(w, "Error importing questions", http.StatusInternalServerError)

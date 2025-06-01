@@ -1,7 +1,6 @@
 package course
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
@@ -36,7 +35,7 @@ type GetMostRecentCoursesResponse struct {
 
 func (handler *GetCourseHandler) GetMostRecentCoursesController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//var err error
+
 	response := &GetMostRecentCoursesResponse{}
 
 	var limit int
@@ -55,7 +54,7 @@ func (handler *GetCourseHandler) GetMostRecentCoursesController(w http.ResponseW
 		}
 	}
 
-	courses, err := handler.CourseService.GetMostRecentCourses(context.Background(), limit)
+	courses, err := handler.CourseService.GetMostRecentCourses(r.Context(), limit)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

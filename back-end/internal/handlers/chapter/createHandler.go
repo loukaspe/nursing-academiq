@@ -1,7 +1,6 @@
 package chapter
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -61,7 +60,7 @@ func (handler *CreateChapterHandler) CreateChapterController(w http.ResponseWrit
 		},
 	}
 
-	uid, err := handler.ChapterService.CreateChapter(context.Background(), domainChapter)
+	uid, err := handler.ChapterService.CreateChapter(r.Context(), domainChapter)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

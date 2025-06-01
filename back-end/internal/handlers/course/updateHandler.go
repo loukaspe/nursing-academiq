@@ -1,7 +1,6 @@
 package course
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
@@ -75,7 +74,7 @@ func (handler *UpdateCourseHandler) UpdateCourseController(w http.ResponseWriter
 		Description: *request.Description,
 	}
 
-	err = handler.CourseService.UpdateCourse(context.Background(), uint32(uid), domainCourse)
+	err = handler.CourseService.UpdateCourse(r.Context(), uint32(uid), domainCourse)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

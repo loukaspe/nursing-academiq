@@ -1,7 +1,6 @@
 package course
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -55,7 +54,7 @@ func (handler *GetCourseByTutorIDHandler) GetCourseByTutorIDController(w http.Re
 		return
 	}
 
-	courses, err := handler.CourseService.GetCourseByTutorID(context.Background(), uint32(tutorId))
+	courses, err := handler.CourseService.GetCourseByTutorID(r.Context(), uint32(tutorId))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

@@ -1,7 +1,6 @@
 package question
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
@@ -95,7 +94,7 @@ func (handler *UpdateQuestionHandler) UpdateQuestionController(w http.ResponseWr
 		Chapter:                &domain.Chapter{ID: uint32(request.ChapterID)},
 	}
 
-	err = handler.QuestionService.UpdateQuestion(context.Background(), uint32(uid), domainQuestion)
+	err = handler.QuestionService.UpdateQuestion(r.Context(), uint32(uid), domainQuestion)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

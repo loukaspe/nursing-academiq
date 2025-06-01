@@ -1,7 +1,6 @@
 package quiz
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -44,7 +43,7 @@ type GetQuizByCourseIDResponse struct {
 
 func (handler *GetQuizByCourseIDHandler) GetQuizByCourseIDController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	//var err error
+
 	response := &GetQuizByCourseIDResponse{}
 
 	id := mux.Vars(r)["id"]
@@ -62,7 +61,7 @@ func (handler *GetQuizByCourseIDHandler) GetQuizByCourseIDController(w http.Resp
 		return
 	}
 
-	quizs, err := handler.QuizService.GetQuizByCourseID(context.Background(), uint32(courseID))
+	quizs, err := handler.QuizService.GetQuizByCourseID(r.Context(), uint32(courseID))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

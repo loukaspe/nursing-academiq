@@ -1,7 +1,6 @@
 package quiz
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -71,7 +70,7 @@ func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r 
 		Course:      &domain.Course{ID: uint32(request.CourseID)},
 	}
 
-	uid, err := handler.QuizService.CreateQuiz(context.Background(), domainQuiz)
+	uid, err := handler.QuizService.CreateQuiz(r.Context(), domainQuiz)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),

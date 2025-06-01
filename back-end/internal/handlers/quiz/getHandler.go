@@ -1,7 +1,6 @@
 package quiz
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
@@ -85,7 +84,7 @@ func (handler *GetQuizHandler) GetQuizController(w http.ResponseWriter, r *http.
 		return
 	}
 
-	quiz, err := handler.QuizService.GetQuiz(context.Background(), uint32(uid))
+	quiz, err := handler.QuizService.GetQuiz(r.Context(), uint32(uid))
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

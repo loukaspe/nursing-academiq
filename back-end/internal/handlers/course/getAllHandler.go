@@ -1,7 +1,6 @@
 package course
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
@@ -39,7 +38,7 @@ func (handler *GetCoursesHandler) GetCoursesController(w http.ResponseWriter, r 
 
 	response := &GetCoursesResponse{}
 
-	courses, err := handler.CourseService.GetCourses(context.Background())
+	courses, err := handler.CourseService.GetCourses(r.Context())
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),
