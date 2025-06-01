@@ -30,6 +30,9 @@ type Quiz struct {
 	Title             string
 	NumberOfQuestions int
 	CourseName        string
+	ShowSubset        bool
+	SubsetSize        int
+	Visibility        bool
 }
 
 type Chapter struct {
@@ -90,6 +93,9 @@ func (handler *GetExtendedCourseHandler) GetExtendedCourseController(w http.Resp
 			Title:             quiz.Title,
 			NumberOfQuestions: quiz.NumberOfQuestions,
 			CourseName:        quiz.Course.Title,
+			ShowSubset:        quiz.ShowSubset,
+			SubsetSize:        quiz.SubsetSize,
+			Visibility:        quiz.Visibility,
 		})
 	}
 

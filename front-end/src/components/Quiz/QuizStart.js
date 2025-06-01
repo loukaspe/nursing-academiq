@@ -65,7 +65,11 @@ const QuizStart = () => {
                 namePath={`/Μαθήματα/${course.Title}/Quiz/${quiz.Title}`}
             />
             <div className="singleQuizName">
-                {quiz.Title} - {quiz.NumberOfQuestions} Ερωτήσεις
+                {
+                    quiz.ShowSubset
+                        ? `${quiz.Title} - ${quiz.SubsetSize} Ερωτήσεις`
+                        : `${quiz.Title} - ${quiz.NumberOfQuestions} Ερωτήσεις`
+                }
             </div>
             <div className="quiz-container">
                 <div className="questionCard">

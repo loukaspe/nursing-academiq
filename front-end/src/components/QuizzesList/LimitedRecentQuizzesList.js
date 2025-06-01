@@ -17,7 +17,7 @@ const LimitedRecentQuizzesList = () => {
                     Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
                 },
                 credentials: 'include',
-            });
+            })
             const result = await response.json();
             // TODO if 401 show unauthorized
             // TODO if 500 show server error
@@ -46,15 +46,21 @@ const LimitedRecentQuizzesList = () => {
         <React.Fragment>
             <ul className="limitedQuizzesList">
                 <div className="quizzesListTitle">Πρόσφατα Quizzes</div>
-                {quizzes.length > 0  ? (
+                {quizzes.some(quiz => quiz.Visibility) ? (
                     quizzes.slice(0, visibleQuizzes).map((item) => {
                         return (
                             <div className="singleQuizContainer">
                                 <div className="quizContent">
                                     <div className="singleQuizTextContainer">
-                                        <div className="singleQuizTitle">{item.Title}</div>
+                                        <Link className="singleQuizTitle"
+                                              to={`/courses/${item.Course.ID}/quizzes/${item.ID}`}>{item.Title}</Link>
                                         <div className="singleQuizDetails">{item.CourseName}</div>
-                                        <div className="singleQuizDetails">{item.NumberOfQuestions} ερωτήσεις</div>
+                                        <div className="singleQuizDetails">
+                                            {item.ShowSubset
+                                                ? `${item.SubsetSize} ερωτήσεις`
+                                                : `${item.NumberOfQuestions} ερωτήσεις`
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

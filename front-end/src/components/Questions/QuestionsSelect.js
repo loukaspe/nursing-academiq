@@ -111,7 +111,7 @@ const QuestionsSelect = () => {
                 questionsIDs: selectedQuestions.map((question) => question.ID),
             });
 
-            navigate(-1)
+            window.location.href = `/courses/${courseID}/quizzes`;
         } catch (error) {
             console.error('Error updating the quiz questions', error);
             setError('Υπήρξε πρόβλημα κατά την επεξαργασία των ερωτήσεων του quiz. Παρακαλώ δοκιμάστε ξανά.');

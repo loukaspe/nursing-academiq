@@ -22,8 +22,12 @@ const CreateChapter = () => {
         // Basic validation
         if (title.trim() === '' || description.trim() === '') {
             setError('Παρακαλώ συμπληρώστε τίτλο και περιγραφή ενότητας.');
+            setIsSubmitting(false);
             return;
         }
+
+        setError('');
+        setIsSubmitting(true);
 
         try {
             let apiUrl = `/chapter`
@@ -57,7 +61,11 @@ const CreateChapter = () => {
                             id="title"
                             name="title"
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                                setError('')
+                            }
+                            }
                         />
                     </div>
                     <div className="edit-chapter-form-row">
@@ -67,7 +75,10 @@ const CreateChapter = () => {
                             id="description"
                             name="description"
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => {
+                                setDescription(e.target.value)
+                                setError('')
+                            }}
                         />
                     </div>
                     <div className="edit-chapter-form-row">

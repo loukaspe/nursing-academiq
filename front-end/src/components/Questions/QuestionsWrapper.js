@@ -41,7 +41,12 @@ const QuestionsWrapper = () => {
                 if (result.quiz.Questions === undefined) {
                     throw Error("error getting quiz questions");
                 }
-                setQuestions(result.quiz.Questions);
+
+                if (result.quiz.ShowSubset) {
+                    setQuestions(getRandomSubset(result.quiz.Questions, result.quiz.SubsetSize))
+                } else {
+                    setQuestions(result.quiz.Questions);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -69,7 +74,7 @@ const QuestionsWrapper = () => {
         const unansweredCount = questions.length - Object.keys(selectedAnswers).length;
         const confirmMessage = `Έχετε ${unansweredCount} αναπάντητες ερωτήσεις. Θέλετε να προχωρήσετε ;`;
 
-        if (window.confirm(confirmMessage)) {
+        if (unansweredCount === 0 || window.confirm(confirmMessage)) {
             questions.forEach((question, index) => {
                 let correctAnswer = question.Answers.find((answer) => answer.IsCorrect);
 
@@ -204,5 +209,23 @@ const QuestionsWrapper = () => {
     );
 };
 
+
+function shuffleArray(arr) {
+    const a = arr.slice(); // copy it, so you don’t clobber the original
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// returns a random “slice” of length `size`
+function getRandomSubset(array, size) {
+    if (size >= array.length) {
+        return array.slice(); // or just return array if you don’t mind mutating it
+    }
+    const shuffled = shuffleArray(array);
+    return shuffled.slice(0, size);
+}
 
 export default QuestionsWrapper;
