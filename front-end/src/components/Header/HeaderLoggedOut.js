@@ -7,9 +7,6 @@ const HeaderLoggedOut = () => {
     return (
         <>
             <header className="appHeader">
-                <div className="appTitle">
-                    <Link className="link" to="/">Nursing Academiq</Link>
-                </div>
                 <nav className="nav">
                     <ul className="ul menu">
                         <li>

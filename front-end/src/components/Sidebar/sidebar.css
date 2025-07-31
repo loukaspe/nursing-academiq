@@ -1,0 +1,105 @@
+/* components/sidebar.css */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--mid-white-color);
+    color: var(--brand-dark-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-right: 0.5em solid var(--brand-dark-color);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.sidebar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.sidebar-link {
+    color: var(--brand-dark-color);
+    text-decoration: none;
+    font-size: 0.8em;
+    transition: color 0.2s ease;
+}
+
+.sidebar-link:hover {
+    color: #bdc3c7;
+}
+
+.sidebar-course {
+    margin-bottom: 20px;
+}
+
+.sidebar-course-title {
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.sidebar-section {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.sidebar-subtitle {
+    font-size: 1em;
+    color: var(--brand-dark-color);
+    margin-bottom: 5px;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0.5em;
+    margin: 0;
+}
+
+.sidebar-list li {
+    margin: 3px 0;
+}
+
+.sidebar-header {
+    background-color: var(--brand-color);
+    /*padding: 20px;*/
+    text-align: center;
+    padding: 1em;
+    width: 100%;
+    border-bottom: 0.5em solid var(--brand-dark-color);
+}
+
+.sidebar-content {
+    padding: 1em;
+}
+
+.app-name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--mid-white-color);
+    text-decoration: none;
+}
+
+.toggle-quizzes-btn {
+    background: none;
+    border: none;
+    color: var(--brand-color);
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    text-align: left;
+    padding: 0;
+}
+
+.toggle-quizzes-btn:hover {
+    text-decoration: underline;
+}

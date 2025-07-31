@@ -1,1 +1,11 @@
 @import "../../styles/variables.css";
+
+.layout-container {
+    display: flex;
+}
+
+.layout-main {
+    margin-left: 250px; /* same as sidebar width */
+    /*padding: 20px;*/
+    width: 100%;
+}
