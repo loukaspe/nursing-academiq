@@ -125,6 +125,7 @@ func (s *Server) initializeRoutes() {
 
 	getQuizHandler := quiz.NewGetQuizHandler(quizService, s.logger)
 	getQuizzesHandler := quiz.NewGetQuizzesHandler(quizService, s.logger)
+	searchQuizzesHandler := quiz.NewSearchQuizHandler(quizService, s.logger)
 	getMostRecentQuizzesHandler := quiz.NewGetMostRecentQuizzesHandler(quizService, s.logger)
 	getQuizByTutorIDHandler := quiz.NewGetQuizByTutorIDHandler(quizService, s.logger)
 	getQuizByCourseIDHandler := quiz.NewGetQuizByCourseIDHandler(quizService, s.logger)
@@ -137,6 +138,8 @@ func (s *Server) initializeRoutes() {
 	protectedJWT.HandleFunc("/quiz", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/quizzes", getQuizzesHandler.GetQuizzesController).Methods("GET")
 	protectedApiKey.HandleFunc("/quizzes", optionsHandlerForCors).Methods(http.MethodOptions)
+	protectedApiKey.HandleFunc("/quizzes/search", searchQuizzesHandler.SearchQuizController).Methods("POST")
+	protectedApiKey.HandleFunc("/quizzes/search", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/quizzes/recent", getMostRecentQuizzesHandler.GetMostRecentQuizzesController).Methods("GET")
 	protectedApiKey.HandleFunc("/quizzes/recent", optionsHandlerForCors).Methods(http.MethodOptions)
 	protectedApiKey.HandleFunc("/quiz/{id:[0-9]+}", getQuizHandler.GetQuizController).Methods("GET")

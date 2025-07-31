@@ -88,6 +88,87 @@ func (repo *QuizRepository) GetQuiz(
 	}, err
 }
 
+func (repo *QuizRepository) SearchQuiz(
+	ctx context.Context,
+	title string,
+	courseName string, // optional filter
+) ([]domain.Quiz, error) {
+	var err error
+	var modelQuizzes []*Quiz
+
+	query := repo.db.WithContext(ctx).
+		Model(&Quiz{}).
+		Preload("Questions.Answers").
+		Preload("Course").
+		Where("quizzes.title LIKE ?", "%"+title+"%")
+
+	if courseName != "" {
+		query = query.Joins("JOIN courses c ON c.id = quizzes.course_id").
+			Where("c.title = ?", courseName)
+	}
+
+	err = query.Find(&modelQuizzes).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if len(modelQuizzes) == 0 {
+		return nil, apierrors.DataNotFoundErrorWrapper{
+			ReturnedStatusCode: http.StatusNotFound,
+			OriginalError:      fmt.Errorf("no quizzes found with title LIKE '%s'", title),
+		}
+	}
+
+	var domainQuizzes []domain.Quiz
+
+	for _, modelQuiz := range modelQuizzes {
+		domainQuestions := make([]domain.Question, 0, len(modelQuiz.Questions))
+		for _, modelQuestion := range modelQuiz.Questions {
+
+			domainAnswers := make([]domain.Answer, 0, modelQuestion.NumberOfAnswers)
+			for _, modelAnswer := range modelQuestion.Answers {
+				domainAnswer := &domain.Answer{
+					Text:      modelAnswer.Text,
+					IsCorrect: modelAnswer.IsCorrect,
+				}
+				domainAnswers = append(domainAnswers, *domainAnswer)
+			}
+
+			domainQuestion := &domain.Question{
+				ID:                     uint32(modelQuestion.ID),
+				Text:                   modelQuestion.Text,
+				Explanation:            modelQuestion.Explanation,
+				Source:                 modelQuestion.Source,
+				MultipleCorrectAnswers: modelQuestion.MultipleCorrectAnswers,
+				NumberOfAnswers:        modelQuestion.NumberOfAnswers,
+				Answers:                domainAnswers,
+			}
+
+			domainQuestions = append(domainQuestions, *domainQuestion)
+		}
+
+		domainQuizzes = append(domainQuizzes, domain.Quiz{
+			ID:                uint32(modelQuiz.ID),
+			Title:             modelQuiz.Title,
+			Description:       modelQuiz.Description,
+			Visibility:        modelQuiz.Visibility,
+			ShowSubset:        modelQuiz.ShowSubset,
+			SubsetSize:        modelQuiz.SubsetSize,
+			ScoreSum:          modelQuiz.ScoreSum,
+			MaxScore:          modelQuiz.MaxScore,
+			NumberOfQuestions: len(modelQuiz.Questions),
+			Questions:         domainQuestions,
+			Course: &domain.Course{
+				ID:          uint32(modelQuiz.CourseID),
+				Title:       modelQuiz.Course.Title,
+				Description: modelQuiz.Course.Description,
+			},
+		})
+	}
+
+	return domainQuizzes, nil
+}
+
 func (repo *QuizRepository) GetQuizByTutorID(
 	ctx context.Context,
 	tutorID uint32,
