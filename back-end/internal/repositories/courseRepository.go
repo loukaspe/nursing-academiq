@@ -185,6 +185,8 @@ func (repo *CourseRepository) GetCourses(
 
 	err = repo.db.WithContext(ctx).
 		Preload("Questions").
+		Preload("Quizs.Questions").
+		Preload("Chapters").
 		Model(Course{}).
 		Find(&modelCourses).Error
 
@@ -200,10 +202,54 @@ func (repo *CourseRepository) GetCourses(
 
 	var domainCourses []domain.Course
 	for _, modelCourse := range modelCourses {
+		domainTutor := domain.Tutor{
+			User: domain.User{
+				FirstName: modelCourse.Tutor.User.FirstName,
+				LastName:  modelCourse.Tutor.User.LastName,
+			},
+		}
+
+		var domainQuizs []domain.Quiz
+
+		for _, modelQuiz := range modelCourse.Quizs {
+			var numberOfQuestions int
+			for _, _ = range modelQuiz.Questions {
+				numberOfQuestions++
+			}
+
+			domainQuizs = append(domainQuizs, domain.Quiz{
+				ID:                uint32(modelQuiz.ID),
+				Title:             modelQuiz.Title,
+				Description:       modelQuiz.Description,
+				Visibility:        modelQuiz.Visibility,
+				ShowSubset:        modelQuiz.ShowSubset,
+				SubsetSize:        modelQuiz.SubsetSize,
+				ScoreSum:          modelQuiz.ScoreSum,
+				MaxScore:          modelQuiz.MaxScore,
+				NumberOfQuestions: numberOfQuestions,
+				Course: &domain.Course{
+					Title: modelCourse.Title,
+				},
+			})
+		}
+
+		var domainChapters []domain.Chapter
+
+		for _, modelChapter := range modelCourse.Chapters {
+			domainChapters = append(domainChapters, domain.Chapter{
+				ID:          uint32(modelChapter.ID),
+				Title:       modelChapter.Title,
+				Description: modelChapter.Description,
+			})
+		}
+
 		domainCourses = append(domainCourses, domain.Course{
 			ID:                uint32(modelCourse.ID),
 			Title:             modelCourse.Title,
 			Description:       modelCourse.Description,
+			Quizzes:           domainQuizs,
+			Chapters:          domainChapters,
+			Tutor:             &domainTutor,
 			NumberOfQuestions: len(modelCourse.Questions),
 		})
 	}

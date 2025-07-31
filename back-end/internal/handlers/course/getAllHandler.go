@@ -26,10 +26,13 @@ func NewGetCoursesHandler(
 type GetCoursesResponse struct {
 	ErrorMessage string `json:"errorMessage,omitempty"`
 	Courses      []struct {
-		ID                uint32 `json:"id"`
-		Title             string `json:"title"`
-		Description       string `json:"description"`
-		NumberOfQuestions int    `json:"numberOfQuestions"`
+		ID                uint32    `json:"id"`
+		Title             string    `json:"title"`
+		Description       string    `json:"description"`
+		Quizzes           []Quiz    `json:"quizzes,omitempty"`
+		Chapters          []Chapter `json:"chapters,omitempty"`
+		TutorName         string    `json:"tutorName"`
+		NumberOfQuestions int       `json:"numberOfQuestions"`
 	} `json:"courses,omitempty"`
 }
 
@@ -56,17 +59,47 @@ func (handler *GetCoursesHandler) GetCoursesController(w http.ResponseWriter, r 
 	}
 
 	for _, course := range courses {
-		response.Courses = append(response.Courses, struct {
-			ID                uint32 `json:"id"`
-			Title             string `json:"title"`
-			Description       string `json:"description"`
-			NumberOfQuestions int    `json:"numberOfQuestions"`
+		responseCourse := struct {
+			ID                uint32    `json:"id"`
+			Title             string    `json:"title"`
+			Description       string    `json:"description"`
+			Quizzes           []Quiz    `json:"quizzes,omitempty"`
+			Chapters          []Chapter `json:"chapters,omitempty"`
+			TutorName         string    `json:"tutorName"`
+			NumberOfQuestions int       `json:"numberOfQuestions"`
 		}{
 			ID:                course.ID,
 			Title:             course.Title,
 			Description:       course.Description,
 			NumberOfQuestions: course.NumberOfQuestions,
-		})
+			TutorName:         course.Tutor.User.FirstName + " " + course.Tutor.User.LastName,
+		}
+
+		for _, quiz := range course.Quizzes {
+			responseCourse.Quizzes = append(responseCourse.Quizzes, Quiz{
+				ID:                quiz.ID,
+				Title:             quiz.Title,
+				NumberOfQuestions: quiz.NumberOfQuestions,
+				CourseName:        quiz.Course.Title,
+				ShowSubset:        quiz.ShowSubset,
+				SubsetSize:        quiz.SubsetSize,
+				Visibility:        quiz.Visibility,
+			})
+		}
+
+		for _, chapter := range course.Chapters {
+			responseCourse.Chapters = append(responseCourse.Chapters, struct {
+				ID          uint32
+				Title       string
+				Description string
+			}{
+				ID:          chapter.ID,
+				Title:       chapter.Title,
+				Description: chapter.Description,
+			})
+		}
+
+		response.Courses = append(response.Courses, responseCourse)
 	}
 
 	json.NewEncoder(w).Encode(response)
