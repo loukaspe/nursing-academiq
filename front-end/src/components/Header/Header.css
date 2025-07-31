@@ -2,7 +2,7 @@
 
 .appHeader {
     background-color: var(--brand-color);
-    display: flex;
+    display: flow-root;
 }
 
 .appTitle {
@@ -21,7 +21,7 @@
 
 .nav {
     float: right;
-    width: 80%;
+    width: 90%;
     display: flex;
 }
 

@@ -62,7 +62,7 @@ const LimitedMyQuizzesList = () => {
     return (
         <React.Fragment>
             <ul className="limitedQuizzesList">
-                <div className="quizzesListTitle">Τα Quiz Μου</div>
+                <div className="quizzesListTitle">Quizzes</div>
                 {quizzes.length > 0 ? (
                     quizzes.slice(0, visibleQuizzes).map((item) => {
                         return (

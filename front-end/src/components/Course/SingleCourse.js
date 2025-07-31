@@ -124,7 +124,7 @@ const SingleCourse = () => {
                     </div>
                     <div className="singleCourseQuizzes">
                         <div className="singleCoursePageSectionTitle">
-                            <SectionTitle title="Πρόσφατα Quizs"/>
+                            <SectionTitle title="Quizzes"/>
                         </div>
                         <LimitedRecentCourseQuizzesList quizzes={quizzes} courseID={courseID}/>
                     </div>

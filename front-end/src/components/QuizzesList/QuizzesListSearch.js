@@ -12,7 +12,7 @@ const QuizzesListSearch = () => {
             <Breadcrumb actualPath={`/quizzes`}
                         namePath={`/Quizzes`}/>
             <ul className="quizzesList">
-                <div className="quizzesListTitle">Τα Quiz Μου</div>
+                <div className="quizzesListTitle">Quizzes</div>
                 {quizzes.length > 0 ? (
                     quizzes.map((item) => {
                         return (
