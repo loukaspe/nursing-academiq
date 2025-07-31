@@ -87,7 +87,7 @@ const Homepage = () => {
                         <div className="homepageSearchControls">
                             <input
                                 type="text"
-                                placeholder="Αναζήτηση Κουίζ..."
+                                placeholder="Αναζήτηση Quiz"
                                 className="homepageSearchInput"
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}

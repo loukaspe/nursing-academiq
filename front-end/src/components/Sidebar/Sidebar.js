@@ -1,14 +1,11 @@
 // components/Sidebar.js
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import './sidebar.css';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
 
 const Sidebar = () => {
-    const itemsToShow = 2
-
-    const [expandedQuizzes, setExpandedQuizzes] = useState({});
     const [expandedChapters, setExpandedChapters] = useState({});
-
+    const [expandedQuizzes, setExpandedQuizzes] = useState({});
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
@@ -47,15 +44,15 @@ const Sidebar = () => {
         fetchCourses();
     }, []);
 
-    const toggleQuizzes = (courseId) => {
-        setExpandedQuizzes(prev => ({
+    const toggleChapters = (courseId) => {
+        setExpandedChapters(prev => ({
             ...prev,
             [courseId]: !prev[courseId]
         }));
     };
 
-    const toggleChapters = (courseId) => {
-        setExpandedChapters(prev => ({
+    const toggleQuizzes = (courseId) => {
+        setExpandedQuizzes(prev => ({
             ...prev,
             [courseId]: !prev[courseId]
         }));
@@ -64,80 +61,62 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="sidebar-header">
-                <Link className="app-name" to={`/`}>
-                    <h1 className="app-name">
-                        Nursing Academiq
-                    </h1>
+                <Link to={`/`} className="sidebar-link">
+                    <h1 className="app-name">Nursing AcademIQ</h1>
                 </Link>
             </div>
             <div className="sidebar-content">
-                <h2 className="sidebar-title">Mαθήματα</h2>
+                <h2 className="sidebar-title">Μαθημάτα</h2>
                 <nav className="sidebar-nav">
-                    {courses.map(course => {
-                        const quizzesToShow = expandedQuizzes[course.id]
-                            ? course.quizzes
-                            : course.quizzes?.slice(0, itemsToShow) || [];
+                    {courses.map(course => (
+                        <div key={course.id} className="sidebar-course">
+                            <div className="sidebar-course-title">{course.title}</div>
 
-                        const chaptersToShow = expandedChapters[course.id]
-                            ? course.chapters
-                            : course.chapters?.slice(0, itemsToShow) || [];
-
-                        return (
-                            <div key={course.id} className="sidebar-course">
-                                <div className="sidebar-course-title">{course.title}</div>
-
-                                {course.chapters?.length > 0 && (
-                                    <div className="sidebar-section">
-                                        <div className="sidebar-subtitle">Θεματικές Ενότητες</div>
+                            {course.chapters?.length > 0 && (
+                                <div className="sidebar-section">
+                                    <button
+                                        className="toggle-section-btn"
+                                        onClick={() => toggleChapters(course.id)}
+                                    >
+                                        {expandedChapters[course.id] ? '▲' : '▼'} Θεματικές Ενότητες
+                                    </button>
+                                    {expandedChapters[course.id] && (
                                         <ul className="sidebar-list">
-                                            {chaptersToShow.map(chapter => (
+                                            {course.chapters.map(chapter => (
                                                 <li key={chapter.ID}>
-                                                    <Link to={`/courses/${course.id}/chapter/${chapter.ID}`}
-                                                          className="sidebar-link">
+                                                    <Link to={`/courses/${course.id}/chapters/${chapter.ID}/quizzes`} className="sidebar-link">
                                                         {chapter.Title}
                                                     </Link>
                                                 </li>
                                             ))}
                                         </ul>
+                                    )}
+                                </div>
+                            )}
 
-                                        {course.chapters.length > 2 && (
-                                            <button
-                                                className="toggle-quizzes-btn"
-                                                onClick={() => toggleChapters(course.id)}
-                                            >
-                                                {expandedChapters[course.id] ? '▲ Λιγότερα' : '▼ Περισσότερα'}
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-
-                                {course.quizzes?.length > 0 && (
-                                    <div className="sidebar-section">
-                                        <div className="sidebar-subtitle">Quizzes</div>
+                            {course.quizzes?.length > 0 && (
+                                <div className="sidebar-section">
+                                    <button
+                                        className="toggle-section-btn"
+                                        onClick={() => toggleQuizzes(course.id)}
+                                    >
+                                        {expandedQuizzes[course.id] ? '▲' : '▼'} Quizzes
+                                    </button>
+                                    {expandedQuizzes[course.id] && (
                                         <ul className="sidebar-list">
-                                            {quizzesToShow.map(quiz => (
+                                            {course.quizzes.map(quiz => (
                                                 <li key={quiz.ID}>
-                                                    <Link to={`/courses/${course.id}/quizzes/${quiz.ID}`}
-                                                          className="sidebar-link">
+                                                    <Link to={`/courses/${course.id}/quizzes/${quiz.ID}`} className="sidebar-link">
                                                         {quiz.Title}
                                                     </Link>
                                                 </li>
                                             ))}
                                         </ul>
-
-                                        {course.quizzes.length > 2 && (
-                                            <button
-                                                className="toggle-quizzes-btn"
-                                                onClick={() => toggleQuizzes(course.id)}
-                                            >
-                                                {expandedQuizzes[course.id] ? '▲ Λιγότερα' : '▼ Περισσότερα'}
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </nav>
             </div>
         </div>
