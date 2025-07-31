@@ -30,6 +30,7 @@ import CreateQuestion from "./components/Questions/CreateQuestion";
 import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
 import CreateTutor from "./components/Tutor/CreateTutor";
+import QuizzesListSearch from "./components/QuizzesList/QuizzesListSearch";
 
 const cookies = new Cookies();
 
@@ -124,6 +125,12 @@ const App = () => {
                         path="quizzes"
                         element={
                             <QuizzesList/>
+                        }
+                    />
+                    <Route
+                        path="quizzes/search"
+                        element={
+                            <QuizzesListSearch/>
                         }
                     />
                     <Route

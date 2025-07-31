@@ -3,7 +3,12 @@
 .homepageContainer {
     width: 100%;
     display: flex;
-    padding-top: 5em;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+    align-items: center;
 }
 
 .coursesListContainer {
@@ -24,4 +29,144 @@
     align-items: center;
     justify-content: center;
     border-left: 0.1em solid var(--grey-color);
+}
+
+/* Section Titles */
+.homepageSectionTitle {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--dark-color);
+}
+
+/* Search Section */
+.homepageSearchSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5em;
+}
+
+.homepageSearchControls {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    width: 100%;
+    max-width: 700px;
+}
+
+@media (min-width: 768px) {
+    .homepageSearchControls {
+        flex-direction: row;
+    }
+}
+
+.homepageSearchInput,
+.homepageFilterSelect {
+    padding: 1em 2em;
+    font-size: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex: 1;
+
+}
+
+/* Courses Section */
+.homepageCoursesSection {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.homepageCoursesGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+@media (min-width: 600px) {
+    .homepageCoursesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.homepageCourseCard {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    align-self: center;
+}
+
+.homepageThumbnailPlaceholder {
+    height: 180px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 18px;
+}
+
+.homepageCourseName {
+    padding: 1em;
+    font-size: 1em;
+    font-weight: 500;
+    justify-self: center;
+    color: var(--dark-color);
+}
+
+/* See More Button */
+.homepageSeeMoreContainer {
+    text-align: center;
+}
+
+.homepageSeeMoreButton {
+    padding: 10px 25px;
+    font-size: 16px;
+    color: #fff;
+    background-color: var(--brand-dark-color);;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.homepageSeeMoreButton:hover {
+    background-color: var(--brand-color);;
+}
+
+.homepageSearchButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: var(--brand-dark-color);;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.homepageSearchButton:hover {
+    background-color: var(--brand-color);;
+}
+
+.homepageCourseImage {
+    width: 100%;
+    height: 20em;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+}
+
+.homepageInfoRow {
+    width: 100%;
+    color: var(--brand-dark-color);
+    padding-bottom: 0.5em;
+    font-size: 1rem;
+    flex: 1;
+
+    text-align: center;
 }

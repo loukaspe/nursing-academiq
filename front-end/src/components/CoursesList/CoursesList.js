@@ -46,7 +46,7 @@ const CoursesList = () => {
         <React.Fragment>
             <Breadcrumb actualPath="/courses" namePath="Μαθήματα"/>
             <div className="coursesList">
-                <div className="coursesListTitle">Κατάλογος Μαθημάτων</div>
+                <div className="coursesListTitle">Μαθήματα</div>
                 {courses.length > 0 ? (
                     courses.map((item) => {
                         return (
