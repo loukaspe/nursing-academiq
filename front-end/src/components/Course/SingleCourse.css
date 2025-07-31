@@ -4,20 +4,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /*padding: 10px 0;*/
 }
 
 .singleCoursePageInfo {
     display: flex;
     flex-grow: 1;
-    align-items: center;
     flex-direction: column;
     padding-left: 1em;
-    /*border-bottom: 1px solid var(--dark-color);*/
 }
 .singleCoursePageCourseName {
-    /*display: inline;*/
-    /*width:70%;*/
     color: var(--dark-color);
 
     font-size: 1.5rem;
@@ -44,12 +39,7 @@
     padding: 1rem;
     border: none;
     font-weight: bold;
-    /*display: inline-block;*/
     cursor: pointer;
-    /*width:10%;*/
-    /*float: right;*/
-    /*text-align: center;*/
-
 }
 
 .courseButton {
@@ -82,7 +72,6 @@
     display: flex;
     padding: 1em;
     font-weight: bold;
-    /*text-align: center;*/
 }
 
 .singleCoursePageContainer {
@@ -94,26 +83,12 @@
 .singleCoursePageDetails {
     height: 60%;
     display: flex;
-    /*text-align: center;*/
 }
 
 .singleCoursePageSectionTitle {
     text-align: center;
     font-size: 1.2rem;
 }
-
-/*.singleCoursePageDetails {*/
-/*    margin-top: 2em;*/
-/*}*/
-
-/*.singleCoursePageDetailsText {*/
-/*    margin-bottom: 0.5rem;*/
-/*}*/
-
-/*.singleCoursePageDetailsTextTitle {*/
-/*    font-size: 1rem;*/
-/*    color: var(--brand-color);*/
-/*}*/
 
 .singleCourseChapters {
     flex: 1;

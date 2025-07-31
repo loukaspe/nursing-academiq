@@ -115,11 +115,13 @@ const Homepage = () => {
                             <h2 className="homepageSectionTitle">Περιήγηση Μαθημάτων</h2>
                             <div className="homepageCoursesGrid">
                                 {courses.slice(0, 3).map((course) => (
-                                    <div className="homepageCoursesCard">
-                                        <img src="/images/courseThumbnail.png" alt="Course Image"
-                                             className="homepageCourseImage"/>
-                                        <div className="homepageCourseName">{course.title}</div>
-                                    </div>
+                                    <Link to={`/courses/${course.id}`}>
+                                        <div className="homepageCoursesCard">
+                                            <img src="/images/courseThumbnail.png" alt="Course Image"
+                                                 className="homepageCourseImage"/>
+                                            <div className="homepageCourseName">{course.title}</div>
+                                        </div>
+                                    </Link>
                                 ))}
 
                             </div>
