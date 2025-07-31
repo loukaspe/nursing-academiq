@@ -38,8 +38,9 @@
 }
 
 .progress-line span.current {
-    background-color: var(--opposite-color);
+    background-color: var(--dark-grey-color);
     color: white;
+    border: 0.2rem solid var(--brand-dark-color);
 }
 
 hr {
@@ -78,13 +79,13 @@ hr {
 }
 
 .question-section li a:hover {
-    background-color: var(--opposite-color);
+    background-color: var(--brand-dark-color);
     cursor: pointer;
     color: white;
 }
 
 .question-section li.selected {
-    background-color: var(--opposite-color);
+    background-color: var(--brand-dark-color);
 }
 
 .question-section li.correct {
@@ -144,7 +145,7 @@ hr {
 
 .questionsSubmitButton {
     color: var(--light-color);
-    background-color: var(--brand-color);
+    background-color: var(--brand-dark-color);
     font-size: 1rem;
     margin: 1rem 1rem 1rem auto;
     border-radius: 10px;

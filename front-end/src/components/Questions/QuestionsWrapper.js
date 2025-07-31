@@ -136,7 +136,7 @@ const QuestionsWrapper = () => {
                 </div>
                 <div className="questionCard">
                     <div className="question-section">
-                        <h2>{questions[currentQuestionIndex].Text}</h2>
+                        <h2> {(currentQuestionIndex + 1) + ". " + questions[currentQuestionIndex].Text}</h2>
                         <hr/>
                         <ul>
                             {questions[currentQuestionIndex].Answers.map((answer, idx) => {
