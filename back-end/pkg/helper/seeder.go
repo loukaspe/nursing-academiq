@@ -301,6 +301,7 @@ func LoadFakeData(db *gorm.DB) {
 	CreateQuestions(db)
 	CreateAnswers(db)
 	CreateQuizzes(db)
+	CreateAdminUser(db)
 }
 
 func PrepareDB(db *gorm.DB) {

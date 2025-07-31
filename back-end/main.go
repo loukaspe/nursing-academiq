@@ -51,7 +51,7 @@ func getDB() *gorm.DB {
 	}
 
 	helper.PrepareDB(db)
-	//helper.LoadFakeData(db)
+	helper.LoadFakeData(db)
 
 	return db
 }
