@@ -87,7 +87,7 @@ const SingleCourse = () => {
                                 <FontAwesomeIcon icon={faPenToSquare} className="courseIcon"/>
                             </Link>
                         ) : (
-                            <span className="singleCoursePageTeacherName">{course.tutorName}</span>
+                            <span className="singleCoursePageTeacherName">Υπεύθυνος/η: {course.tutorName}</span>
                         )
                     }
                 </div>
