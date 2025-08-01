@@ -10,7 +10,7 @@ const Homepage = () => {
             <div>
                 <PageTitle title={"Αρχική Σελίδα"}/>
             </div>
-            <div className="homepageContainer">
+            <div className="homepageLoggedInContainer">
                 <div className="coursesListContainer">
                     <LimitedMyCoursesList/>
                 </div>

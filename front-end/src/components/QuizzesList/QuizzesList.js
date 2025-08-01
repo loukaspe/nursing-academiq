@@ -56,7 +56,8 @@ const QuizzesList = () => {
                                     <div className="singleQuizTextContainer">
                                         <Link className="singleQuizTitle"
                                               to={`/courses/${item.Course.ID}/quizzes/${item.ID}`}>{item.Title}</Link>
-                                        <div className="singleQuizDetails">{item.CourseName}</div>
+                                        <div className="singleQuizDetails">{item.Course.Title}</div>
+                                        <div className="singleQuizDetails">{item.Description}</div>
                                         <div className="singleQuizDetails">{item.ShowSubset
                                             ? `${item.SubsetSize} ερωτήσεις`
                                             : `${item.NumberOfQuestions} ερωτήσεις`

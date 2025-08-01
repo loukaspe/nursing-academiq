@@ -73,7 +73,7 @@
 .sidebar-header {
     background-color: var(--brand-color);
     text-align: center;
-    padding: 1em;
+    padding-top: 1em;
     width: 100%;
 }
 

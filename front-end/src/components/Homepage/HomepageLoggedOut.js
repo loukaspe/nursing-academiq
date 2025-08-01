@@ -79,11 +79,11 @@ const Homepage = () => {
 
     return (
         <>
-            <div className="homepageContainer">
-                <div className="homepageContainer">
+            <div className="homepageLoggedOutContainer">
+                <div className="homepageLoggedOutContainer">
                     {/* Search Section */}
                     <section className="homepageSearchSection">
-                        <h1 className="homepageSectionTitle">Αναζήτηση Κουίζ</h1>
+                        <h1 className="homepageSectionTitle">Αναζήτηση Quiz</h1>
                         <div className="homepageSearchControls">
                             <input
                                 type="text"
