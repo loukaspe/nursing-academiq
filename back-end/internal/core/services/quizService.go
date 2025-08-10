@@ -38,8 +38,8 @@ func (service QuizService) GetMostRecentQuizzes(ctx context.Context, limit int) 
 	return service.repository.GetMostRecentQuizzes(ctx, limit)
 }
 
-func (service QuizService) CreateQuiz(ctx context.Context, quiz *domain.Quiz) (uint, error) {
-	return service.repository.CreateQuiz(ctx, quiz)
+func (service QuizService) CreateQuiz(ctx context.Context, quiz *domain.Quiz, questionIDs []uint32) (uint, error) {
+	return service.repository.CreateQuiz(ctx, quiz, questionIDs)
 }
 
 func (service QuizService) UpdateQuiz(ctx context.Context, uid uint32, quiz *domain.Quiz) error {

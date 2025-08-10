@@ -19,6 +19,7 @@ type QuizRequest struct {
 	MaxScore          int
 	NumberOfQuestions int
 	CourseID          uint
+	QuestionsIDs      []uint32
 }
 
 type CreateQuizResponse struct {
@@ -70,7 +71,7 @@ func (handler *CreateQuizHandler) CreateQuizController(w http.ResponseWriter, r 
 		Course:      &domain.Course{ID: uint32(request.CourseID)},
 	}
 
-	uid, err := handler.QuizService.CreateQuiz(r.Context(), domainQuiz)
+	uid, err := handler.QuizService.CreateQuiz(r.Context(), domainQuiz, request.QuestionsIDs)
 	if err != nil {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": err.Error(),
