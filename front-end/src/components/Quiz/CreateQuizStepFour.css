@@ -1,0 +1,198 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /*overflow: hidden;*/
+}
+
+.createQuizStepFourPageTitle {
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    padding: 0.5em;
+    font-weight: bold;
+
+    margin-right: 1rem;
+}
+
+.createQuizStepFourContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent overflow within the container */
+}
+
+.createQuizStepFourHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 10%;
+}
+
+.createQuizStepFourInfo {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.createQuizStepFourHeaderRow {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.createQuizStepFourDetailsRow {
+    display: flex;
+    flex-direction: column;
+
+
+    background: white; /* optional, if you want it to stand out */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+.createQuizStepFourDetailsRowColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.createQuizStepFourDetailsRowInputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.createQuizStepFourDetailsRowInputText {
+    padding: 0.5em;
+    border-radius: 5px;
+    border: 0.1em solid #ccc;
+    margin-top: 0.2em;
+}
+
+.createQuizStepFourHeaderButton {
+    color: var(--dark-color);
+    background-color: var(--grey-color);
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+    font-weight: bold;
+    display: inline;
+    cursor: pointer;
+}
+
+.createQuizStepFourDetailsRowInputGroup input {
+    width: 50%;
+}
+
+.createQuizStepFourCheckboxRow {
+    display: flex;
+    align-items: center;
+}
+
+.createQuizStepFourQuestionsRow {
+    /*flex: 0 0 50%;*/
+    /*display: flex;*/
+    /*padding: 10px;*/
+    /*gap: 10px;*/
+    flex: 1; /* Take up the remaining space */
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.createQuizStepFourQuestionsList {
+    flex: 0 0 70%;
+    /*overflow-y: auto;*/
+    /*border: 1px solid #ccc;*/
+    /*padding: 10px;*/
+    /*list-style-type: none;*/
+    /*flex: 1; !* Expand to fill the available height *!*/
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style-type: none;
+    height: 100%; /* Ensure full use of the parent height */
+}
+
+.createQuizStepFourQuestionsListTitle {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--brand-dark-color);
+}
+
+.createQuizStepFourQuestionsListItem {
+    font-size: 1rem;
+    color: var(--text-grey-color);
+    list-style-type: none;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--grey-color);
+}
+
+.createQuizStepFourButtonsColumn {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: auto;
+}
+
+.createQuizStepFourButtonsColumn button {
+    width: 50%;       /* Set width to half of the container */
+    align-self: center;
+}
+
+.createQuizStepFourSaveButton {
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.createQuizStepFourDeleteButton {
+    background-color: var(--error-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.disabledInput {
+    color: var(--dark-grey-color);
+}
+
+.createQuizStepFourButtonSubmit {
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 1em;
+}
+
+.createQuizStepFourButtonDelete {
+    background-color: var(--error-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 1em;
+}

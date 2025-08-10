@@ -1,0 +1,50 @@
+.create-quiz-step-one-page-title {
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    padding: 0.5em;
+    font-weight: bold;
+
+    margin-right: 1rem;
+}
+
+.create-quiz-step-one-content {
+    background: #fff;
+    padding: 2em 2em;
+    width: 50%;
+    animation: slideIn 0.3s ease-out;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-quiz-step-one-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: var(--dark-color);
+}
+
+.create-quiz-step-one-content select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5em;
+    outline: none;
+}
+
+.create-quiz-step-one-content-button {
+    background-color: var(--brand-color);
+    color: var(--light-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 1em;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 2rem;
+}
+
+.create-quiz-step-one-content-button.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}

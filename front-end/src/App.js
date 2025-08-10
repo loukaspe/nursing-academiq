@@ -23,7 +23,6 @@ import CreateCourse from "./components/Course/CreateCourse";
 import EditChapter from "./components/Chapter/EditChapter";
 import CreateChapter from "./components/Chapter/CreateChapter";
 import EditQuiz from "./components/Quiz/EditQuiz";
-import CreateQuiz from "./components/Quiz/CreateQuiz";
 import CourseQuestionsManager from "./components/Questions/CourseQuestionsManager";
 import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
@@ -31,6 +30,10 @@ import QuestionsSelect from "./components/Questions/QuestionsSelect";
 import QuizzesList from "./components/QuizzesList/QuizzesList";
 import CreateTutor from "./components/Tutor/CreateTutor";
 import QuizzesListSearch from "./components/QuizzesList/QuizzesListSearch";
+import CreateQuizStepOne from "./components/Quiz/CreateQuizStepOne";
+import CreateQuizStepTwo from "./components/Quiz/CreateQuizStepTwo";
+import CreateQuizStepThree from "./components/Quiz/CreateQuizStepThree";
+import CreateQuizStepFour from "./components/Quiz/CreateQuizStepFour";
 
 const cookies = new Cookies();
 
@@ -149,7 +152,31 @@ const App = () => {
                         path="quizzes/create"
                         element={
                             <ProtectedRoutes>
-                                <CreateQuiz/>
+                                <CreateQuizStepOne/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="quizzes/create/step-two"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuizStepTwo/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="quizzes/create/step-three"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuizStepThree/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="quizzes/create/step-four"
+                        element={
+                            <ProtectedRoutes>
+                                <CreateQuizStepFour/>
                             </ProtectedRoutes>
                         }
                     />
@@ -165,7 +192,7 @@ const App = () => {
                         path="courses/:courseID/quizzes/create"
                         element={
                             <ProtectedRoutes>
-                                <CreateQuiz/>
+                                <CreateQuizStepOne/>
                             </ProtectedRoutes>
                         }
                     />
