@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "./CreateQuizStepFour.css";
 import {useQuiz} from "../../context/QuizContext";
-import CreationProgressBar from "./CreationProgressBar";
 import api from "../Utilities/APICaller";
-import {Link} from "react-router-dom";
 import Cookies from "universal-cookie";
+import EditProgressBar from "./EditProgressBar";
 
 const cookies = new Cookies();
-const CreateQuizStepFour = () => {
+const EditQuizStepThree = () => {
     const {quiz, setQuiz, resetQuiz} = useQuiz();
 
     let userCookie = cookies.get("user");
@@ -32,9 +31,9 @@ const CreateQuizStepFour = () => {
         const questionIDs = quiz.questions.map(q => q.ID);
 
         try {
-            let apiUrl = `/quiz`
+            let apiUrl = `/quiz/${quiz.id}`
 
-            const response = await api.post(apiUrl, {
+            const response = await api.put(apiUrl, {
                 Title: quiz.title,
                 Description: quiz.description,
                 CourseID: parseInt(quiz.course.id),
@@ -44,17 +43,10 @@ const CreateQuizStepFour = () => {
                 QuestionsIDs: questionIDs
             });
 
-
-            if (response.status === 201 && response.data.insertedID) {
-                const newQuizID = response.data.insertedID;
-
-                resetQuiz()
-                window.location.href = `/my-quizzes`;
-            } else {
-                console.error("Quiz creation failed, unexpected response:", response);
-            }
+            resetQuiz()
+            window.location.href = `/courses/${quiz.course.ID}/quizzes/`;
         } catch (error) {
-            console.error('Error creating the quiz', error);
+            console.error('Error update the quiz', error);
             // setError('Υπήρξε πρόβλημα κατά την δημιουργία του quiz. Παρακαλώ δοκιμάστε ξανά.');
         }
     };
@@ -68,8 +60,8 @@ const CreateQuizStepFour = () => {
 
     return (
         <div>
-            <CreationProgressBar/>
-            <h2 className="createQuizStepFourPageTitle">4. Ολοκλήρωση</h2>
+            <EditProgressBar/>
+            <h2 className="createQuizStepFourPageTitle">3. Ολοκλήρωση</h2>
             <div className="createQuizStepFourDetailsRow">
                 <div className="createQuizStepFourDetailsRowColumn">
                     <div> Αριθμός Ερωτήσεων: {quiz.questions.length}</div>
@@ -109,4 +101,4 @@ const CreateQuizStepFour = () => {
     );
 };
 
-export default CreateQuizStepFour;
+export default EditQuizStepThree;

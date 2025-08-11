@@ -3,6 +3,7 @@ import { createContext, useState, useContext } from "react";
 const QuizContext = createContext();
 
 const initialQuizState = {
+    id: null,
     course: null,
     title: "",
     description: "",

@@ -22,7 +22,6 @@ import EditCourse from "./components/Course/EditCourse";
 import CreateCourse from "./components/Course/CreateCourse";
 import EditChapter from "./components/Chapter/EditChapter";
 import CreateChapter from "./components/Chapter/CreateChapter";
-import EditQuiz from "./components/Quiz/EditQuiz";
 import CourseQuestionsManager from "./components/Questions/CourseQuestionsManager";
 import EditQuestion from "./components/Questions/EditQuestion";
 import CreateQuestion from "./components/Questions/CreateQuestion";
@@ -34,6 +33,9 @@ import CreateQuizStepOne from "./components/Quiz/CreateQuizStepOne";
 import CreateQuizStepTwo from "./components/Quiz/CreateQuizStepTwo";
 import CreateQuizStepThree from "./components/Quiz/CreateQuizStepThree";
 import CreateQuizStepFour from "./components/Quiz/CreateQuizStepFour";
+import EditQuizStepOne from "./components/Quiz/EditQuizStepOne";
+import EditQuizStepTwo from "./components/Quiz/EditQuizStepTwo";
+import EditQuizStepThree from "./components/Quiz/EditQuizStepThree";
 
 const cookies = new Cookies();
 
@@ -184,7 +186,23 @@ const App = () => {
                         path="courses/:courseID/quizzes/:id/edit"
                         element={
                             <ProtectedRoutes>
-                                <EditQuiz/>
+                                <EditQuizStepOne/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/:id/edit/step-two"
+                        element={
+                            <ProtectedRoutes>
+                                <EditQuizStepTwo/>
+                            </ProtectedRoutes>
+                        }
+                    />
+                    <Route
+                        path="courses/:courseID/quizzes/:id/edit/step-three"
+                        element={
+                            <ProtectedRoutes>
+                                <EditQuizStepThree/>
                             </ProtectedRoutes>
                         }
                     />
