@@ -30,7 +30,7 @@ const SingleCourse = () => {
 
     useEffect(() => {
         fetchCourse();
-    }, []);
+    }, [courseID]);
 
     const fetchCourse = () => {
         let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`

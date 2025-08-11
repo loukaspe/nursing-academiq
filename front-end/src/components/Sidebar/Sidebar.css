@@ -36,24 +36,19 @@
 
 .sidebar-menu,
 .sidebar-courses {
-    padding: 1rem;
+    padding: 0.5rem;
     flex-shrink: 0;
 }
 
 .menu-list {
     list-style: none;
     padding-left: 0;
-    margin-bottom: 1rem;
-}
-
-.menu-list.account-menu {
-    margin-top: 2rem;
-    border-top: 1px solid var(--brand-dark-color);
-    padding-top: 1rem;
+    /*margin-bottom: 1rem;*/
 }
 
 .menu-list li {
     margin-bottom: 0.7rem;
+    font-weight: bold;
 }
 
 .menu-link {
@@ -89,6 +84,7 @@
 
 .course-container {
     margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .course-title {

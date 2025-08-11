@@ -1,11 +1,11 @@
 // components/Sidebar.js
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import "./Sidebar.css";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import './Sidebar.css';
 import Cookies from "universal-cookie";
 
-
 const cookies = new Cookies();
+
 const Sidebar = () => {
     const location = useLocation();
     const token = cookies.get("access_token");
@@ -17,260 +17,309 @@ const Sidebar = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await fetch(process.env.REACT_APP_API_URL + `/courses`, {
-                    method: "GET",
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`, {
+                    method: 'GET',
                     headers: {
-                        "Content-Type": "application/json",
+                        'Content-Type': 'application/json',
                         Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
                     },
-                    credentials: "include",
+                    credentials: 'include',
                 });
                 const result = await response.json();
-                if (!response.ok) throw new Error(result.message || "Failed to fetch courses");
-                if (!result.courses) throw new Error("No courses found");
+
+                if (response.status === 401) throw new Error('Unauthorized: 401');
+                if (response.status === 500) throw new Error(result.message || 'Server error');
+                if (!result.courses) throw new Error('Error getting courses list');
+
                 setCourses(result.courses);
             } catch (error) {
-                console.error("Error fetching courses:", error);
+                console.error('Error fetching data:', error);
             }
         };
 
         fetchCourses();
     }, []);
 
-    const toggleChapters = (courseId) => {
-        setExpandedChapters((prev) => ({ ...prev, [courseId]: !prev[courseId] }));
-    };
-
-    const toggleQuizzes = (courseId) => {
-        setExpandedQuizzes((prev) => ({ ...prev, [courseId]: !prev[courseId] }));
-    };
-
-    const isActive = (path) => {
-        if (!path) return false;
-        if (location.pathname === path) return true;
-        if (location.pathname.startsWith(path + "/")) return true;
-        return false;
-    };
-
+    // Expand if current location matches a chapter in course
     useEffect(() => {
-        // Auto-expand chapters/quizzes if active
-        const newExpandedChapters = {};
-        const newExpandedQuizzes = {};
         courses.forEach((course) => {
+            // Expand chapters if any chapter link active
             if (
                 course.chapters?.some(
                     (ch) =>
-                        isActive(`/courses/${course.id}/chapters/${ch.ID}`) ||
-                        isActive(`/courses/${course.id}/chapters/${ch.ID}/edit`)
+                        location.pathname.startsWith(`/courses/${course.id}/chapters/${ch.ID}`) &&
+                        location.pathname.includes('/edit') === false // ignore edit here for chapter expand
                 )
             ) {
-                newExpandedChapters[course.id] = true;
+                setExpandedChapters((prev) => ({ ...prev, [course.id]: true }));
             }
+
+            // Expand quizzes if any quiz link active or quiz edit page active
             if (
                 course.quizzes?.some(
-                    (quiz) =>
-                        isActive(`/courses/${course.id}/quizzes/${quiz.ID}`) ||
-                        isActive(`/courses/${course.id}/quizzes/${quiz.ID}/edit`)
+                    (q) =>
+                        location.pathname.startsWith(`/courses/${course.id}/quizzes/${q.ID}`) ||
+                        location.pathname.startsWith(`/courses/${course.id}/quizzes/${q.ID}/edit`) ||
+                        location.pathname.startsWith(`/courses/${course.id}/quizzes/create`) ||
+                        location.pathname.startsWith(`/quizzes/create`)
                 )
             ) {
-                newExpandedQuizzes[course.id] = true;
+                setExpandedQuizzes((prev) => ({ ...prev, [course.id]: true }));
             }
         });
-        setExpandedChapters((prev) => ({ ...prev, ...newExpandedChapters }));
-        setExpandedQuizzes((prev) => ({ ...prev, ...newExpandedQuizzes }));
     }, [location.pathname, courses]);
 
+    const toggleChapters = (courseId) => {
+        setExpandedChapters((prev) => ({
+            ...prev,
+            [courseId]: !prev[courseId],
+        }));
+    };
+
+    const toggleQuizzes = (courseId) => {
+        setExpandedQuizzes((prev) => ({
+            ...prev,
+            [courseId]: !prev[courseId],
+        }));
+    };
+
+    const isActiveLink = (path) => location.pathname === path;
+
+    const isActivePrefix = (prefix) => location.pathname.startsWith(prefix);
+
     return (
-        <aside className="sidebar">
-            <header className="sidebar-header">
+        <div className="sidebar">
+            <div className="sidebar-header">
                 <Link to="/" className="sidebar-logo">
                     Nursing AcademIQ
                 </Link>
-            </header>
+            </div>
 
-            <section className="sidebar-menu">
-                {token ? (
-                    <>
-                        <ul className="menu-list">
-                            <li className={isActive("/my-courses") ? "active" : ""}>
+            <nav className="sidebar-menu">
+                <ul className="menu-list">
+                    {token ? (
+                        <>
+                            <li className={isActiveLink('/my-courses') ? 'active' : ''}>
                                 <Link to="/my-courses" className="menu-link">
                                     Διαχείριση Μαθημάτων
                                 </Link>
                             </li>
-                            <li className={isActive("/my-quizzes") ? "active" : ""}>
+                            <li className={isActiveLink('/my-quizzes') ? 'active' : ''}>
                                 <Link to="/my-quizzes" className="menu-link">
                                     Διαχείριση Quiz
                                 </Link>
                             </li>
-                            <li className={isActive("/courses") ? "active" : ""}>
+                            <li className={isActiveLink('/courses') || location.pathname.startsWith('/courses/') ? 'active' : ''}>
                                 <Link to="/courses" className="menu-link">
                                     Μαθήματα
                                 </Link>
                             </li>
-                            <li className={isActive("/create-tutor") ? "active" : ""}>
+                            <li className={isActiveLink('/create-tutor') ? 'active' : ''}>
                                 <Link to="/create-tutor" className="menu-link">
                                     Προσθήκη Καθηγητή
                                 </Link>
                             </li>
-                        </ul>
-                        <ul className="menu-list account-menu">
-                            <li className={isActive("/profile") ? "active" : ""}>
-                                <Link to="/profile" className="menu-link">
-                                    Προφίλ
-                                </Link>
-                            </li>
-                        </ul>
-                    </>
-                ) : (
-                    <>
-                        <ul className="menu-list">
-                            <li className={isActive("/courses") ? "active" : ""}>
+                        </>
+                    ) : (
+                        <>
+                            <li className={isActiveLink('/courses') || location.pathname.startsWith('/courses/') ? 'active' : ''}>
                                 <Link to="/courses" className="menu-link">
                                     Μαθήματα
                                 </Link>
                             </li>
-                            <li className={isActive("/quizzes") ? "active" : ""}>
+                            <li className={isActiveLink('/quizzes') || location.pathname.startsWith('/quizzes') ? 'active' : ''}>
                                 <Link to="/quizzes" className="menu-link">
                                     Quizzes
                                 </Link>
                             </li>
-                        </ul>
-                        <ul className="menu-list account-menu">
-                            <li className={isActive("/login") ? "active" : ""}>
-                                <Link to="/login" className="menu-link">
-                                    Σύνδεση
-                                </Link>
-                            </li>
-                        </ul>
-                    </>
+                        </>
+                    )}
+                </ul>
+
+                <ul className="menu-list account-menu">
+                    {token ? (
+                        <li className={isActiveLink('/profile') ? 'active' : ''}>
+                            <Link to="/profile" className="menu-link">
+                                Προφίλ
+                            </Link>
+                        </li>
+                    ) : (
+                        <li className={isActiveLink('/login') ? 'active' : ''}>
+                            <Link to="/login" className="menu-link">
+                                Σύνδεση
+                            </Link>
+                        </li>
+                    )}
+                </ul>
+            </nav>
+
+            <div className="sidebar-courses">
+                <div className="sidebar-section-title">Μαθήματα</div>
+
+                {/* Show create course button if token exists */}
+                {token && (
+                    <Link to="/courses/create" className="btn-create">
+                        Δημιουργία Μαθήματος
+                    </Link>
                 )}
-            </section>
-
-            <section className="sidebar-courses">
-                <h2 className="sidebar-section-title">Μαθήματα</h2>
-
-                {/* Create Course button */}
-                <Link
-                    to="/courses/create"
-                    className={`btn-create ${isActive("/courses/create") ? "active" : ""}`}
-                >
-                    Δημιουργία Μαθήματος
-                </Link>
 
                 {courses.map((course) => {
                     const coursePath = `/courses/${course.id}`;
-                    const courseActive = isActive(coursePath);
+                    const courseIsActive = isActivePrefix(coursePath);
 
                     return (
-                        <div key={course.id} className="course-container">
-                            <Link
-                                to={coursePath}
-                                className={`course-title ${courseActive ? "active" : ""}`}
-                            >
+                        <div
+                            key={course.id}
+                            className={`course-container ${courseIsActive ? 'active' : ''}`}
+                        >
+                            {/* Course title as Link */}
+                            <Link to={coursePath} className={`course-title ${courseIsActive ? 'active' : ''}`}>
                                 {course.title}
                             </Link>
 
-                            <div className="btn-group-create">
-                                <Link
-                                    to={`/courses/${course.id}/chapters/create`}
-                                    className={`btn-create small ${
-                                        isActive(`/courses/${course.id}/chapters/create`) ? "active" : ""
-                                    }`}
-                                >
-                                    Δημιουργία Θεματικής Ενότητας
+                            {/* Edit button under course title if token */}
+                            {token && (
+                                <Link to={`/courses/${course.id}/edit`} className="edit-btn">
+                                    Επεξεργασία Μαθήματος
                                 </Link>
-                                <Link
-                                    to={`/courses/${course.id}/quizzes/create`}
-                                    className={`btn-create small ${
-                                        isActive(`/courses/${course.id}/quizzes/create`) ? "active" : ""
-                                    }`}
-                                >
-                                    Δημιουργία Quiz
-                                </Link>
-                            </div>
+                            )}
 
-                            {/* Chapters */}
+                            {/* Chapters Section */}
                             {course.chapters?.length > 0 && (
                                 <div className="sidebar-section">
                                     <button
-                                        className="toggle-btn"
                                         onClick={() => toggleChapters(course.id)}
-                                        aria-expanded={expandedChapters[course.id] ? "true" : "false"}
+                                        className={`toggle-btn ${expandedChapters[course.id] ? 'expanded' : ''}`}
+                                        aria-expanded={expandedChapters[course.id] ? 'true' : 'false'}
                                     >
-                                        {expandedChapters[course.id] ? "▲" : "▼"} Θεματικές Ενότητες
+                                        Θεματικές Ενότητες
                                     </button>
+
                                     {expandedChapters[course.id] && (
-                                        <ul className="sidebar-list">
-                                            {course.chapters.map((chapter) => {
-                                                const chapterPath = `/courses/${course.id}/chapters/${chapter.ID}`;
-                                                const chapterEditPath = `${chapterPath}/edit`;
-                                                return (
-                                                    <li key={chapter.ID} className="sidebar-list-item">
-                                                        <Link
-                                                            to={`${chapterPath}/quizzes`}
-                                                            className={`sidebar-link ${
-                                                                isActive(chapterPath) ? "active" : ""
-                                                            }`}
-                                                        >
-                                                            {chapter.Title}
-                                                        </Link>
-                                                        <Link
-                                                            to={chapterEditPath}
-                                                            className={`edit-btn ${
-                                                                isActive(chapterEditPath) ? "active" : ""
-                                                            }`}
-                                                        >
-                                                            Επεξεργασία
-                                                        </Link>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
+                                        <>
+                                            {/* Create chapter button if token */}
+                                            {token && (
+                                                <Link
+                                                    to={`/courses/${course.id}/chapters/create`}
+                                                    className="btn-create"
+                                                >
+                                                    Δημιουργία Ενότητας
+                                                </Link>
+                                            )}
+
+                                            <ul className="sidebar-list">
+                                                {course.chapters.map((chapter) => {
+                                                    const chapterPath = `/courses/${course.id}/chapters/${chapter.ID}/quizzes`;
+                                                    const chapterEditPath = `/courses/${course.id}/chapters/${chapter.ID}/edit`;
+                                                    const chapterIsActive = isActivePrefix(chapterPath) || isActiveLink(chapterEditPath);
+
+                                                    return (
+                                                        <li key={chapter.ID} className="sidebar-list-item">
+                                                            <Link
+                                                                to={chapterPath}
+                                                                className={`sidebar-link ${chapterIsActive ? 'active' : ''}`}
+                                                            >
+                                                                {chapter.Title}
+                                                            </Link>
+
+                                                            {/* Edit button under chapter if token */}
+                                                            {token && (
+                                                                <Link to={chapterEditPath} className="edit-btn">
+                                                                    Επεξεργασία
+                                                                </Link>
+                                                            )}
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </>
                                     )}
                                 </div>
                             )}
 
-                            {/* Quizzes */}
+                            {/* Quizzes Section */}
                             {course.quizzes?.length > 0 && (
                                 <div className="sidebar-section">
                                     <button
-                                        className="toggle-btn"
                                         onClick={() => toggleQuizzes(course.id)}
-                                        aria-expanded={expandedQuizzes[course.id] ? "true" : "false"}
+                                        className={`toggle-btn ${expandedQuizzes[course.id] ? 'expanded' : ''}`}
+                                        aria-expanded={expandedQuizzes[course.id] ? 'true' : 'false'}
                                     >
-                                        {expandedQuizzes[course.id] ? "▲" : "▼"} Quizzes
+                                        Quizzes
                                     </button>
+
                                     {expandedQuizzes[course.id] && (
-                                        <ul className="sidebar-list">
-                                            {course.quizzes.map((quiz) => {
-                                                const quizPath = `/courses/${course.id}/quizzes/${quiz.ID}`;
-                                                const quizEditPath = `/courses/${course.id}/quizzes/${quiz.ID}/edit`;
-                                                return (
-                                                    <li key={quiz.ID} className="sidebar-list-item">
-                                                        <Link
-                                                            to={quizPath}
-                                                            className={`sidebar-link ${isActive(quizPath) ? "active" : ""}`}
-                                                        >
-                                                            {quiz.Title}
-                                                        </Link>
-                                                        <Link
-                                                            to={quizEditPath}
-                                                            className={`edit-btn ${isActive(quizEditPath) ? "active" : ""}`}
-                                                        >
-                                                            Επεξεργασία
-                                                        </Link>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
+                                        <>
+                                            {/* Create quiz buttons if token */}
+                                            {token && (
+                                                <>
+                                                    <Link
+                                                        to={`/courses/${course.id}/quizzes/create`}
+                                                        className="btn-create"
+                                                    >
+                                                        Δημιουργία Quiz
+                                                    </Link>
+                                                    <Link
+                                                        to={`/quizzes/create/step-two`}
+                                                        className="btn-create"
+                                                    >
+                                                        Δημιουργία Quiz - Βήμα 2
+                                                    </Link>
+                                                    <Link
+                                                        to={`/quizzes/create/step-three`}
+                                                        className="btn-create"
+                                                    >
+                                                        Δημιουργία Quiz - Βήμα 3
+                                                    </Link>
+                                                    <Link
+                                                        to={`/quizzes/create/step-four`}
+                                                        className="btn-create"
+                                                    >
+                                                        Δημιουργία Quiz - Βήμα 4
+                                                    </Link>
+                                                </>
+                                            )}
+
+                                            <ul className="sidebar-list">
+                                                {course.quizzes.map((quiz) => {
+                                                    const quizPath = `/courses/${course.id}/quizzes/${quiz.ID}`;
+                                                    const quizEditPaths = [
+                                                        `/courses/${course.id}/quizzes/${quiz.ID}/edit`,
+                                                        `/courses/${course.id}/quizzes/${quiz.ID}/edit/step-two`,
+                                                        `/courses/${course.id}/quizzes/${quiz.ID}/edit/step-three`,
+                                                    ];
+                                                    const quizIsActive =
+                                                        isActivePrefix(quizPath) ||
+                                                        quizEditPaths.some((p) => isActivePrefix(p));
+
+                                                    return (
+                                                        <li key={quiz.ID} className="sidebar-list-item">
+                                                            <Link
+                                                                to={quizPath}
+                                                                className={`sidebar-link ${quizIsActive ? 'active' : ''}`}
+                                                            >
+                                                                {quiz.Title}
+                                                            </Link>
+
+                                                            {/* Edit button under quiz if token */}
+                                                            {token && (
+                                                                <Link to={`${quizPath}/edit`} className="edit-btn">
+                                                                    Επεξεργασία
+                                                                </Link>
+                                                            )}
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </>
                                     )}
                                 </div>
                             )}
                         </div>
                     );
                 })}
-            </section>
-        </aside>
+            </div>
+        </div>
     );
 };
 
