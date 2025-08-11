@@ -106,7 +106,7 @@ const ChapterQuizzesList = (props) => {
                             <FontAwesomeIcon icon={faPenToSquare} className="chapterIcon"/>
                         </Link>
                     }
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
                 {
                     isTutorSignedIn()

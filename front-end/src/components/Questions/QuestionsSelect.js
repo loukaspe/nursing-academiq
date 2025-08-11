@@ -144,7 +144,7 @@ const QuestionsSelect = () => {
                 <div className="questionsSelectPageInfo">
                     <span className="questionsSelectPageTitle">Ερωτήσεις Quiz</span>
 
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
             </div>
             <div className="questionsSelectSubtitle">

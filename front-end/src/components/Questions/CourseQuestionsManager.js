@@ -137,7 +137,7 @@ const CourseQuestionsManager = () => {
                 <div className="questionsManagerPageInfo">
                     <span className="questionsManagerPageTitle">Ερωτήσεις</span>
 
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
             </div>
             <div className="questionsManagerSubtitle">

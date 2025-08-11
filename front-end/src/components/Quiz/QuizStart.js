@@ -76,7 +76,6 @@ const QuizStart = () => {
                     <div className="quizDescription">{quiz.Description}</div>
                     <div className="quizButtons">
                         <div className="quizButtonsRow">
-                            <button className="quizSmallButton" onClick={() => navigate(-1)}>Πίσω</button>
                             <Link className="quizSmallButton"
                                   to={`/courses/${courseID}/quizzes/${quizID}/complete`}>Έναρξη</Link>
                         </div>

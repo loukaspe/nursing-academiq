@@ -75,7 +75,7 @@ const CourseChaptersList = (props) => {
             <div className="singleCourseChaptersPageHeader">
                 <div className="singleCourseChaptersPageInfo">
                     <span className="singleCourseChaptersPageCourseName">{course.title}</span>
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
                 <Link className="chapterButton" to={`/courses/${courseID}/chapters/create`}>
                     + Νέα Θεματική Ενότητα

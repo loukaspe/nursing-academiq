@@ -113,7 +113,7 @@ const CreateQuizStepThree = () => {
                 <div className="questionsSelectPageInfo">
                     <span className="questionsSelectPageTitle">3. Επιλογή Ερωτήσεων</span>
 
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
             </div>
             <div className="questionsSelectSubtitle">

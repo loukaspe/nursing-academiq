@@ -104,8 +104,6 @@ const EditQuizStepTwo = () => {
             <div className="questionsSelectPageHeader">
                 <div className="questionsSelectPageInfo">
                     <span className="questionsSelectPageTitle">2. Επιλογή Ερωτήσεων</span>
-
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
                 </div>
             </div>
             <div className="questionsSelectSubtitle">

@@ -132,7 +132,7 @@ const CsvImport = () => {
                 <div className="csvImportPageHeader">
                     <div className="csvImportPageInfo">
                         <span className="singleChapterQuizzesPageChapterName">Εισαγωγή Ερωτήσεων</span>
-                        <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                        
                     </div>
                 </div>
                 <div className="csvImportPageImportRow">

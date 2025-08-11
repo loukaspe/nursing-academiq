@@ -99,7 +99,7 @@ const CreateQuestion = () => {
 
             <div className="editQuestionPageInfo">
                 <span className="editQuestionPageTitle">Δημιουργία Ερώτησης</span>
-                <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                
             </div>
             <div className="editQuestionPageChapterSection">
                 <label htmlFor="chapter-select">Θεματική Ενότητα:</label>

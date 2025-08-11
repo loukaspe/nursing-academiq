@@ -77,7 +77,7 @@ const CourseQuizzesList = (props) => {
             <div className="singleCourseQuizzesPageHeader">
                 <div className="singleCourseQuizzesPageInfo">
                     <span className="singleCourseQuizzesPageCourseName">{course.title}</span>
-                    <button className="backButton" onClick={() => navigate(-1)}>Πίσω</button>
+                    
                 </div>
                 {
                     isTutorSignedIn()
