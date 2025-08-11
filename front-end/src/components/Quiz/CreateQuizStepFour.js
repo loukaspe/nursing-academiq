@@ -5,6 +5,7 @@ import CreationProgressBar from "./CreationProgressBar";
 import api from "../Utilities/APICaller";
 import {Link} from "react-router-dom";
 import Cookies from "universal-cookie";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const cookies = new Cookies();
 const CreateQuizStepFour = () => {
@@ -68,6 +69,7 @@ const CreateQuizStepFour = () => {
 
     return (
         <div>
+            <Breadcrumb actualPath={`/quizzes/create/step-four`} namePath={`/Quiz/Δημιουργία - Βήμα 4`}/>
             <CreationProgressBar/>
             <h2 className="createQuizStepFourPageTitle">4. Ολοκλήρωση</h2>
             <div className="createQuizStepFourDetailsRow">

@@ -3,12 +3,14 @@ import {Link} from "react-router-dom";
 import CreationProgressBar from "./CreationProgressBar";
 import React from "react";
 import "./CreateQuizStepTwo.css";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 export default function CreateQuizStepTwo() {
     const {quiz, setQuiz} = useQuiz();
 
     return (
         <div className="createQuizStepTwoContainer">
+            <Breadcrumb actualPath={`/quizzes/create/step-two`} namePath={`/Quiz/Δημιουργία - Βήμα 2`}/>
             <CreationProgressBar/>
             <div className="createQuizStepTwoHeaderRow">
                 <div className="createQuizStepTwoHeader">

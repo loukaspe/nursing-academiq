@@ -4,6 +4,7 @@ import {useQuiz} from "../../context/QuizContext";
 import api from "../Utilities/APICaller";
 import Cookies from "universal-cookie";
 import EditProgressBar from "./EditProgressBar";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 const cookies = new Cookies();
 const EditQuizStepThree = () => {
@@ -60,6 +61,10 @@ const EditQuizStepThree = () => {
 
     return (
         <div>
+            <Breadcrumb
+                actualPath={`/courses/${quiz.course.ID}/quizzes/${quiz.id}/edit/step-three`}
+                namePath={`/Μαθήματα/${quiz.course.Title}/Quiz/${quiz.title}/Επεξεργασία - Βήμα 3`}
+            />
             <EditProgressBar/>
             <h2 className="createQuizStepFourPageTitle">3. Ολοκλήρωση</h2>
             <div className="createQuizStepFourDetailsRow">

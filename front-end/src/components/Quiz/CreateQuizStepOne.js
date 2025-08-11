@@ -5,6 +5,7 @@ import CreationProgressBar from "./CreationProgressBar";
 import "./CreateQuizStepOne.css";
 import api from "../Utilities/APICaller";
 import Cookies from "universal-cookie";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 export default function CreateQuizStepOne() {
     const {quiz, setQuiz} = useQuiz();
@@ -52,6 +53,7 @@ export default function CreateQuizStepOne() {
 
     return (
         <div>
+            <Breadcrumb actualPath={`/quizzes/create`} namePath={`/Quiz/Δημιουργία - Βήμα 1`}/>
             <CreationProgressBar/>
             <div className="create-quiz-step-one-content">
                 <h2 className="create-quiz-step-one-page-title">1. Επιλογή Μαθήματος</h2>

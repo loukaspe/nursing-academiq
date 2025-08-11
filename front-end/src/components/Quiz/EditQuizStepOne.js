@@ -5,6 +5,7 @@ import React, {useEffect} from "react";
 import "./CreateQuizStepTwo.css";
 import axios from "axios";
 import EditProgressBar from "./EditProgressBar";
+import Breadcrumb from "../Utilities/Breadcrumb";
 
 export default function EditQuizStepOne() {
     const {quiz, setQuiz} = useQuiz();
@@ -44,6 +45,10 @@ export default function EditQuizStepOne() {
 
     return (
         <div className="createQuizStepTwoContainer">
+            <Breadcrumb
+                actualPath={`/courses/${quiz.course.ID}/quizzes/${quiz.id}/edit`}
+                namePath={`/Μαθήματα/${quiz.course.Title}/Quiz/${quiz.title}/Επεξεργασία`}
+            />
             <EditProgressBar/>
             <div className="createQuizStepTwoHeaderRow">
                 <div className="createQuizStepTwoHeader">

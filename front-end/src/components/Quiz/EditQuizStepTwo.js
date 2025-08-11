@@ -100,6 +100,10 @@ const EditQuizStepTwo = () => {
 
     return (
         <React.Fragment>
+            <Breadcrumb
+                actualPath={`/courses/${quiz.course.ID}/quizzes/${quiz.id}/edit/step-two`}
+                namePath={`/Μαθήματα/${quiz.course.Title}/Quiz/${quiz.title}/Επεξεργασία - Βήμα 2`}
+            />
             <EditProgressBar/>
             <div className="questionsSelectPageHeader">
                 <div className="questionsSelectPageInfo">

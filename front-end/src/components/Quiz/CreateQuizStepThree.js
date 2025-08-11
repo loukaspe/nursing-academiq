@@ -108,6 +108,7 @@ const CreateQuizStepThree = () => {
 
     return (
         <React.Fragment>
+            <Breadcrumb actualPath={`/quizzes/create/step-three`} namePath={`/Quiz/Δημιουργία - Βήμα 3`}/>
             <CreationProgressBar/>
             <div className="questionsSelectPageHeader">
                 <div className="questionsSelectPageInfo">
