@@ -461,6 +461,7 @@ func (repo *QuizRepository) UpdateQuiz(
 	ctx context.Context,
 	uid uint32,
 	quiz *domain.Quiz,
+	questionsIDs []uint32,
 ) error {
 	modelQuiz := &Quiz{}
 
@@ -480,6 +481,29 @@ func (repo *QuizRepository) UpdateQuiz(
 	modelQuiz.Visibility = quiz.Visibility
 	modelQuiz.ShowSubset = quiz.ShowSubset
 	modelQuiz.SubsetSize = quiz.SubsetSize
+
+	var questions []*Question
+	if len(questionsIDs) > 0 {
+		if err := repo.db.WithContext(ctx).Find(&questions, questionsIDs).Error; err != nil {
+			return apierrors.DataNotFoundErrorWrapper{
+				ReturnedStatusCode: http.StatusNotFound,
+				OriginalError:      errors.New(fmt.Sprintf("questionIDs %v not found", questionsIDs)),
+			}
+		}
+
+		if err := repo.db.WithContext(ctx).Model(&modelQuiz).Association("Questions").Replace(questions); err != nil {
+			return fmt.Errorf("could not add questions for quiz with ID %d: %w", modelQuiz.ID, err)
+		}
+	}
+
+	if len(questionsIDs) == 0 {
+		err = repo.db.WithContext(ctx).Model(&modelQuiz).Association("Questions").Clear()
+		if err != nil {
+			return fmt.Errorf("could not update questions for quiz with ID %d: %w", uid, err)
+		}
+
+		return nil
+	}
 
 	err = repo.db.WithContext(ctx).Save(&modelQuiz).Error
 
@@ -543,13 +567,6 @@ func (repo *QuizRepository) DeleteQuiz(
 
 	// Start transaction
 	return repo.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// Delete questions first
-		if len(quiz.Questions) > 0 {
-			if err := tx.Delete(&quiz.Questions).Error; err != nil {
-				return err
-			}
-		}
-
 		// Clear the join table to remove associations
 		if err := tx.Model(&quiz).Association("Questions").Clear(); err != nil {
 			return err

@@ -12,11 +12,12 @@ import (
 )
 
 type UpdateQuizRequest struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Visibility  bool   `json:"visibility"`
-	ShowSubset  bool   `json:"showSubset"`
-	SubsetSize  int    `json:"subsetSize"`
+	Title        string   `json:"title"`
+	Description  string   `json:"description"`
+	Visibility   bool     `json:"visibility"`
+	ShowSubset   bool     `json:"showSubset"`
+	SubsetSize   int      `json:"subsetSize"`
+	QuestionsIDs []uint32 `json:"questionsIDs"`
 }
 
 type UpdateQuizHandler struct {
@@ -80,7 +81,7 @@ func (handler *UpdateQuizHandler) UpdateQuizController(w http.ResponseWriter, r 
 		SubsetSize:  request.SubsetSize,
 	}
 
-	err = handler.QuizService.UpdateQuiz(r.Context(), uint32(uid), domainQuiz)
+	err = handler.QuizService.UpdateQuiz(r.Context(), uint32(uid), domainQuiz, request.QuestionsIDs)
 	if dataNotFoundErrorWrapper, ok := err.(apierrors.DataNotFoundErrorWrapper); ok {
 		handler.logger.WithFields(log.Fields{
 			"errorMessage": dataNotFoundErrorWrapper.Unwrap().Error(),

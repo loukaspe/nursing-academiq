@@ -13,7 +13,7 @@ type QuizRepositoryInterface interface {
 	GetQuizzes(ctx context.Context) ([]domain.Quiz, error)
 	GetMostRecentQuizzes(ctx context.Context, limit int) ([]domain.Quiz, error)
 	CreateQuiz(context.Context, *domain.Quiz, []uint32) (uint, error)
-	UpdateQuiz(context.Context, uint32, *domain.Quiz) error
+	UpdateQuiz(context.Context, uint32, *domain.Quiz, []uint32) error
 	UpdateQuizQuestions(context.Context, uint32, []uint32) error
 	DeleteQuiz(ctx context.Context, uid uint32) error
 }
