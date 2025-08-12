@@ -67,9 +67,9 @@
 }
 
 .menu-list li.active > .menu-link {
-    background-color: var(--mid-white-color);
+    background-color: var(--brand-dark-color);
     font-weight: 600;
-    color: #000000;
+    color: var(--mid-white-color);
 }
 
 .sidebar-section-title {

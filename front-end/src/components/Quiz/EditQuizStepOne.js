@@ -45,10 +45,12 @@ export default function EditQuizStepOne() {
 
     return (
         <div className="createQuizStepTwoContainer">
-            <Breadcrumb
-                actualPath={`/courses/${quiz.course.ID}/quizzes/${quiz.id}/edit`}
-                namePath={`/Μαθήματα/${quiz.course.Title}/Quiz/${quiz.title}/Επεξεργασία`}
-            />
+            {quiz.course && (
+                <Breadcrumb
+                    actualPath={`/courses/${quiz.course.ID}/quizzes/${quiz.id}/edit`}
+                    namePath={`/Μαθήματα/${quiz.course.Title}/Quiz/${quiz.title}/Επεξεργασία`}
+                />
+            )}
             <EditProgressBar/>
             <div className="createQuizStepTwoHeaderRow">
                 <div className="createQuizStepTwoHeader">
