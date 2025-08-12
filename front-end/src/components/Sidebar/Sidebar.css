@@ -4,8 +4,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: var(--brand-color);
-    color: var(--mid-white-color);
+    background-color: #ffffff; /* White background */
+    color: var(--dark-color); /* Dark text */
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -15,11 +15,11 @@
 }
 
 .sidebar-header {
-    background-color: var(--brand-dark-color);
+    background-color: var(--brand-color); /* Light gray header */
     padding: 1.5rem 1rem;
     text-align: center;
-    border-bottom: 1px solid var(--brand-dark-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid var(--mid-white-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-logo {
@@ -31,7 +31,7 @@
 }
 
 .sidebar-logo:hover {
-    color: var(--dark-grey-color);
+    color: #666666;
 }
 
 .sidebar-menu,
@@ -43,7 +43,6 @@
 .menu-list {
     list-style: none;
     padding-left: 0;
-    /*margin-bottom: 1rem;*/
 }
 
 .menu-list li {
@@ -52,7 +51,7 @@
 }
 
 .menu-link {
-    color: var(--mid-white-color);
+    color: var(--dark-color);
     text-decoration: none;
     font-size: 1rem;
     padding: 0.25rem 0.5rem;
@@ -63,34 +62,37 @@
 }
 
 .menu-link:hover {
-    color: var(--dark-grey-color);
-    background-color: var(--brand-dark-color);
+    color: #000000;
+    background-color: #eaeaea;
 }
 
 .menu-list li.active > .menu-link {
-    background-color: var(--dark-color);
+    background-color: var(--mid-white-color);
     font-weight: 600;
-    color: var(--mid-white-color);
+    color: #000000;
 }
 
 .sidebar-section-title {
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
-    border-bottom: 1px solid var(--brand-dark-color);
+    border-bottom: 1px solid var(--mid-white-color);
     padding-bottom: 0.3rem;
     user-select: none;
 }
 
 .course-container {
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 0.5rem;
 }
 
 .course-title {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--mid-white-color);
+    color: var(--dark-color);
     text-decoration: none;
     display: block;
     margin-bottom: 0.4rem;
@@ -101,14 +103,14 @@
 }
 
 .course-title:hover {
-    color: var(--dark-grey-color);
-    border-color: var(--dark-grey-color);
+    color: #000000;
+    border-color: #666666;
 }
 
 .course-title.active {
-    border-color: var(--mid-white-color);
+    border-color: #000000;
     font-weight: 700;
-    color: var(--mid-white-color);
+    color: #000000;
 }
 
 .btn-group-create {
@@ -119,8 +121,8 @@
 }
 
 .btn-create {
-    background-color: var(--brand-dark-color);
-    color: var(--mid-white-color);
+    background-color: var(--brand-color);
+    color: #ffffff;
     border: none;
     padding: 0.4rem 0.7rem;
     font-size: 0.9rem;
@@ -142,8 +144,8 @@
 
 .btn-create:hover,
 .btn-create.active {
-    background-color: var(--opposite-color);
-    color: var(--mid-white-color);
+    background-color: var(--brand-color);
+    color: #ffffff;
 }
 
 .sidebar-section {
@@ -154,7 +156,7 @@
 .toggle-btn {
     background: none;
     border: none;
-    color: var(--mid-white-color);
+    color: #333333;
     cursor: pointer;
     font-weight: 700;
     font-size: 1rem;
@@ -181,7 +183,7 @@
 }
 
 .sidebar-link {
-    color: var(--mid-white-color);
+    color: var(--dark-color);
     text-decoration: none;
     font-size: 0.95rem;
     display: block;
@@ -192,24 +194,24 @@
 }
 
 .sidebar-link:hover {
-    color: var(--dark-grey-color);
-    background-color: var(--brand-dark-color);
+    color: #000000;
+    background-color: #eaeaea;
 }
 
 .sidebar-link.active {
-    background-color: var(--dark-color);
+    background-color: #cccccc;
     font-weight: 600;
-    color: var(--mid-white-color);
+    color: #000000;
 }
 
 .edit-btn {
     display: block;
     font-size: 0.85rem;
-    color: var(--mid-white-color);
+    color: #ffffff;
     text-decoration: none;
     margin-top: 4px;
     padding: 2px 6px;
-    background-color: var(--brand-dark-color);
+    background-color: var(--brand-color);
     border-radius: 3px;
     width: fit-content;
     user-select: none;
@@ -219,8 +221,8 @@
 
 .edit-btn:hover,
 .edit-btn.active {
-    background-color: var(--opposite-color);
-    color: var(--mid-white-color);
+    background-color: var(--brand-color);
+    color: #ffffff;
 }
 
 /* Scrollbar for sidebar */
@@ -229,11 +231,11 @@
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: var(--brand-color);
+    background: #ffffff;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background-color: var(--brand-dark-color);
+    background-color: #cccccc;
     border-radius: 4px;
 }
 
