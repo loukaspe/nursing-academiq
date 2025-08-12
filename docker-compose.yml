@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  nursing-academiq-db:
+    image: postgres:latest
+    container_name: nursing-academiq-db
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydb
+      - DATABASE_HOST=postgres-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  app:
+    container_name: app
+    build:
+      context: ./back-end
+      dockerfile: dev.Dockerfile
+    ports:
+      - 8080:8080
+      - 40000:40000
+    restart: always
+    volumes:
+      - ./back-end:/usr/src/app/
+    depends_on:
+      - nursing-academiq-db
+    networks:
+      - app-network
+
+  frontend:
+    build: ./front-end
+    container_name: frontend
+    networks:
+      - app-network
+    restart: always
+
+  caddy:
+    image: caddy:latest
+    container_name: my-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - app
+    networks:
+      - app-network
+    restart: always
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app-network:
+    driver: bridge
