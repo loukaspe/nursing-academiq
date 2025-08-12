@@ -163,7 +163,16 @@ const Sidebar = () => {
                     </Link>
                 )}
 
-                {courses.map((course) => {
+                {(token
+                        ? courses
+                        : courses.filter(
+                            (course) =>
+                                (Array.isArray(course.chapters) &&
+                                course.chapters.length > 0) || (
+                                Array.isArray(course.quizzes) &&
+                                course.quizzes.length > 0)
+                        )
+                ).map((course) => {
                     const coursePath = `/courses/${course.id}`;
                     const courseIsActive = isActivePrefix(coursePath);
 
@@ -262,7 +271,10 @@ const Sidebar = () => {
                                         )}
                                         {course.quizzes?.length > 0 && (
                                             <ul className="sidebar-list">
-                                                {course.quizzes.map((quiz) => {
+                                                {(token
+                                                        ? course.quizzes
+                                                        : course.quizzes.filter((quiz) => quiz.Visibility === true)
+                                                ).map((quiz) => {
                                                     const quizPath = `/courses/${course.id}/quizzes/${quiz.ID}`;
                                                     const quizEditPaths = [
                                                         `/courses/${course.id}/quizzes/${quiz.ID}/edit`,
