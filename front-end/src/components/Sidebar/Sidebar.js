@@ -1,6 +1,6 @@
 // components/Sidebar.js
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation} from 'react-router-dom';
 import './Sidebar.css';
 import Cookies from "universal-cookie";
 
@@ -51,7 +51,7 @@ const Sidebar = () => {
                         location.pathname.includes('/edit') === false // ignore edit here for chapter expand
                 )
             ) {
-                setExpandedChapters((prev) => ({ ...prev, [course.id]: true }));
+                setExpandedChapters((prev) => ({...prev, [course.id]: true}));
             }
 
             // Expand quizzes if any quiz link active or quiz edit page active
@@ -64,7 +64,7 @@ const Sidebar = () => {
                         location.pathname.startsWith(`/quizzes/create`)
                 )
             ) {
-                setExpandedQuizzes((prev) => ({ ...prev, [course.id]: true }));
+                setExpandedQuizzes((prev) => ({...prev, [course.id]: true}));
             }
         });
     }, [location.pathname, courses]);
@@ -185,28 +185,27 @@ const Sidebar = () => {
                             )}
 
                             {/* Chapters Section */}
-                            {course.chapters?.length > 0 && (
-                                <div className="sidebar-section">
-                                    <button
-                                        onClick={() => toggleChapters(course.id)}
-                                        className={`toggle-btn ${expandedChapters[course.id] ? 'expanded' : ''}`}
-                                        aria-expanded={expandedChapters[course.id] ? 'true' : 'false'}
-                                    >
-                                        Θεματικές Ενότητες
-                                    </button>
+                            <div className="sidebar-section">
+                                <button
+                                    onClick={() => toggleChapters(course.id)}
+                                    className={`toggle-btn ${expandedChapters[course.id] ? 'expanded' : ''}`}
+                                    aria-expanded={expandedChapters[course.id] ? 'true' : 'false'}
+                                >
+                                    Θεματικές Ενότητες
+                                </button>
 
-                                    {expandedChapters[course.id] && (
-                                        <>
-                                            {/* Create chapter button if token */}
-                                            {token && (
-                                                <Link
-                                                    to={`/courses/${course.id}/chapters/create`}
-                                                    className="btn-create"
-                                                >
-                                                    Δημιουργία Ενότητας
-                                                </Link>
-                                            )}
-
+                                {expandedChapters[course.id] && (
+                                    <>
+                                        {/* Create chapter button if token */}
+                                        {token && (
+                                            <Link
+                                                to={`/courses/${course.id}/chapters/create`}
+                                                className="btn-create"
+                                            >
+                                                Δημιουργία Ενότητας
+                                            </Link>
+                                        )}
+                                        {course.chapters?.length > 0 && (
                                             <ul className="sidebar-list">
                                                 {course.chapters.map((chapter) => {
                                                     const chapterPath = `/courses/${course.id}/chapters/${chapter.ID}/quizzes`;
@@ -232,54 +231,36 @@ const Sidebar = () => {
                                                     );
                                                 })}
                                             </ul>
-                                        </>
-                                    )}
-                                </div>
-                            )}
+                                        )}
+                                    </>
+                                )}
+                            </div>
+
 
                             {/* Quizzes Section */}
-                            {course.quizzes?.length > 0 && (
-                                <div className="sidebar-section">
-                                    <button
-                                        onClick={() => toggleQuizzes(course.id)}
-                                        className={`toggle-btn ${expandedQuizzes[course.id] ? 'expanded' : ''}`}
-                                        aria-expanded={expandedQuizzes[course.id] ? 'true' : 'false'}
-                                    >
-                                        Quizzes
-                                    </button>
+                            <div className="sidebar-section">
+                                <button
+                                    onClick={() => toggleQuizzes(course.id)}
+                                    className={`toggle-btn ${expandedQuizzes[course.id] ? 'expanded' : ''}`}
+                                    aria-expanded={expandedQuizzes[course.id] ? 'true' : 'false'}
+                                >
+                                    Quizzes
+                                </button>
 
-                                    {expandedQuizzes[course.id] && (
-                                        <>
-                                            {/* Create quiz buttons if token */}
-                                            {token && (
-                                                <>
-                                                    <Link
-                                                        to={`/courses/${course.id}/quizzes/create`}
-                                                        className="btn-create"
-                                                    >
-                                                        Δημιουργία Quiz
-                                                    </Link>
-                                                    <Link
-                                                        to={`/quizzes/create/step-two`}
-                                                        className="btn-create"
-                                                    >
-                                                        Δημιουργία Quiz - Βήμα 2
-                                                    </Link>
-                                                    <Link
-                                                        to={`/quizzes/create/step-three`}
-                                                        className="btn-create"
-                                                    >
-                                                        Δημιουργία Quiz - Βήμα 3
-                                                    </Link>
-                                                    <Link
-                                                        to={`/quizzes/create/step-four`}
-                                                        className="btn-create"
-                                                    >
-                                                        Δημιουργία Quiz - Βήμα 4
-                                                    </Link>
-                                                </>
-                                            )}
-
+                                {expandedQuizzes[course.id] && (
+                                    <>
+                                        {/* Create quiz buttons if token */}
+                                        {token && (
+                                            <>
+                                                <Link
+                                                    to={`/courses/${course.id}/quizzes/create`}
+                                                    className="btn-create"
+                                                >
+                                                    Δημιουργία Quiz
+                                                </Link>
+                                            </>
+                                        )}
+                                        {course.quizzes?.length > 0 && (
                                             <ul className="sidebar-list">
                                                 {course.quizzes.map((quiz) => {
                                                     const quizPath = `/courses/${course.id}/quizzes/${quiz.ID}`;
@@ -311,10 +292,10 @@ const Sidebar = () => {
                                                     );
                                                 })}
                                             </ul>
-                                        </>
-                                    )}
-                                </div>
-                            )}
+                                        )}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     );
                 })}
