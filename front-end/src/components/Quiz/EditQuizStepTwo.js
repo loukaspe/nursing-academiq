@@ -155,7 +155,8 @@ const EditQuizStepTwo = () => {
                     </div>
                 </div>
                 <div className="chaptersSection">
-                    <h2 className="questionsSelectPageTitle">Θεματικές Ενότητες</h2>
+                    <h2 className="questionsSelectPageTitle">Φίλτρα</h2>
+                    <h3 className="questionsSelectPageTitle">Θεματικές Ενότητες</h3>
                     {chapters.length > 0 ? (
                         chapters.map((chapter) => (
                             <div key={chapter.id} className="chapterRow">
