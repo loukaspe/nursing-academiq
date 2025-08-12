@@ -71,41 +71,43 @@ const CreateQuizStepFour = () => {
         <div>
             <Breadcrumb actualPath={`/quizzes/create/step-four`} namePath={`/Quiz/Δημιουργία - Βήμα 4`}/>
             <CreationProgressBar/>
-            <h2 className="createQuizStepFourPageTitle">4. Ολοκλήρωση</h2>
-            <div className="createQuizStepFourDetailsRow">
-                <div className="createQuizStepFourDetailsRowColumn">
-                    <div> Αριθμός Ερωτήσεων: {quiz.questions.length}</div>
-                    <div className="createQuizStepFourCheckboxRow">
-                        <label>
-                            Ορατό <input type="checkbox"
-                                         checked={quiz.isVisible}
-                                         onChange={(e) => setQuiz({...quiz, isVisible: e.target.checked})}/>
-                        </label>
+            <div className="createQuizStepFourContainer">
+                <h2 className="createQuizStepFourPageTitle">4. Ολοκλήρωση</h2>
+                <div className="createQuizStepFourDetailsRow">
+                    <div className="createQuizStepFourDetailsRowColumn">
+                        <div> Αριθμός Ερωτήσεων: {quiz.questions.length}</div>
+                        <div className="createQuizStepFourCheckboxRow">
+                            <label>
+                                Ορατό <input type="checkbox"
+                                             checked={quiz.isVisible}
+                                             onChange={(e) => setQuiz({...quiz, isVisible: e.target.checked})}/>
+                            </label>
 
-                    </div>
-                    <div className="createQuizStepFourCheckboxRow">
-                        <label>
-                            Τυχαίο Υποσύνολο Ανά Συμπλήρωση
-                            <input type="checkbox"
-                                   checked={quiz.isShowSubsetChecked}
-                                   onChange={(e) => setQuiz({...quiz, isShowSubsetChecked: e.target.checked})}/>
-                        </label>
-                    </div>
+                        </div>
+                        <div className="createQuizStepFourCheckboxRow">
+                            <label>
+                                Τυχαίο Υποσύνολο Ανά Συμπλήρωση
+                                <input type="checkbox"
+                                       checked={quiz.isShowSubsetChecked}
+                                       onChange={(e) => setQuiz({...quiz, isShowSubsetChecked: e.target.checked})}/>
+                            </label>
+                        </div>
 
-                    <div className={quiz.isShowSubsetChecked ? "" : "disabledInput"}>
-                        <label className={quiz.isShowSubsetChecked ? "" : "disabledInput"}>
-                            Πλήθος Ερωτήσεων Ανά Συμπλήρωση: </label>
-                        <input type="number" value={quiz.subsetSize}
-                               onChange={handleSubsetSizeChange}
-                               disabled={!quiz.isShowSubsetChecked}
-                               className="createQuizStepFourDetailsRowInputText"
-                        />
+                        <div className={quiz.isShowSubsetChecked ? "" : "disabledInput"}>
+                            <label className={quiz.isShowSubsetChecked ? "" : "disabledInput"}>
+                                Πλήθος Ερωτήσεων Ανά Συμπλήρωση: </label>
+                            <input type="number" value={quiz.subsetSize}
+                                   onChange={handleSubsetSizeChange}
+                                   disabled={!quiz.isShowSubsetChecked}
+                                   className="createQuizStepFourDetailsRowInputText"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="createQuizStepTwoButtonsContainer">
-                <button className="createQuizStepFourButtonSubmit" onClick={handleSubmit}>Αποθήκευση</button>
-                <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>Διαγραφή</button>
+                <div className="createQuizStepTwoButtonsContainer">
+                    <button className="createQuizStepFourButtonSubmit" onClick={handleSubmit}>Αποθήκευση</button>
+                    <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>Διαγραφή</button>
+                </div>
             </div>
         </div>
     );

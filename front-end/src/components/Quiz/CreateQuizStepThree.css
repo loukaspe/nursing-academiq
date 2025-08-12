@@ -133,3 +133,11 @@
     color: var(--dark-grey-color);
     font-weight: bold;
 }
+
+.createQuizStepThreeContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent overflow within the container */
+    margin-left: 1em;
+}

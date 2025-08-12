@@ -110,24 +110,25 @@ const CreateQuizStepThree = () => {
         <React.Fragment>
             <Breadcrumb actualPath={`/quizzes/create/step-three`} namePath={`/Quiz/Δημιουργία - Βήμα 3`}/>
             <CreationProgressBar/>
-            <div className="questionsSelectPageHeader">
-                <div className="questionsSelectPageInfo">
-                    <span className="questionsSelectPageTitle">3. Επιλογή Ερωτήσεων</span>
+            <div className="createQuizStepThreeContainer">
+                <div className="questionsSelectPageHeader">
+                    <div className="questionsSelectPageInfo">
+                        <span className="questionsSelectPageTitle">3. Επιλογή Ερωτήσεων</span>
 
-                    
+
+                    </div>
                 </div>
-            </div>
-            <div className="questionsSelectSubtitle">
-                <div>{quizName}</div>
-            </div>
-            <div className="questionsSelectChaptersContainer">
-                <div className="questionsSection">
-                    <div className="questionsList">
-                        {questions.length > 0 ? (
-                            questions.map((question, index) => (
-                                <div key={index} className="questionSelectRow">
-                                    <div className="questionSelectRowTop">
-                                        <div className="questionSelectDetails">
+                <div className="questionsSelectSubtitle">
+                    <div>{quizName}</div>
+                </div>
+                <div className="questionsSelectChaptersContainer">
+                    <div className="questionsSection">
+                        <div className="questionsList">
+                            {questions.length > 0 ? (
+                                questions.map((question, index) => (
+                                    <div key={index} className="questionSelectRow">
+                                        <div className="questionSelectRowTop">
+                                            <div className="questionSelectDetails">
                                         <span>
                                             <input
                                                 className="questionSelectCheckbox"
@@ -136,9 +137,9 @@ const CreateQuizStepThree = () => {
                                                 checked={quiz.questions.some(q => q.ID === question.ID)}
                                             />
                                         </span>
-                                            <span>{question.Text}</span>
-                                        </div>
-                                        <span className="questionSelectCheckboxContainer">
+                                                <span>{question.Text}</span>
+                                            </div>
+                                            <span className="questionSelectCheckboxContainer">
                                         <Link
                                             to={`/courses/${courseID}/chapters/${question.ChapterID}/questions/${question.ID}/edit`}
                                         >
@@ -150,44 +151,45 @@ const CreateQuizStepThree = () => {
                                             onClick={() => deleteQuestion(question)}
                                         />
                                     </span>
+                                        </div>
+                                        <div className="questionSelectChapterName">Θεματική
+                                            Ενότητα: {question.Chapter.title}</div>
                                     </div>
-                                    <div className="questionSelectChapterName">Θεματική
-                                        Ενότητα: {question.Chapter.title}</div>
-                                </div>
 
+                                ))
+                            ) : (
+                                <div className="questionSelectDetails">Δεν υπάρχουν διαθέσιμες ερωτήσεις.</div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="chaptersSection">
+                        <h2 className="questionsSelectPageTitle">Φίλτρα</h2>
+                        <h3 className="questionsSelectPageTitle">Θεματικές Ενότητες</h3>
+                        {chapters.length > 0 ? (
+                            chapters.map((chapter) => (
+                                <div key={chapter.id} className="chapterRow">
+                                    <span>{chapter.title}</span>
+                                    <input
+                                        type="checkbox"
+                                        onChange={() => handleChapterCheckbox(chapter.id)}
+                                        checked={selectedChaptersIDs.includes(chapter.id)}
+                                    />
+                                </div>
                             ))
                         ) : (
-                            <div className="questionSelectDetails">Δεν υπάρχουν διαθέσιμες ερωτήσεις.</div>
+                            <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
                         )}
                     </div>
                 </div>
-                <div className="chaptersSection">
-                    <h2 className="questionsSelectPageTitle">Φίλτρα</h2>
-                    <h3 className="questionsSelectPageTitle">Θεματικές Ενότητες</h3>
-                    {chapters.length > 0 ? (
-                        chapters.map((chapter) => (
-                            <div key={chapter.id} className="chapterRow">
-                                <span>{chapter.title}</span>
-                                <input
-                                    type="checkbox"
-                                    onChange={() => handleChapterCheckbox(chapter.id)}
-                                    checked={selectedChaptersIDs.includes(chapter.id)}
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
-                    )}
-                </div>
-            </div>
-            {error && <div className="questionsSelectErrorRow">{error}</div>}
-            <div className="questionsSelectChaptersButtonContainer">
-                <div className="questionsSelectChaptersLeft questionsSelectPageTitle">
-                    Τρέχων Αριθμός Ερωτήσεων : {quiz.questions.length}
-                </div>
-                <div className="questionsSelectChaptersRightButtons">
-                    <Link className="questionsSelectChaptersSaveButton" to="/quizzes/create/step-two">Προηγούμενο</Link>
-                    <Link className="questionsSelectChaptersSaveButton" to="/quizzes/create/step-four">Επόμενο</Link>
+                {error && <div className="questionsSelectErrorRow">{error}</div>}
+                <div className="questionsSelectChaptersButtonContainer">
+                    <div className="questionsSelectChaptersLeft questionsSelectPageTitle">
+                        Τρέχων Αριθμός Ερωτήσεων : {quiz.questions.length}
+                    </div>
+                    <div className="questionsSelectChaptersRightButtons">
+                        <Link className="questionsSelectChaptersSaveButton" to="/quizzes/create/step-two">Προηγούμενο</Link>
+                        <Link className="questionsSelectChaptersSaveButton" to="/quizzes/create/step-four">Επόμενο</Link>
+                    </div>
                 </div>
             </div>
         </React.Fragment>
