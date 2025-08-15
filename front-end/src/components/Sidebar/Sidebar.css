@@ -31,7 +31,7 @@
 }
 
 .sidebar-logo:hover {
-    color: #666666;
+    color: var(--dark-grey-color);
 }
 
 .sidebar-menu,
@@ -79,6 +79,8 @@
     border-bottom: 1px solid var(--mid-white-color);
     padding-bottom: 0.3rem;
     user-select: none;
+    color: var(--dark-color);
+    text-decoration: none;
 }
 
 .course-container {
@@ -144,7 +146,7 @@
 
 .btn-create:hover,
 .btn-create.active {
-    background-color: var(--brand-color);
+    background-color: var(--opposite-color);
     color: #ffffff;
 }
 
@@ -221,7 +223,7 @@
 
 .edit-btn:hover,
 .edit-btn.active {
-    background-color: var(--brand-color);
+    background-color: var(--opposite-color);
     color: #ffffff;
 }
 

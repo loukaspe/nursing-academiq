@@ -87,6 +87,9 @@ const Sidebar = () => {
 
     const isActivePrefix = (prefix) => location.pathname.startsWith(prefix);
 
+    const courseCreatePath = `/courses/create`;
+    const courseCreateIsActive = isActiveLink(courseCreatePath);
+
     return (
         <div className="sidebar">
             <div className="sidebar-header">
@@ -154,11 +157,14 @@ const Sidebar = () => {
             </nav>
 
             <div className="sidebar-courses">
-                <div className="sidebar-section-title">Μαθήματα</div>
+                <Link to="/courses" className="sidebar-section-title">
+                    <div className="sidebar-section-title">Μαθήματα</div>
+                </Link>
 
                 {/* Show create course button if token exists */}
                 {token && (
-                    <Link to="/courses/create" className="btn-create">
+                    <Link to="/courses/create"
+                          className={`btn-create  ${courseCreateIsActive ? 'active' : ''}`}>
                         Δημιουργία Μαθήματος
                     </Link>
                 )}
@@ -168,13 +174,21 @@ const Sidebar = () => {
                         : courses.filter(
                             (course) =>
                                 (Array.isArray(course.chapters) &&
-                                course.chapters.length > 0) || (
-                                Array.isArray(course.quizzes) &&
-                                course.quizzes.length > 0)
+                                    course.chapters.length > 0) || (
+                                    Array.isArray(course.quizzes) &&
+                                    course.quizzes.length > 0)
                         )
                 ).map((course) => {
                     const coursePath = `/courses/${course.id}`;
                     const courseIsActive = isActivePrefix(coursePath);
+
+                    const courseEditPath = `/courses/${course.id}/edit`;
+                    const courseEditIsActive = isActiveLink(courseEditPath);
+                    const courseQuestionsManagePath = `/courses/${course.id}/questions/manage`;
+                    const courseQuestionsManageIsActive = isActiveLink(courseQuestionsManagePath);
+
+                    const chapterCreatePath = `/courses/${course.id}/chapters/create`;
+                    const chapterCreateIsActive = isActiveLink(chapterCreatePath);
 
                     return (
                         <div
@@ -188,8 +202,16 @@ const Sidebar = () => {
 
                             {/* Edit button under course title if token */}
                             {token && (
-                                <Link to={`/courses/${course.id}/edit`} className="edit-btn">
+                                <Link to={`/courses/${course.id}/edit`}
+                                      className={`edit-btn  ${courseEditIsActive ? 'active' : ''}`}>
                                     Επεξεργασία Μαθήματος
+                                </Link>
+                            )}
+
+                            {token && (
+                                <Link to={`/courses/${course.id}/questions/manage`}
+                                      className={`edit-btn  ${courseQuestionsManageIsActive ? 'active' : ''}`}>
+                                    Διαχείριση Ερωτήσεων
                                 </Link>
                             )}
 
@@ -209,7 +231,7 @@ const Sidebar = () => {
                                         {token && (
                                             <Link
                                                 to={`/courses/${course.id}/chapters/create`}
-                                                className="btn-create"
+                                                className={`btn-create  ${chapterCreateIsActive ? 'active' : ''}`}
                                             >
                                                 Δημιουργία Ενότητας
                                             </Link>
@@ -220,6 +242,7 @@ const Sidebar = () => {
                                                     const chapterPath = `/courses/${course.id}/chapters/${chapter.ID}/quizzes`;
                                                     const chapterEditPath = `/courses/${course.id}/chapters/${chapter.ID}/edit`;
                                                     const chapterIsActive = isActivePrefix(chapterPath) || isActiveLink(chapterEditPath);
+                                                    const chapterEditIsActive = isActiveLink(chapterEditPath);
 
                                                     return (
                                                         <li key={chapter.ID} className="sidebar-list-item">
@@ -232,7 +255,8 @@ const Sidebar = () => {
 
                                                             {/* Edit button under chapter if token */}
                                                             {token && (
-                                                                <Link to={chapterEditPath} className="edit-btn">
+                                                                <Link to={chapterEditPath}
+                                                                      className={`edit-btn  ${chapterEditIsActive ? 'active' : ''}`}>
                                                                     Επεξεργασία
                                                                 </Link>
                                                             )}
