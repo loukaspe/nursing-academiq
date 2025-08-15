@@ -1,6 +1,6 @@
 // components/Sidebar.js
-import React, {useEffect, useState} from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 import Cookies from "universal-cookie";
 
@@ -40,21 +40,18 @@ const Sidebar = () => {
         fetchCourses();
     }, []);
 
-    // Expand if current location matches a chapter in course
     useEffect(() => {
         courses.forEach((course) => {
-            // Expand chapters if any chapter link active
             if (
                 course.chapters?.some(
                     (ch) =>
                         location.pathname.startsWith(`/courses/${course.id}/chapters/${ch.ID}`) &&
-                        location.pathname.includes('/edit') === false // ignore edit here for chapter expand
+                        location.pathname.includes('/edit') === false
                 )
             ) {
-                setExpandedChapters((prev) => ({...prev, [course.id]: true}));
+                setExpandedChapters((prev) => ({ ...prev, [course.id]: true }));
             }
 
-            // Expand quizzes if any quiz link active or quiz edit page active
             if (
                 course.quizzes?.some(
                     (q) =>
@@ -64,7 +61,7 @@ const Sidebar = () => {
                         location.pathname.startsWith(`/quizzes/create`)
                 )
             ) {
-                setExpandedQuizzes((prev) => ({...prev, [course.id]: true}));
+                setExpandedQuizzes((prev) => ({ ...prev, [course.id]: true }));
             }
         });
     }, [location.pathname, courses]);
@@ -84,7 +81,6 @@ const Sidebar = () => {
     };
 
     const isActiveLink = (path) => location.pathname === path;
-
     const isActivePrefix = (prefix) => location.pathname.startsWith(prefix);
 
     const courseCreatePath = `/courses/create`;
@@ -161,7 +157,6 @@ const Sidebar = () => {
                     <div className="sidebar-section-title">Μαθήματα</div>
                 </Link>
 
-                {/* Show create course button if token exists */}
                 {token && (
                     <Link to="/courses/create"
                           className={`btn-create  ${courseCreateIsActive ? 'active' : ''}`}>
@@ -173,10 +168,8 @@ const Sidebar = () => {
                         ? courses
                         : courses.filter(
                             (course) =>
-                                (Array.isArray(course.chapters) &&
-                                    course.chapters.length > 0) || (
-                                    Array.isArray(course.quizzes) &&
-                                    course.quizzes.length > 0)
+                                (Array.isArray(course.chapters) && course.chapters.length > 0) ||
+                                (Array.isArray(course.quizzes) && course.quizzes.length > 0)
                         )
                 ).map((course) => {
                     const coursePath = `/courses/${course.id}`;
@@ -195,12 +188,10 @@ const Sidebar = () => {
                             key={course.id}
                             className={`course-container ${courseIsActive ? 'active' : ''}`}
                         >
-                            {/* Course title as Link */}
                             <Link to={coursePath} className={`course-title ${courseIsActive ? 'active' : ''}`}>
                                 {course.title}
                             </Link>
 
-                            {/* Edit button under course title if token */}
                             {token && (
                                 <Link to={`/courses/${course.id}/edit`}
                                       className={`edit-btn  ${courseEditIsActive ? 'active' : ''}`}>
@@ -227,7 +218,6 @@ const Sidebar = () => {
 
                                 {expandedChapters[course.id] && (
                                     <>
-                                        {/* Create chapter button if token */}
                                         {token && (
                                             <Link
                                                 to={`/courses/${course.id}/chapters/create`}
@@ -238,7 +228,7 @@ const Sidebar = () => {
                                         )}
                                         {course.chapters?.length > 0 && (
                                             <ul className="sidebar-list">
-                                                {course.chapters.map((chapter) => {
+                                                {course.chapters.slice(0, 2).map((chapter) => {
                                                     const chapterPath = `/courses/${course.id}/chapters/${chapter.ID}/quizzes`;
                                                     const chapterEditPath = `/courses/${course.id}/chapters/${chapter.ID}/edit`;
                                                     const chapterIsActive = isActivePrefix(chapterPath) || isActiveLink(chapterEditPath);
@@ -252,8 +242,6 @@ const Sidebar = () => {
                                                             >
                                                                 {chapter.Title}
                                                             </Link>
-
-                                                            {/* Edit button under chapter if token */}
                                                             {token && (
                                                                 <Link to={chapterEditPath}
                                                                       className={`edit-btn  ${chapterEditIsActive ? 'active' : ''}`}>
@@ -263,12 +251,19 @@ const Sidebar = () => {
                                                         </li>
                                                     );
                                                 })}
+
+                                                {course.chapters.length > 2 && (
+                                                    <li>
+                                                        <Link to={`/courses/${course.id}/chapters`} className="see-more-link">
+                                                            Δείτε Περισσότερα
+                                                        </Link>
+                                                    </li>
+                                                )}
                                             </ul>
                                         )}
                                     </>
                                 )}
                             </div>
-
 
                             {/* Quizzes Section */}
                             <div className="sidebar-section">
@@ -282,23 +277,20 @@ const Sidebar = () => {
 
                                 {expandedQuizzes[course.id] && (
                                     <>
-                                        {/* Create quiz buttons if token */}
                                         {token && (
-                                            <>
-                                                <Link
-                                                    to={`/courses/${course.id}/quizzes/create`}
-                                                    className="btn-create"
-                                                >
-                                                    Δημιουργία Quiz
-                                                </Link>
-                                            </>
+                                            <Link
+                                                to={`/courses/${course.id}/quizzes/create`}
+                                                className="btn-create"
+                                            >
+                                                Δημιουργία Quiz
+                                            </Link>
                                         )}
                                         {course.quizzes?.length > 0 && (
                                             <ul className="sidebar-list">
                                                 {(token
                                                         ? course.quizzes
                                                         : course.quizzes.filter((quiz) => quiz.Visibility === true)
-                                                ).map((quiz) => {
+                                                ).slice(0, 2).map((quiz) => {
                                                     const quizPath = `/courses/${course.id}/quizzes/${quiz.ID}`;
                                                     const quizEditPaths = [
                                                         `/courses/${course.id}/quizzes/${quiz.ID}/edit`,
@@ -317,8 +309,6 @@ const Sidebar = () => {
                                                             >
                                                                 {quiz.Title}
                                                             </Link>
-
-                                                            {/* Edit button under quiz if token */}
                                                             {token && (
                                                                 <Link to={`${quizPath}/edit`} className="edit-btn">
                                                                     Επεξεργασία
@@ -327,6 +317,14 @@ const Sidebar = () => {
                                                         </li>
                                                     );
                                                 })}
+
+                                                {course.quizzes.length > 2 && (
+                                                    <li>
+                                                        <Link to={`/courses/${course.id}/quizzes`} className="see-more-link">
+                                                            Δείτε Περισσότερα
+                                                        </Link>
+                                                    </li>
+                                                )}
                                             </ul>
                                         )}
                                     </>
