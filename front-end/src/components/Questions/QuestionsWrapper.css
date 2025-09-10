@@ -6,8 +6,15 @@
     font-family: Arial, sans-serif;
 }
 
+.quiz-title {
+    text-align: center;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 .questionCard {
-    box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
     max-width: 80%;
     border-radius: 15px;
     margin: 0 auto;
@@ -16,14 +23,15 @@
 
 .progress-line {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+    gap: 1rem;
     margin: 2em;
 }
 
 .progress-line span {
     width: 3em;
     height: 3em;
-    border-radius: 50%;
+    border-radius: 5px;
     background-color: var(--dark-grey-color);
     color: var(--light-white-color);
     display: flex;
