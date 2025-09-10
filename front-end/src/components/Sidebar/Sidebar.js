@@ -1,6 +1,6 @@
 // components/Sidebar.js
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation} from 'react-router-dom';
 import './Sidebar.css';
 import Cookies from "universal-cookie";
 
@@ -49,7 +49,7 @@ const Sidebar = () => {
                         location.pathname.includes('/edit') === false
                 )
             ) {
-                setExpandedChapters((prev) => ({ ...prev, [course.id]: true }));
+                setExpandedChapters((prev) => ({...prev, [course.id]: true}));
             }
 
             if (
@@ -61,7 +61,7 @@ const Sidebar = () => {
                         location.pathname.startsWith(`/quizzes/create`)
                 )
             ) {
-                setExpandedQuizzes((prev) => ({ ...prev, [course.id]: true }));
+                setExpandedQuizzes((prev) => ({...prev, [course.id]: true}));
             }
         });
     }, [location.pathname, courses]);
@@ -94,68 +94,9 @@ const Sidebar = () => {
                 </Link>
             </div>
 
-            <nav className="sidebar-menu">
-                <ul className="menu-list">
-                    {token ? (
-                        <>
-                            <li className={isActiveLink('/my-courses') ? 'active' : ''}>
-                                <Link to="/my-courses" className="menu-link">
-                                    Διαχείριση Μαθημάτων
-                                </Link>
-                            </li>
-                            <li className={isActiveLink('/my-quizzes') ? 'active' : ''}>
-                                <Link to="/my-quizzes" className="menu-link">
-                                    Διαχείριση Quiz
-                                </Link>
-                            </li>
-                            <li className={isActiveLink('/courses') || location.pathname.startsWith('/courses/') ? 'active' : ''}>
-                                <Link to="/courses" className="menu-link">
-                                    Μαθήματα
-                                </Link>
-                            </li>
-                            <li className={isActiveLink('/create-tutor') ? 'active' : ''}>
-                                <Link to="/create-tutor" className="menu-link">
-                                    Προσθήκη Καθηγητή
-                                </Link>
-                            </li>
-                        </>
-                    ) : (
-                        <>
-                            <li className={isActiveLink('/courses') || location.pathname.startsWith('/courses/') ? 'active' : ''}>
-                                <Link to="/courses" className="menu-link">
-                                    Μαθήματα
-                                </Link>
-                            </li>
-                            <li className={isActiveLink('/quizzes') || location.pathname.startsWith('/quizzes') ? 'active' : ''}>
-                                <Link to="/quizzes" className="menu-link">
-                                    Quizzes
-                                </Link>
-                            </li>
-                        </>
-                    )}
-                </ul>
-
-                <ul className="menu-list account-menu">
-                    {token ? (
-                        <li className={isActiveLink('/profile') ? 'active' : ''}>
-                            <Link to="/profile" className="menu-link">
-                                Προφίλ
-                            </Link>
-                        </li>
-                    ) : (
-                        <li className={isActiveLink('/login') ? 'active' : ''}>
-                            <Link to="/login" className="menu-link">
-                                Σύνδεση
-                            </Link>
-                        </li>
-                    )}
-                </ul>
-            </nav>
-
             <div className="sidebar-courses">
-                <Link to="/courses" className="sidebar-section-title">
-                    <div className="sidebar-section-title">Μαθήματα</div>
-                </Link>
+                <div className="sidebar-section-title">Μαθήματα</div>
+
 
                 {token && (
                     <Link to="/courses/create"
@@ -254,7 +195,8 @@ const Sidebar = () => {
 
                                                 {course.chapters.length > 2 && (
                                                     <li>
-                                                        <Link to={`/courses/${course.id}/chapters`} className="see-more-link">
+                                                        <Link to={`/courses/${course.id}/chapters`}
+                                                              className="see-more-link">
                                                             Δείτε Περισσότερα
                                                         </Link>
                                                     </li>
@@ -320,7 +262,8 @@ const Sidebar = () => {
 
                                                 {course.quizzes.length > 2 && (
                                                     <li>
-                                                        <Link to={`/courses/${course.id}/quizzes`} className="see-more-link">
+                                                        <Link to={`/courses/${course.id}/quizzes`}
+                                                              className="see-more-link">
                                                             Δείτε Περισσότερα
                                                         </Link>
                                                     </li>
