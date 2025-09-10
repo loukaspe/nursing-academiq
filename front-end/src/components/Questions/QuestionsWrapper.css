@@ -105,11 +105,13 @@ hr {
 }
 
 .question-section li.correct {
-    border: 3px solid var(--positive-color);
+    background-color: var(--positive-color);
+    color: white;
 }
 
 .question-section li.incorrect {
-    border: 3px solid var(--error-color);
+    background-color: var(--error-color);
+    color: white;
 }
 
 .explanation {
