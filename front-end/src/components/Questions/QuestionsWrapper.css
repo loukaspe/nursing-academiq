@@ -92,6 +92,21 @@ hr {
     font-weight: bold;
     text-align: left;
     max-width: 60%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.question-section li input[type="radio"],
+.question-section li input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.question-section li span {
+    flex: 1;
 }
 
 .question-section li a:hover {

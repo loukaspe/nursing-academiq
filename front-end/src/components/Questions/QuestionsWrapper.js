@@ -58,10 +58,37 @@ const QuestionsWrapper = () => {
         fetchQuestions();
     }, [quizID]);
     const handleAnswerClick = (answer) => {
-        setSelectedAnswers(prev => ({
-            ...prev,
-            [currentQuestionIndex]: answer
-        }));
+        const currentQuestion = questions[currentQuestionIndex];
+        const correctAnswers = currentQuestion.Answers.filter(a => a.IsCorrect);
+        const isMultipleChoice = correctAnswers.length > 1;
+        
+        if (isMultipleChoice) {
+            // Handle multiple choice with checkboxes
+            setSelectedAnswers(prev => {
+                const currentSelections = prev[currentQuestionIndex] || [];
+                const isSelected = currentSelections.includes(answer);
+                
+                if (isSelected) {
+                    // Remove answer if already selected
+                    return {
+                        ...prev,
+                        [currentQuestionIndex]: currentSelections.filter(a => a !== answer)
+                    };
+                } else {
+                    // Add answer if not selected
+                    return {
+                        ...prev,
+                        [currentQuestionIndex]: [...currentSelections, answer]
+                    };
+                }
+            });
+        } else {
+            // Handle single choice with radio buttons
+            setSelectedAnswers(prev => ({
+                ...prev,
+                [currentQuestionIndex]: answer
+            }));
+        }
     };
 
     const handleNext = () => {
@@ -73,16 +100,27 @@ const QuestionsWrapper = () => {
     };
 
     const handleSubmit = () => {
-
         const unansweredCount = questions.length - Object.keys(selectedAnswers).length;
         const confirmMessage = `Έχετε ${unansweredCount} αναπάντητες ερωτήσεις. Θέλετε να προχωρήσετε ;`;
 
         if (unansweredCount === 0 || window.confirm(confirmMessage)) {
             questions.forEach((question, index) => {
-                let correctAnswer = question.Answers.find((answer) => answer.IsCorrect);
-
-                if (selectedAnswers[index] === correctAnswer) {
-                    setScore((preValue) => preValue + 1);
+                const correctAnswers = question.Answers.filter((answer) => answer.IsCorrect);
+                const userSelections = selectedAnswers[index];
+                
+                if (Array.isArray(userSelections)) {
+                    // Multiple choice - check if all correct answers are selected and no incorrect ones
+                    const allCorrectSelected = correctAnswers.every(correct => userSelections.includes(correct));
+                    const noIncorrectSelected = userSelections.every(selected => correctAnswers.includes(selected));
+                    
+                    if (allCorrectSelected && noIncorrectSelected) {
+                        setScore((preValue) => preValue + 1);
+                    }
+                } else {
+                    // Single choice
+                    if (userSelections === correctAnswers[0]) {
+                        setScore((preValue) => preValue + 1);
+                    }
                 }
             });
 
@@ -91,7 +129,8 @@ const QuestionsWrapper = () => {
     };
 
     const handleCheck = () => {
-        if (!selectedAnswers.hasOwnProperty(currentQuestionIndex)) {
+        const currentSelections = selectedAnswers[currentQuestionIndex];
+        if (!currentSelections || (Array.isArray(currentSelections) && currentSelections.length === 0)) {
             alert('Please select an answer before checking.');
             return;
         }
@@ -148,13 +187,20 @@ const QuestionsWrapper = () => {
                         <ul>
                             {questions[currentQuestionIndex].Answers.map((answer, idx) => {
                                 let className = '';
-
-                                let correctAnswer = questions[currentQuestionIndex].Answers.find((answer) => answer.IsCorrect);
+                                const currentQuestion = questions[currentQuestionIndex];
+                                const correctAnswers = currentQuestion.Answers.filter(a => a.IsCorrect);
+                                const isMultipleChoice = correctAnswers.length > 1;
+                                const currentSelections = selectedAnswers[currentQuestionIndex];
+                                
+                                // Check if this answer is selected
+                                const isSelected = isMultipleChoice 
+                                    ? Array.isArray(currentSelections) && currentSelections.includes(answer)
+                                    : currentSelections === answer;
 
                                 if (checkedQuestions[currentQuestionIndex]) {
-                                    if (answer === correctAnswer) {
+                                    if (answer.IsCorrect) {
                                         className = 'correct';
-                                    } else if (answer === selectedAnswers[currentQuestionIndex]) {
+                                    } else if (isSelected && !answer.IsCorrect) {
                                         className = 'incorrect';
                                     }
                                 }
@@ -162,10 +208,16 @@ const QuestionsWrapper = () => {
                                 return (
                                     <li
                                         key={idx}
-                                        className={`${selectedAnswers[currentQuestionIndex] === answer ? 'selected' : ''} ${className}`}
+                                        className={`${isSelected ? 'selected' : ''} ${className}`}
                                         onClick={() => handleAnswerClick(answer)}
                                     >
-                                        {answer.Text}
+                                        <input
+                                            type={isMultipleChoice ? 'checkbox' : 'radio'}
+                                            checked={isSelected}
+                                            onChange={() => {}} // Handled by onClick on li
+                                            readOnly
+                                        />
+                                        <span>{answer.Text}</span>
                                     </li>
                                 );
                             })}
@@ -174,14 +226,34 @@ const QuestionsWrapper = () => {
                             checkedQuestions[currentQuestionIndex] && (
                                 <div className="Explanation">
                                     <div className="ExplanationResult">
-                                        {selectedAnswers[currentQuestionIndex].Text === questions[currentQuestionIndex].Answers.find(option => option.IsCorrect).Text
-                                            ? <span className="correct">Σωστό</span>
-                                            : <span className="incorrect">Λάθος</span>}
+                                        {(() => {
+                                            const currentQuestion = questions[currentQuestionIndex];
+                                            const correctAnswers = currentQuestion.Answers.filter(a => a.IsCorrect);
+                                            const userSelections = selectedAnswers[currentQuestionIndex];
+                                            const isMultipleChoice = correctAnswers.length > 1;
+                                            
+                                            let isCorrect = false;
+                                            if (isMultipleChoice) {
+                                                const allCorrectSelected = correctAnswers.every(correct => userSelections.includes(correct));
+                                                const noIncorrectSelected = userSelections.every(selected => correctAnswers.includes(selected));
+                                                isCorrect = allCorrectSelected && noIncorrectSelected;
+                                            } else {
+                                                isCorrect = userSelections === correctAnswers[0];
+                                            }
+                                            
+                                            return isCorrect 
+                                                ? <span className="correct">Σωστό</span>
+                                                : <span className="incorrect">Λάθος</span>;
+                                        })()}
                                     </div>
                                     <br />
                                     <div className="ExplanationCorrectAnswer">
-                                        Σωστή
-                                        Απάντηση: <strong>{questions[currentQuestionIndex].Answers.find(option => option.IsCorrect).Text}</strong>
+                                        Σωστή Απάντηση: <strong>
+                                            {questions[currentQuestionIndex].Answers
+                                                .filter(option => option.IsCorrect)
+                                                .map(option => option.Text)
+                                                .join(', ')}
+                                        </strong>
                                     </div>
                                     <br />
                                     <div className="ExplanationDetails">
