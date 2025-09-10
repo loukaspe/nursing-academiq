@@ -195,6 +195,14 @@ const QuestionsWrapper = () => {
                             )}
                     </div>
                     <div className="questionButtons">
+                        <button className="questionsSubmitButton" onClick={handleCheck}>
+                            Έλεγχος Απάντησης
+                        </button>
+                        <button className="questionsSubmitButton" onClick={handleSubmit}>
+                            Οριστική Υποβολή Quiz
+                        </button>
+                    </div>
+                    <div className="navigationButtons">
                         <button className="questionsSimpleButton" onClick={handlePrevious}
                             disabled={currentQuestionIndex === 0}>
                             Προηγούμενη
@@ -203,13 +211,7 @@ const QuestionsWrapper = () => {
                             disabled={currentQuestionIndex === questions.length - 1}>
                             Eπόμενη
                         </button>
-                        <button className="questionsSubmitButton" onClick={handleCheck}>
-                            Έλεγχος Απάντησης
-                        </button>
                     </div>
-                    <button className="questionsSubmitButton" onClick={handleSubmit}>
-                        Οριστική Υποβολή Quiz
-                    </button>
                 </div>
             </div>
         </React.Fragment>)
