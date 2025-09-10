@@ -17,9 +17,6 @@ const HeaderLoggedIn = () => {
                             <Link className="link" to="/my-quizzes">Διαχείριση Quiz</Link>
                         </li>
                         <li>
-                            <Link className="link" to="/courses">Μαθήματα</Link>
-                        </li>
-                        <li>
                             <Link className="link" to="/create-tutor">Προσθήκη Καθηγητή</Link>
                         </li>
                     </ul>

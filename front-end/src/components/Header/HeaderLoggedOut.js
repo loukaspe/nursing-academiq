@@ -10,9 +10,6 @@ const HeaderLoggedOut = () => {
                 <nav className="nav">
                     <ul className="ul menu">
                         <li>
-                            <Link className="link" to="/courses">Μαθήματα</Link>
-                        </li>
-                        <li>
                             <Link className="link" to="/quizzes">Quizzes</Link>
                         </li>
                     </ul>
