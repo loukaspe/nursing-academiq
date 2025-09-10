@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./QuestionsWrapper.css";
 import Result from "./Result";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const QuestionsWrapper = () => {
     const [questions, setQuestions] = useState([]);
+    const [quizTitle, setQuizTitle] = useState('');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [checkedQuestions, setCheckedQuestions] = useState({});
@@ -41,6 +42,8 @@ const QuestionsWrapper = () => {
                 if (result.quiz.Questions === undefined) {
                     throw Error("error getting quiz questions");
                 }
+
+                setQuizTitle(result.quiz.Title || '');
 
                 if (result.quiz.ShowSubset) {
                     setQuestions(getRandomSubset(result.quiz.Questions, result.quiz.SubsetSize))
@@ -123,6 +126,7 @@ const QuestionsWrapper = () => {
             />
         ) : (<React.Fragment>
             <div className="quiz-container">
+                {quizTitle && <h1 className="quiz-title">{quizTitle}</h1>}
                 <div className="progress-line">
                     {questions.map((_, index) => (
                         <span
@@ -130,14 +134,14 @@ const QuestionsWrapper = () => {
                             className={`${selectedAnswers[index] ? 'completed' : ''} ${currentQuestionIndex === index ? 'current' : ''}`}
                             onClick={() => handleCircleClick(index)}
                         >
-            {index + 1}
-          </span>
+                            {index + 1}
+                        </span>
                     ))}
                 </div>
                 <div className="questionCard">
                     <div className="question-section">
                         <h2> {(currentQuestionIndex + 1) + ". " + questions[currentQuestionIndex].Text}</h2>
-                        <hr/>
+                        <hr />
                         <ul>
                             {questions[currentQuestionIndex].Answers.map((answer, idx) => {
                                 let className = '';
@@ -171,16 +175,16 @@ const QuestionsWrapper = () => {
                                             ? <span className="correct">Σωστό</span>
                                             : <span className="incorrect">Λάθος</span>}
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div className="ExplanationCorrectAnswer">
                                         Σωστή
                                         Απάντηση: <strong>{questions[currentQuestionIndex].Answers.find(option => option.IsCorrect).Text}</strong>
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div className="ExplanationDetails">
                                         Εξήγηση: {questions[currentQuestionIndex].Explanation}
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div>
                                         Πηγή: {questions[currentQuestionIndex].Source}
                                     </div>
@@ -189,11 +193,11 @@ const QuestionsWrapper = () => {
                     </div>
                     <div className="questionButtons">
                         <button className="questionsSimpleButton" onClick={handlePrevious}
-                                disabled={currentQuestionIndex === 0}>
+                            disabled={currentQuestionIndex === 0}>
                             Προηγούμενη
                         </button>
                         <button className="questionsSimpleButton" onClick={handleNext}
-                                disabled={currentQuestionIndex === questions.length - 1}>
+                            disabled={currentQuestionIndex === questions.length - 1}>
                             Eπόμενη
                         </button>
                         <button className="questionsSubmitButton" onClick={handleCheck}>
