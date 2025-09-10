@@ -28,6 +28,14 @@
     margin: 2em;
 }
 
+.question-counter {
+    text-align: center;
+    color: var(--dark-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
 .progress-line span {
     width: 3em;
     height: 3em;

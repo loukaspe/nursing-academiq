@@ -138,6 +138,9 @@ const QuestionsWrapper = () => {
                         </span>
                     ))}
                 </div>
+                <div className="question-counter">
+                    Ερώτηση {currentQuestionIndex + 1} από τις {questions.length}
+                </div>
                 <div className="questionCard">
                     <div className="question-section">
                         <h2> {(currentQuestionIndex + 1) + ". " + questions[currentQuestionIndex].Text}</h2>
