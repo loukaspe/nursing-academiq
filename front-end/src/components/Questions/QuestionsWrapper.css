@@ -149,6 +149,21 @@ hr {
     font-weight: bold;
     display: flex;
     gap: 2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.questionsSimpleButton:hover {
+    background-color: var(--dark-grey-color);
+    color: var(--light-white-color);
+    transform: translateY(-2px);
+}
+
+.questionsSimpleButton:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .questionsSubmitButton {
@@ -160,4 +175,11 @@ hr {
     padding: 1rem;
     border: none;
     font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.questionsSubmitButton:hover {
+    background-color: var(--brand-color);
+    transform: translateY(-2px);
 }
