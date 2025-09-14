@@ -22,7 +22,7 @@ export default function CreateQuizStepTwo() {
             <div className="createQuizStepTwoDetailsRow">
                 <div className="createQuizStepTwoDetailsRowColumn">
                     <div className="createQuizStepTwoDetailsRowInputGroup">
-                        <label>Όνομα Quiz</label>
+                        <label>*Όνομα Quiz</label>
                         <input type="text"
                                value={quiz.title}
                                className="createQuizStepTwoDetailsRowInputText"
@@ -30,7 +30,7 @@ export default function CreateQuizStepTwo() {
                         />
                     </div>
                     <div className="createQuizStepTwoDetailsRowInputGroup">
-                        <label>Περιγραφή</label>
+                        <label>*Περιγραφή</label>
                         <input type="text"
                                value={quiz.description}
                                className="createQuizStepTwoDetailsRowInputText"
