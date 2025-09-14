@@ -119,12 +119,12 @@ const CreateQuestion = () => {
                 <label htmlFor="question-text">
                     Εκφώνηση <span className="editQuestionPageQuestionSectionLabelSpanText">(εώς 500 χαρακτήρες)</span>
                 </label>
-                <input
+                <textarea
                     id="question-text"
-                    type="text"
                     value={questionText}
                     onChange={handleQuestionTextChange}
                     maxLength={500}
+                    rows={4}
                 />
             </div>
 

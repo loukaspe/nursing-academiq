@@ -56,12 +56,19 @@
     font-weight: normal;
 }
 
-.editQuestionPageQuestionSection input {
+.editQuestionPageQuestionSection input,
+.editQuestionPageQuestionSection textarea {
     margin-top: 0.5rem;
-    width: 100%;
+    width: 60%;
     padding: 0.5rem;
     border: 1px solid var(--dark-grey-color);
     border-radius: 5px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.editQuestionPageQuestionSection textarea {
+    min-height: 100px;
 }
 
 .editQuestionPageAnswersMetadataSection {
@@ -79,14 +86,13 @@
 
 .editQuestionPageAnswersHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     font-weight: bold;
     margin-bottom: 10px;
+    gap: 2rem;
 }
 
 .editQuestionPageAnswersHeader span {
-    flex: 1;
-    text-align: left;
     color: var(--brand-dark-color);
     margin-bottom: 1em;
 }
@@ -97,7 +103,6 @@
 
 .editQuestionPageAnswersHeader span:last-child {
     flex: 1;
-    text-align: right;
 }
 
 .editQuestionPageAnswerRow {
@@ -126,11 +131,12 @@
 }
 
 .editQuestionPageCheckbox {
-    margin-top: 1em;
+    margin-top: 1.5em;
     flex: 1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
+    margin-left: 1rem;
 }
 
 .editQuestionPageCenteredButton {
