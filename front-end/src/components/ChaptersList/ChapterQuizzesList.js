@@ -117,7 +117,9 @@ const ChapterQuizzesList = (props) => {
                         </Link>
                         <button className="courseDangerButton" onClick={() => {
                             deleteChapter(chapterID, chapter.title)
-                        }}>Διαγραφή Ενότητας
+                        }}>
+                            <FontAwesomeIcon icon={faTrashCan} />
+                            Διαγραφή Ενότητας
                         </button>
                     </>
                 }

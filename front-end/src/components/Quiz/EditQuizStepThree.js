@@ -5,6 +5,8 @@ import api from "../Utilities/APICaller";
 import Cookies from "universal-cookie";
 import EditProgressBar from "./EditProgressBar";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 const EditQuizStepThree = () => {
@@ -100,7 +102,10 @@ const EditQuizStepThree = () => {
             </div>
             <div className="createQuizStepTwoButtonsContainer">
                 <button className="createQuizStepFourButtonSubmit" onClick={handleSubmit}>Αποθήκευση</button>
-                <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>Διαγραφή</button>
+                <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>
+                    <FontAwesomeIcon icon={faTrashCan} />
+                    Διαγραφή
+                </button>
             </div>
         </div>
     );

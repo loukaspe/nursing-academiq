@@ -110,12 +110,12 @@ const Homepage = () => {
                     {error && <div className="homepageInfoRow">{error}</div>}
 
                     {/* Courses Section */}
-                    {courses &&
+                    {courses && courses.length > 0 &&
                         <section className="homepageCoursesSection">
                             <h2 className="homepageSectionTitle">Περιήγηση Μαθημάτων</h2>
                             <div className="homepageCoursesGrid">
                                 {courses.slice(0, 3).map((course) => (
-                                    <Link to={`/courses/${course.id}`}>
+                                    <Link key={course.id} to={`/courses/${course.id}`}>
                                         <div className="homepageCoursesCard">
                                             <img src="/images/courseThumbnail.png" alt="Course Image"
                                                  className="homepageCourseImage"/>

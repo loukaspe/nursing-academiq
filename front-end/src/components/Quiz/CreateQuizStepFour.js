@@ -6,6 +6,8 @@ import api from "../Utilities/APICaller";
 import {Link} from "react-router-dom";
 import Cookies from "universal-cookie";
 import Breadcrumb from "../Utilities/Breadcrumb";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 const CreateQuizStepFour = () => {
@@ -106,7 +108,10 @@ const CreateQuizStepFour = () => {
                 </div>
                 <div className="createQuizStepTwoButtonsContainer">
                     <button className="createQuizStepFourButtonSubmit" onClick={handleSubmit}>Αποθήκευση</button>
-                    <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>Διαγραφή</button>
+                    <button className="createQuizStepFourButtonDelete" onClick={handleDelete}>
+                        <FontAwesomeIcon icon={faTrashCan} />
+                        Διαγραφή
+                    </button>
                 </div>
             </div>
         </div>

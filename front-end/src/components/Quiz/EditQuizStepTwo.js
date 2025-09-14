@@ -114,6 +114,24 @@ const EditQuizStepTwo = () => {
                 <div>{quizName}</div>
             </div>
             <div className="questionsSelectChaptersContainer">
+                <div className="chaptersSection">
+                    <h2 className="questionsSelectPageTitle">Φίλτρα</h2>
+                    <h3 className="questionsSelectPageTitle">Θεματικές Ενότητες</h3>
+                    {chapters.length > 0 ? (
+                        chapters.map((chapter) => (
+                            <div key={chapter.id} className="chapterRow">
+                                <span>{chapter.title}</span>
+                                <input
+                                    type="checkbox"
+                                    onChange={() => handleChapterCheckbox(chapter.id)}
+                                    checked={selectedChaptersIDs.includes(chapter.id)}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
+                    )}
+                </div>
                 <div className="questionsSection">
                     <div className="questionsList">
                         {questions.length > 0 ? (
@@ -153,24 +171,6 @@ const EditQuizStepTwo = () => {
                             <div className="questionSelectDetails">Δεν υπάρχουν διαθέσιμες ερωτήσεις.</div>
                         )}
                     </div>
-                </div>
-                <div className="chaptersSection">
-                    <h2 className="questionsSelectPageTitle">Φίλτρα</h2>
-                    <h3 className="questionsSelectPageTitle">Θεματικές Ενότητες</h3>
-                    {chapters.length > 0 ? (
-                        chapters.map((chapter) => (
-                            <div key={chapter.id} className="chapterRow">
-                                <span>{chapter.title}</span>
-                                <input
-                                    type="checkbox"
-                                    onChange={() => handleChapterCheckbox(chapter.id)}
-                                    checked={selectedChaptersIDs.includes(chapter.id)}
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <div className="mySingleCourseTitle">Δεν υπάρχουν διαθέσιμες θεματικές ενότητες.</div>
-                    )}
                 </div>
             </div>
             {error && <div className="questionsSelectErrorRow">{error}</div>}

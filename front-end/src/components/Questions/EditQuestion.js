@@ -5,6 +5,8 @@ import axios from "axios";
 
 import Cookies from "universal-cookie";
 import api from "../Utilities/APICaller";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
 const cookies = new Cookies();
 
@@ -217,7 +219,10 @@ const EditQuestion = () => {
                     />
                     <div className="editQuestionPageActionButtons">
                         {error && <div className="editQuestionErrorRow">{error}</div>}
-                        <button onClick={handleDelete} className="editQuestionPageDeleteButton">Διαγραφή</button>
+                        <button onClick={handleDelete} className="editQuestionPageDeleteButton">
+                            <FontAwesomeIcon icon={faTrashCan} />
+                            Διαγραφή
+                        </button>
                         <button onClick={handleSave} className="editQuestionPageButton"
                                 disabled={isSubmitting}>Αποθήκευση
                         </button>

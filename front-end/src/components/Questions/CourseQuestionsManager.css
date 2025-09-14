@@ -141,17 +141,30 @@
 .questionsChaptersRightButton {
     margin-left: auto;
     margin-right: 2em;
-    background-color: var(--error-color);
-    color: var(--light-color);
-    border: none;
+    background-color: white;
+    color: var(--error-color);
+    border: 2px solid var(--error-color);
     border-radius: 10px;
     padding: 0.5em;
     font-size: 1.2rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .questionsChaptersRightButton:disabled {
-    background-color: var(--dark-grey-color);
+    background-color: #f5f5f5;
+    color: #999;
+    border-color: #ccc;
+}
+
+.questionsChaptersRightButton .fa-trash-can {
+    color: var(--error-color);
+}
+
+.questionsChaptersRightButton:disabled .fa-trash-can {
+    color: #999;
 }
 
 .questionsChaptersButton {

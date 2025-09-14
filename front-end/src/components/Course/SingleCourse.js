@@ -8,7 +8,7 @@ import LimitedRecentCourseQuizzesList from "../QuizzesList/LimitedRecentCourseQu
 import axios from "axios";
 import LimitedRecentCourseChaptersList from "../ChaptersList/LimitedCourseChaptersList";
 import Breadcrumb from "../Utilities/Breadcrumb";
-import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import api from "../Utilities/APICaller";
 
@@ -100,7 +100,9 @@ const SingleCourse = () => {
                         </Link>
                         <button className="courseDangerButton" onClick={() => {
                             deleteCourse()
-                        }}>Διαγραφή
+                        }}>
+                            <FontAwesomeIcon icon={faTrashCan} />
+                            Διαγραφή
                         </button>
                     </>
                 }
