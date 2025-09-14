@@ -2,11 +2,11 @@ package tutor
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"time"
 )
 
 type CreateTutorHandler struct {
@@ -30,8 +30,6 @@ type CreateTutorRequest struct {
 	FirstName    string `json:"first_name"`
 	LastName     string `json:"last_name"`
 	Email        string `json:"email"`
-	BirthDate    string `json:"birth_date"`
-	PhoneNumber  string `json:"phone_number"`
 	AcademicRank string `json:"academic_rank"`
 }
 
@@ -58,26 +56,12 @@ func (handler *CreateTutorHandler) CreateTutorController(w http.ResponseWriter, 
 		return
 	}
 
-	birthDate, err := time.Parse("01-02-2006", request.BirthDate)
-	if err != nil {
-		handler.logger.WithFields(log.Fields{
-			"errorMessage": err.Error(),
-		}).Error("Error in creating tutor birth date")
-
-		w.WriteHeader(http.StatusBadRequest)
-		response.ErrorMessage = "malformed tutor data: birth date"
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-
 	domainUser := &domain.User{
-		Username:    request.Username,
-		Password:    request.Password,
-		FirstName:   request.FirstName,
-		LastName:    request.LastName,
-		Email:       request.Email,
-		BirthDate:   birthDate,
-		PhoneNumber: request.PhoneNumber,
+		Username:  request.Username,
+		Password:  request.Password,
+		FirstName: request.FirstName,
+		LastName:  request.LastName,
+		Email:     request.Email,
 	}
 
 	domainTutor := &domain.Tutor{

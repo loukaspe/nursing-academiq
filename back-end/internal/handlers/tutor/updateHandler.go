@@ -2,14 +2,14 @@ package tutor
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"strconv"
-	"time"
 )
 
 //TODO: test if sql injection
@@ -69,26 +69,12 @@ func (handler *UpdateTutorHandler) UpdateTutorController(w http.ResponseWriter, 
 		return
 	}
 
-	birthDate, err := time.Parse("17-03-2023", tutorRequest.BirthDate)
-	if err != nil {
-		handler.logger.WithFields(log.Fields{
-			"errorMessage": err.Error(),
-		}).Error("Error in creating tutor birth date")
-
-		w.WriteHeader(http.StatusBadRequest)
-		response.ErrorMessage = "malformed tutor data: birth date"
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-
 	domainUser := &domain.User{
-		Username:    tutorRequest.Username,
-		Password:    tutorRequest.Password,
-		FirstName:   tutorRequest.FirstName,
-		LastName:    tutorRequest.LastName,
-		Email:       tutorRequest.Email,
-		BirthDate:   birthDate,
-		PhoneNumber: tutorRequest.PhoneNumber,
+		Username:  tutorRequest.Username,
+		Password:  tutorRequest.Password,
+		FirstName: tutorRequest.FirstName,
+		LastName:  tutorRequest.LastName,
+		Email:     tutorRequest.Email,
 	}
 
 	domainTutor := &domain.Tutor{

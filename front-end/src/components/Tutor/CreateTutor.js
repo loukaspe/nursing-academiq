@@ -9,16 +9,10 @@ const CreateTutor = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [academicRank, setAcademicRank] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const formatBirthDate = (date) => {
-        const [year, month, day] = date.split("-");
-        return `${month}-${day}-${year}`;
-    };
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
@@ -29,9 +23,7 @@ const CreateTutor = () => {
             lastName.trim() === '' ||
             password.trim() === '' ||
             email.trim() === '' ||
-            phoneNumber.trim() === '' ||
-            academicRank.trim() === '' ||
-            birthDate.trim() === ''
+            academicRank.trim() === ''
         ) {
             setError('Παρακαλώ συμπληρώστε όλα τα πεδία.');
             return;
@@ -51,8 +43,6 @@ const CreateTutor = () => {
                 first_name: firstName,
                 last_name: lastName,
                 email: email,
-                birth_date: formatBirthDate(birthDate),
-                phone_number: phoneNumber,
                 academic_rank: academicRank,
             }).then((response) => {
                 console.log(response.data);
@@ -73,7 +63,7 @@ const CreateTutor = () => {
                 <h2 className="create-tutor-title">Δημιουργία Νέου Εκπαιδευτή</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="username">Όνομα Χρήστη:</label>
+                        <label htmlFor="username">Όνομα Χρήστη: *</label>
                         <input
                             type="text"
                             id="username"
@@ -83,7 +73,7 @@ const CreateTutor = () => {
                         />
                     </div>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="password">Κωδικός:</label>
+                        <label htmlFor="password">Κωδικός: *</label>
                         <input
                             type="password"
                             id="password"
@@ -99,7 +89,13 @@ const CreateTutor = () => {
                         </div>
                     </div>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="firstName">Όνομα:</label>
+                        <p>     </p>
+                        <div className="create-tutor-note">
+                            *Ο κωδικός πρέπει να είναι τουλάχιστον 6 χαρακτήρες
+                        </div>
+                    </div>
+                    <div className="create-tutor-form-row">
+                        <label htmlFor="firstName">Όνομα: *</label>
                         <input
                             type="text"
                             id="firstName"
@@ -109,7 +105,7 @@ const CreateTutor = () => {
                         />
                     </div>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="lastName">Επώνυμο:</label>
+                        <label htmlFor="lastName">Επώνυμο: *</label>
                         <input
                             type="text"
                             id="lastName"
@@ -119,7 +115,7 @@ const CreateTutor = () => {
                         />
                     </div>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="email">Email:</label>
+                        <label htmlFor="email">Email: *</label>
                         <input
                             type="email"
                             id="email"
@@ -129,33 +125,13 @@ const CreateTutor = () => {
                         />
                     </div>
                     <div className="create-tutor-form-row">
-                        <label htmlFor="phoneNumber">Κινητό Τηλέφωνο:</label>
-                        <input
-                            type="text"
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={phoneNumber}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                        />
-                    </div>
-                    <div className="create-tutor-form-row">
-                        <label htmlFor="academicRank">Ακαδημαϊκή Βαθμίδα:</label>
+                        <label htmlFor="academicRank">Ακαδημαϊκή Βαθμίδα: *</label>
                         <input
                             type="text"
                             id="academicRank"
                             name="academicRank"
                             value={academicRank}
                             onChange={(e) => setAcademicRank(e.target.value)}
-                        />
-                    </div>
-                    <div className="create-tutor-form-row">
-                        <label htmlFor="birthDate">Ημερομηνία Γέννησης:</label>
-                        <input
-                            type="date"
-                            id="birthDate"
-                            name="birthDate"
-                            value={birthDate}
-                            onChange={(e) => setBirthDate(e.target.value)}
                         />
                     </div>
                     <div className="create-tutor-form-row">

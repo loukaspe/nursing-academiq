@@ -2,12 +2,13 @@ package tutor
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/gorilla/mux"
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"strconv"
 )
 
 type GetTutorHandler struct {
@@ -32,8 +33,6 @@ type TutorRequest struct {
 		FirstName    string `json:"first_name"`
 		LastName     string `json:"last_name"`
 		Email        string `json:"email"`
-		BirthDate    string `json:"birth_date"`
-		PhoneNumber  string `json:"phone_number"`
 		AcademicRank string `json:"academic_rank"`
 	} `json:""`
 }
@@ -87,8 +86,6 @@ func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *htt
 			FirstName    string `json:"first_name"`
 			LastName     string `json:"last_name"`
 			Email        string `json:"email"`
-			BirthDate    string `json:"birth_date"`
-			PhoneNumber  string `json:"phone_number"`
 			AcademicRank string `json:"academic_rank"`
 		}{
 			Username:     tutor.Username,
@@ -96,8 +93,6 @@ func (handler *GetTutorHandler) GetTutorController(w http.ResponseWriter, r *htt
 			FirstName:    tutor.FirstName,
 			LastName:     tutor.LastName,
 			Email:        tutor.Email,
-			BirthDate:    tutor.BirthDate.String(),
-			PhoneNumber:  tutor.PhoneNumber,
 			AcademicRank: tutor.AcademicRank,
 		},
 	}
