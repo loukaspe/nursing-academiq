@@ -1,195 +1,191 @@
 package helper
 
 import (
-	"github.com/loukaspe/nursing-academiq/internal/repositories"
 	"log"
+
+	"github.com/loukaspe/nursing-academiq/internal/repositories"
 
 	"gorm.io/gorm"
 )
 
 var users = []repositories.User{
 	repositories.User{
-		Username:  "user1",
-		Password:  "password1",
-		FirstName: "firstName1",
-		LastName:  "lastName1",
-		Email:     "email1@email.com",
+		Username:  "sarah.johnson",
+		Password:  "password123",
+		FirstName: "Sarah",
+		LastName:  "Johnson",
+		Email:     "sarah.johnson@nursing.edu",
 	},
 	repositories.User{
-		Username:  "user2",
-		Password:  "password2",
-		FirstName: "firstName2",
-		LastName:  "lastName2",
-		Email:     "email2@email.com",
+		Username:  "michael.chen",
+		Password:  "password123",
+		FirstName: "Michael",
+		LastName:  "Chen",
+		Email:     "michael.chen@nursing.edu",
 	},
 	repositories.User{
-		Username:  "user3",
-		Password:  "password3",
-		FirstName: "firstName3",
-		LastName:  "lastName3",
-		Email:     "email3@email.com",
+		Username:  "emma.rodriguez",
+		Password:  "password123",
+		FirstName: "Emma",
+		LastName:  "Rodriguez",
+		Email:     "emma.rodriguez@nursing.edu",
 	},
 	repositories.User{
-		Username:  "user4",
-		Password:  "password4",
-		FirstName: "firstName4",
-		LastName:  "lastName4",
-		Email:     "email4@email.com",
+		Username:  "david.kim",
+		Password:  "password123",
+		FirstName: "David",
+		LastName:  "Kim",
+		Email:     "david.kim@nursing.edu",
 	},
 	repositories.User{
-		Username:  "user5",
-		Password:  "password5",
-		FirstName: "firstName5",
-		LastName:  "lastName5",
-		Email:     "email5@email.com",
+		Username:  "lisa.anderson",
+		Password:  "password123",
+		FirstName: "Lisa",
+		LastName:  "Anderson",
+		Email:     "lisa.anderson@nursing.edu",
 	},
 	repositories.User{
-		Username:  "korelli",
-		Password:  "korelli",
-		FirstName: "Dr",
+		Username:  "dr.korelli",
+		Password:  "korelli123",
+		FirstName: "Dr. Maria",
 		LastName:  "Korelli",
-		Email:     "email5@email.com",
+		Email:     "maria.korelli@nursing.edu",
 	},
-}
-
-var legitTutor = repositories.Tutor{
-	UserID:       6,
-	AcademicRank: "professoras1",
 }
 
 var tutor1 = repositories.Tutor{
 	UserID:       1,
-	AcademicRank: "professoras1",
+	AcademicRank: "Assistant Professor",
 }
 
 var tutor2 = repositories.Tutor{
 	UserID:       2,
-	AcademicRank: "professoras2",
+	AcademicRank: "Associate Professor",
 }
 
 var course1 = repositories.Course{
-	Title:       "math gen",
-	Description: "mathimatika genikhs",
+	Title:       "Fundamentals of Nursing",
+	Description: "Introduction to basic nursing principles, patient care, and professional practice",
 	TutorID:     2,
 }
 
 var chapter1 = repositories.Chapter{
-	Title:       "math gen kef 1",
-	Description: "math gen kefalaio uno",
+	Title:       "Introduction to Nursing Practice",
+	Description: "Overview of nursing as a profession and basic care principles",
 	CourseID:    1,
 }
 
 var chapter2 = repositories.Chapter{
-	Title:       "math gen kef 2",
-	Description: "math gen kefalaio dos",
+	Title:       "Patient Assessment and Vital Signs",
+	Description: "Learning to assess patients and monitor vital signs effectively",
 	CourseID:    1,
 }
 
 var chapter3 = repositories.Chapter{
-	Title:       "math gen kef 3",
-	Description: "math gen kefalaio tres",
+	Title:       "Infection Control and Safety",
+	Description: "Understanding infection prevention and maintaining patient safety",
 	CourseID:    1,
 }
 
 var course2 = repositories.Course{
-	Title:       "math kat",
-	Description: "mathimatika kateythynshs",
+	Title:       "Medical-Surgical Nursing",
+	Description: "Advanced nursing care for medical and surgical patients",
 	TutorID:     2,
 }
 
 var course3 = repositories.Course{
-	Title:       "math 3",
-	Description: "mathimatika 3",
+	Title:       "Pharmacology for Nurses",
+	Description: "Understanding medications, drug interactions, and safe administration",
 	TutorID:     2,
 }
 
 var course4 = repositories.Course{
-	Title:       "math 4",
-	Description: "mathimatika 4",
+	Title:       "Pediatric Nursing",
+	Description: "Specialized care for infants, children, and adolescents",
 	TutorID:     2,
 }
 
 var course5 = repositories.Course{
-	Title:       "math 5",
-	Description: "mathimatika 5",
+	Title:       "Mental Health Nursing",
+	Description: "Caring for patients with mental health conditions and psychiatric disorders",
 	TutorID:     2,
 }
 
 var question1 = repositories.Question{
-	Text:                   "ti sko",
-	Explanation:            "ti skotwse o ai giorgis",
+	Text:                   "What is the normal range for adult blood pressure?",
+	Explanation:            "Normal adult blood pressure is typically defined as systolic pressure less than 120 mmHg and diastolic pressure less than 80 mmHg",
 	ChapterID:              1,
 	CourseID:               1,
-	Source:                 "wikipedia1",
-	MultipleCorrectAnswers: true,
+	Source:                 "American Heart Association Guidelines",
+	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
 
 var question2 = repositories.Question{
-	Text:                   "me ti",
-	Explanation:            "me ti ftiaxnoyme pastitsio",
+	Text:                   "Which of the following is the most effective method for preventing healthcare-associated infections?",
+	Explanation:            "Hand hygiene is the single most effective method for preventing healthcare-associated infections and should be performed before and after patient contact",
 	ChapterID:              2,
 	CourseID:               1,
-	Source:                 "google",
-	MultipleCorrectAnswers: true,
+	Source:                 "CDC Infection Control Guidelines",
+	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
 
 var question3 = repositories.Question{
-	Text:                   "with what",
-	Explanation:            "with what we kill the cat",
+	Text:                   "What is the primary purpose of the nursing process?",
+	Explanation:            "The nursing process is a systematic method used by nurses to provide individualized, patient-centered care through assessment, diagnosis, planning, implementation, and evaluation",
 	ChapterID:              1,
 	CourseID:               1,
-	Source:                 "chatgpt",
-	MultipleCorrectAnswers: true,
+	Source:                 "Nursing Fundamentals Textbook",
+	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
 
 var answer1 = repositories.Answer{
-	Text:       "apanthsh1",
+	Text:       "140/90 mmHg",
 	QuestionID: 1,
 	IsCorrect:  false,
 	//TimesGiven: 0,
 }
 
 var answer2 = repositories.Answer{
-	Text:       "apanthsh2",
+	Text:       "Less than 120/80 mmHg",
 	QuestionID: 1,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var answer3 = repositories.Answer{
-	Text:       "apanthsh3",
+	Text:       "Wearing gloves only",
 	QuestionID: 2,
 	IsCorrect:  false,
 	//TimesGiven: 0,
 }
 
 var answer4 = repositories.Answer{
-	Text:       "apanthsh4",
+	Text:       "Proper hand hygiene",
 	QuestionID: 2,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var answer5 = repositories.Answer{
-	Text:       "apanthsh5",
+	Text:       "To document patient information",
 	QuestionID: 3,
 	IsCorrect:  false,
 	//TimesGiven: 0,
 }
 
 var answer6 = repositories.Answer{
-	Text:       "apanthsh6",
+	Text:       "To provide systematic, patient-centered care",
 	QuestionID: 3,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var quiz1 = repositories.Quiz{
-	Title:       "first quiz",
-	Description: "the first quiz of the chapter",
+	Title:       "Nursing Fundamentals Assessment",
+	Description: "Comprehensive quiz covering basic nursing principles and patient care",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -203,8 +199,8 @@ var quiz1 = repositories.Quiz{
 }
 
 var quiz11 = repositories.Quiz{
-	Title:       "first and one quiz",
-	Description: "the first quiz of the chapter",
+	Title:       "Patient Assessment Quiz",
+	Description: "Test your knowledge of patient assessment techniques and vital signs",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -218,8 +214,8 @@ var quiz11 = repositories.Quiz{
 }
 
 var quiz12 = repositories.Quiz{
-	Title:       "first and two quiz",
-	Description: "the first quiz of the chapter",
+	Title:       "Nursing Process Review",
+	Description: "Evaluate your understanding of the nursing process and care planning",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -233,8 +229,8 @@ var quiz12 = repositories.Quiz{
 }
 
 var quiz13 = repositories.Quiz{
-	Title:       "first and three quiz",
-	Description: "the first quiz of the chapter",
+	Title:       "Professional Practice Quiz",
+	Description: "Assessment of nursing professional standards and ethical practice",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -248,8 +244,8 @@ var quiz13 = repositories.Quiz{
 }
 
 var quiz21 = repositories.Quiz{
-	Title:       "second quiz",
-	Description: "the second quiz of the chapter",
+	Title:       "Infection Control Assessment",
+	Description: "Test your knowledge of infection prevention and control measures",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -263,8 +259,8 @@ var quiz21 = repositories.Quiz{
 }
 
 var quiz22 = repositories.Quiz{
-	Title:       "second quiz",
-	Description: "the second quiz of the chapter",
+	Title:       "Safety Protocols Quiz",
+	Description: "Assessment of patient safety protocols and healthcare standards",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -278,8 +274,8 @@ var quiz22 = repositories.Quiz{
 }
 
 var quiz23 = repositories.Quiz{
-	Title:       "second quiz",
-	Description: "the second quiz of the chapter",
+	Title:       "Medical-Surgical Nursing Review",
+	Description: "Comprehensive review of medical-surgical nursing principles and practices",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
