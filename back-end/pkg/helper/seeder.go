@@ -289,15 +289,15 @@ var quiz23 = repositories.Quiz{
 }
 
 func LoadFakeData(db *gorm.DB) {
-	DropTables(db)
 	CreateUsers(db)
+	CreateAdminUser(db)
+	CreateAdminTutor(db)
 	CreateTutors(db)
 	CreateCourses(db)
 	CreateChapters(db)
 	CreateQuestions(db)
 	CreateAnswers(db)
 	CreateQuizzes(db)
-	CreateAdminUser(db)
 }
 
 func PrepareDB(db *gorm.DB) {
