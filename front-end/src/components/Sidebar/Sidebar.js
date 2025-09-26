@@ -9,6 +9,7 @@ const cookies = new Cookies();
 const Sidebar = () => {
     const location = useLocation();
     const token = cookies.get("access_token");
+    const user = cookies.get("user");
 
     const [expandedChapters, setExpandedChapters] = useState({});
     const [expandedQuizzes, setExpandedQuizzes] = useState({});
@@ -106,7 +107,13 @@ const Sidebar = () => {
                 )}
 
                 {(token
-                        ? courses
+                        ? courses.filter((course) => {
+                            // If user is logged in, only show courses where tutor ID matches user's tutor ID
+                            if (user && user.specificID) {
+                                return course.tutor_id === user.specificID;
+                            }
+                            return true; // Fallback if no user info
+                        })
                         : courses.filter(
                             (course) =>
                                 (Array.isArray(course.chapters) && course.chapters.length > 0) ||
