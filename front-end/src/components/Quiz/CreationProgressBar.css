@@ -20,3 +20,14 @@
     border-bottom: 3px solid var(--brand-color);
     font-weight: bold;
 }
+
+.step.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.step.disabled:hover {
+    color: #ccc;
+    border-bottom: 3px solid transparent;
+}
