@@ -39,6 +39,16 @@
     flex: 1;
 }
 
+.edit-course-form-row p {
+    width: 100%;
+    margin-right: 10px;
+    color: var(--brand-dark-color);
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    font-size: 1rem;
+    flex: 1;
+}
+
 .edit-course-form-row input {
     flex: 2;
     padding: 1em;

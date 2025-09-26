@@ -55,7 +55,7 @@ const CreateCourse = () => {
                 <h2 className="edit-course-title">Δημιουργία Μαθήματος</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="edit-course-form-row">
-                        <label htmlFor="title">Τίτλος:</label>
+                        <label htmlFor="title">*Τίτλος:</label>
                         <input
                             type="text"
                             id="title"
@@ -65,7 +65,7 @@ const CreateCourse = () => {
                         />
                     </div>
                     <div className="edit-course-form-row">
-                        <label htmlFor="description">Περιγραφή:</label>
+                        <label htmlFor="description">*Περιγραφή:</label>
                         <input
                             type="text"
                             id="description"
@@ -73,6 +73,9 @@ const CreateCourse = () => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
+                    </div>
+                    <div className="edit-course-form-row">
+                        <p>Τα πεδία με αστερίσκο είναι υποχρεωτικά.</p>
                     </div>
                     <div className="edit-course-form-row">
                         <button type="submit" className="edit-course-submit" disabled={isSubmitting}>
