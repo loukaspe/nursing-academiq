@@ -10,133 +10,133 @@ import (
 
 var users = []repositories.User{
 	repositories.User{
-		Username:  "sarah.johnson",
+		Username:  "maria.papadopoulou",
 		Password:  "password123",
-		FirstName: "Sarah",
-		LastName:  "Johnson",
-		Email:     "sarah.johnson@nursing.edu",
+		FirstName: "Μαρία",
+		LastName:  "Παπαδοπούλου",
+		Email:     "maria.papadopoulou@nursing.edu",
 	},
 	repositories.User{
-		Username:  "michael.chen",
+		Username:  "dimitris.kostas",
 		Password:  "password123",
-		FirstName: "Michael",
-		LastName:  "Chen",
-		Email:     "michael.chen@nursing.edu",
+		FirstName: "Δημήτρης",
+		LastName:  "Κώστας",
+		Email:     "dimitris.kostas@nursing.edu",
 	},
 	repositories.User{
-		Username:  "emma.rodriguez",
+		Username:  "eleni.nikolaou",
 		Password:  "password123",
-		FirstName: "Emma",
-		LastName:  "Rodriguez",
-		Email:     "emma.rodriguez@nursing.edu",
+		FirstName: "Ελένη",
+		LastName:  "Νικολάου",
+		Email:     "eleni.nikolaou@nursing.edu",
 	},
 	repositories.User{
-		Username:  "david.kim",
+		Username:  "kostas.petrou",
 		Password:  "password123",
-		FirstName: "David",
-		LastName:  "Kim",
-		Email:     "david.kim@nursing.edu",
+		FirstName: "Κώστας",
+		LastName:  "Πέτρου",
+		Email:     "kostas.petrou@nursing.edu",
 	},
 	repositories.User{
-		Username:  "lisa.anderson",
+		Username:  "sofia.andrea",
 		Password:  "password123",
-		FirstName: "Lisa",
-		LastName:  "Anderson",
-		Email:     "lisa.anderson@nursing.edu",
+		FirstName: "Σοφία",
+		LastName:  "Ανδρέα",
+		Email:     "sofia.andrea@nursing.edu",
 	},
 	repositories.User{
-		Username:  "dr.korelli",
+		Username:  "dkorelli",
 		Password:  "korelli123",
-		FirstName: "Dr. Maria",
-		LastName:  "Korelli",
+		FirstName: "Αλεξάνδρα",
+		LastName:  "Κορέλλη",
 		Email:     "maria.korelli@nursing.edu",
 	},
 }
 
 var tutor1 = repositories.Tutor{
 	UserID:       1,
-	AcademicRank: "Assistant Professor",
+	AcademicRank: "Αναπληρωτής Καθηγητής",
 }
 
 var tutor2 = repositories.Tutor{
 	UserID:       2,
-	AcademicRank: "Associate Professor",
+	AcademicRank: "Επίκουρος Καθηγητής",
 }
 
 var course1 = repositories.Course{
-	Title:       "Fundamentals of Nursing",
-	Description: "Introduction to basic nursing principles, patient care, and professional practice",
+	Title:       "Βασικές Αρχές Νοσηλευτικής",
+	Description: "Εισαγωγή στις βασικές αρχές νοσηλευτικής, φροντίδα ασθενών και επαγγελματική πρακτική",
 	TutorID:     2,
 }
 
 var chapter1 = repositories.Chapter{
-	Title:       "Introduction to Nursing Practice",
-	Description: "Overview of nursing as a profession and basic care principles",
+	Title:       "Εισαγωγή στην Νοσηλευτική Πρακτική",
+	Description: "Επισκόπηση της νοσηλευτικής ως επαγγέλματος και βασικών αρχών φροντίδας",
 	CourseID:    1,
 }
 
 var chapter2 = repositories.Chapter{
-	Title:       "Patient Assessment and Vital Signs",
-	Description: "Learning to assess patients and monitor vital signs effectively",
+	Title:       "Αξιολόγηση Ασθενούς και Σημεία Ζωής",
+	Description: "Μάθηση αξιολόγησης ασθενών και παρακολούθησης σημείων ζωής",
 	CourseID:    1,
 }
 
 var chapter3 = repositories.Chapter{
-	Title:       "Infection Control and Safety",
-	Description: "Understanding infection prevention and maintaining patient safety",
+	Title:       "Έλεγχος Λοιμώξεων και Ασφάλεια",
+	Description: "Κατανόηση πρόληψης λοιμώξεων και διατήρησης ασφάλειας ασθενών",
 	CourseID:    1,
 }
 
 var course2 = repositories.Course{
-	Title:       "Medical-Surgical Nursing",
-	Description: "Advanced nursing care for medical and surgical patients",
+	Title:       "Ιατρική-Χειρουργική Νοσηλευτική",
+	Description: "Προχωρημένη νοσηλευτική φροντίδα για ιατρικούς και χειρουργικούς ασθενείς",
 	TutorID:     2,
 }
 
 var course3 = repositories.Course{
-	Title:       "Pharmacology for Nurses",
-	Description: "Understanding medications, drug interactions, and safe administration",
+	Title:       "Φαρμακολογία για Νοσηλευτές",
+	Description: "Κατανόηση φαρμάκων, φαρμακευτικών αλληλεπιδράσεων και ασφαλούς χορήγησης",
 	TutorID:     2,
 }
 
 var course4 = repositories.Course{
-	Title:       "Pediatric Nursing",
-	Description: "Specialized care for infants, children, and adolescents",
+	Title:       "Παιδιατρική Νοσηλευτική",
+	Description: "Εξειδικευμένη φροντίδα για βρέφη, παιδιά και εφήβους",
 	TutorID:     2,
 }
 
 var course5 = repositories.Course{
-	Title:       "Mental Health Nursing",
-	Description: "Caring for patients with mental health conditions and psychiatric disorders",
+	Title:       "Ψυχιατρική Νοσηλευτική",
+	Description: "Φροντίδα ασθενών με ψυχικές διαταραχές και ψυχιατρικές παθήσεις",
 	TutorID:     2,
 }
 
 var question1 = repositories.Question{
-	Text:                   "What is the normal range for adult blood pressure?",
-	Explanation:            "Normal adult blood pressure is typically defined as systolic pressure less than 120 mmHg and diastolic pressure less than 80 mmHg",
+	Text:                   "Ποια είναι η φυσιολογική αξία της αρτηριακής πίεσης σε ενήλικες;",
+	Explanation:            "Η φυσιολογική αρτηριακή πίεση ενήλικων ορίζεται ως συστολική πίεση κάτω από 120 mmHg και διαστολική πίεση κάτω από 80 mmHg",
 	ChapterID:              1,
 	CourseID:               1,
-	Source:                 "American Heart Association Guidelines",
+	Source:                 "Οδηγίες Αμερικανικής Καρδιολογικής Εταιρείας",
 	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
 
 var question2 = repositories.Question{
-	Text:                   "Which of the following is the most effective method for preventing healthcare-associated infections?",
-	Explanation:            "Hand hygiene is the single most effective method for preventing healthcare-associated infections and should be performed before and after patient contact",
+	Text:                   "Ποια από τις παρακάτω είναι η πιο αποτελεσματική μέθοδος πρόληψης νοσοκομειακών λοιμώξεων;",
+	Explanation:            "Η υγιεινή των χεριών είναι η πιο αποτελεσματική μέθοδος πρόληψης νοσοκομειακών λοιμώξεων και πρέπει να πραγματοποιείται πριν και μετά την επαφή με ασθενή",
 	ChapterID:              2,
 	CourseID:               1,
-	Source:                 "CDC Infection Control Guidelines",
+	Source:                 "Οδηγίες Έλεγχου Λοιμώξεων CDC",
 	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
 
 var question3 = repositories.Question{
-	Text:                   "What is the primary purpose of the nursing process?",
-	Explanation:            "The nursing process is a systematic method used by nurses to provide individualized, patient-centered care through assessment, diagnosis, planning, implementation, and evaluation",
+	Text:                   "Ποιος είναι ο κύριος σκοπός της νοσηλευτικής διαδικασίας;",
+	Explanation:            "Η νοσηλευτική διαδικασία είναι μια συστηματική μέθοδος που χρησιμοποιούν οι νοσηλευτές για την παροχή εξατομικευμένης, κεντρωμένης στον ασθενή φροντίδας μέσω αξιολόγησης, διάγνωσης, σχεδιασμού, εφαρμογής και αξιολόγησης",
 	ChapterID:              1,
 	CourseID:               1,
-	Source:                 "Nursing Fundamentals Textbook",
+	Source:                 "Βιβλίο Βασικών Αρχών Νοσηλευτικής",
 	MultipleCorrectAnswers: false,
 	NumberOfAnswers:        1,
 }
@@ -149,43 +149,43 @@ var answer1 = repositories.Answer{
 }
 
 var answer2 = repositories.Answer{
-	Text:       "Less than 120/80 mmHg",
+	Text:       "Κάτω από 120/80 mmHg",
 	QuestionID: 1,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var answer3 = repositories.Answer{
-	Text:       "Wearing gloves only",
+	Text:       "Φοράω μόνο γάντια",
 	QuestionID: 2,
 	IsCorrect:  false,
 	//TimesGiven: 0,
 }
 
 var answer4 = repositories.Answer{
-	Text:       "Proper hand hygiene",
+	Text:       "Σωστή υγιεινή των χεριών",
 	QuestionID: 2,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var answer5 = repositories.Answer{
-	Text:       "To document patient information",
+	Text:       "Να καταγράφω πληροφορίες ασθενούς",
 	QuestionID: 3,
 	IsCorrect:  false,
 	//TimesGiven: 0,
 }
 
 var answer6 = repositories.Answer{
-	Text:       "To provide systematic, patient-centered care",
+	Text:       "Να παρέχω συστηματική, κεντρωμένη στον ασθενή φροντίδα",
 	QuestionID: 3,
 	IsCorrect:  true,
 	//TimesGiven: 0,
 }
 
 var quiz1 = repositories.Quiz{
-	Title:       "Nursing Fundamentals Assessment",
-	Description: "Comprehensive quiz covering basic nursing principles and patient care",
+	Title:       "Αξιολόγηση Βασικών Αρχών Νοσηλευτικής",
+	Description: "Ολοκληρωμένο κουίζ που καλύπτει τις βασικές αρχές νοσηλευτικής και φροντίδας ασθενών",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -199,8 +199,8 @@ var quiz1 = repositories.Quiz{
 }
 
 var quiz11 = repositories.Quiz{
-	Title:       "Patient Assessment Quiz",
-	Description: "Test your knowledge of patient assessment techniques and vital signs",
+	Title:       "Κουίζ Αξιολόγησης Ασθενούς",
+	Description: "Δοκιμάστε τις γνώσεις σας για τεχνικές αξιολόγησης ασθενούς και σημεία ζωής",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -214,8 +214,8 @@ var quiz11 = repositories.Quiz{
 }
 
 var quiz12 = repositories.Quiz{
-	Title:       "Nursing Process Review",
-	Description: "Evaluate your understanding of the nursing process and care planning",
+	Title:       "Επανάληψη Νοσηλευτικής Διαδικασίας",
+	Description: "Αξιολογήστε την κατανόησή σας για τη νοσηλευτική διαδικασία και τον σχεδιασμό φροντίδας",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -229,8 +229,8 @@ var quiz12 = repositories.Quiz{
 }
 
 var quiz13 = repositories.Quiz{
-	Title:       "Professional Practice Quiz",
-	Description: "Assessment of nursing professional standards and ethical practice",
+	Title:       "Κουίζ Επαγγελματικής Πρακτικής",
+	Description: "Αξιολόγηση επαγγελματικών προτύπων νοσηλευτικής και ηθικής πρακτικής",
 	CourseID:    1,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -244,8 +244,8 @@ var quiz13 = repositories.Quiz{
 }
 
 var quiz21 = repositories.Quiz{
-	Title:       "Infection Control Assessment",
-	Description: "Test your knowledge of infection prevention and control measures",
+	Title:       "Αξιολόγηση Ελέγχου Λοιμώξεων",
+	Description: "Δοκιμάστε τις γνώσεις σας για πρόληψη και έλεγχο λοιμώξεων",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -259,8 +259,8 @@ var quiz21 = repositories.Quiz{
 }
 
 var quiz22 = repositories.Quiz{
-	Title:       "Safety Protocols Quiz",
-	Description: "Assessment of patient safety protocols and healthcare standards",
+	Title:       "Κουίζ Πρωτοκόλλων Ασφάλειας",
+	Description: "Αξιολόγηση πρωτοκόλλων ασφάλειας ασθενών και προτύπων υγειονομικής περίθαλψης",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
@@ -274,8 +274,8 @@ var quiz22 = repositories.Quiz{
 }
 
 var quiz23 = repositories.Quiz{
-	Title:       "Medical-Surgical Nursing Review",
-	Description: "Comprehensive review of medical-surgical nursing principles and practices",
+	Title:       "Επανάληψη Ιατρικής-Χειρουργικής Νοσηλευτικής",
+	Description: "Ολοκληρωμένη επανάληψη αρχών και πρακτικών ιατρικής-χειρουργικής νοσηλευτικής",
 	CourseID:    2,
 	Visibility:  true,
 	ShowSubset:  false,
