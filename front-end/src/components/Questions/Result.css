@@ -1,26 +1,41 @@
 @import "../../styles/variables.css";
 
 .resultWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     text-align: center;
+    background-color: var(--mid-white-color);
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 .finalScore {
-    font-size: 2rem;
-    color: var(--positive-color);
+    font-size: 2.5rem;
+    color: var(--brand-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .restart {
-    background-color: var(--negative-color);
-    color: var(--dark-color);
+    background-color: var(--brand-color);
+    color: var(--light-white-color);
     font-size: 1.3rem;
     margin: 1.3rem;
     font-weight: bolder;
     border-radius: 10px;
-    padding: 0.5rem;
+    padding: 1rem 2rem;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(96, 112, 172, 0.3);
 }
 
 .restart:hover {
-    background-color: white;
+    background-color: var(--brand-dark-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(96, 112, 172, 0.4);
 }
