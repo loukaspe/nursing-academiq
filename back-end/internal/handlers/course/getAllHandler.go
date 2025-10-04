@@ -2,10 +2,11 @@ package course
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/loukaspe/nursing-academiq/internal/core/services"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type GetCoursesHandler struct {
@@ -33,6 +34,7 @@ type GetCoursesResponse struct {
 		Chapters          []Chapter `json:"chapters,omitempty"`
 		TutorName         string    `json:"tutorName"`
 		NumberOfQuestions int       `json:"numberOfQuestions"`
+		TutorID           uint      `json:"tutorID"`
 	} `json:"courses,omitempty"`
 }
 
@@ -67,12 +69,14 @@ func (handler *GetCoursesHandler) GetCoursesController(w http.ResponseWriter, r 
 			Chapters          []Chapter `json:"chapters,omitempty"`
 			TutorName         string    `json:"tutorName"`
 			NumberOfQuestions int       `json:"numberOfQuestions"`
+			TutorID           uint      `json:"tutorID"`
 		}{
 			ID:                course.ID,
 			Title:             course.Title,
 			Description:       course.Description,
 			NumberOfQuestions: course.NumberOfQuestions,
 			TutorName:         course.Tutor.User.FirstName + " " + course.Tutor.User.LastName,
+			TutorID:           course.Tutor.ID,
 		}
 
 		for _, quiz := range course.Quizzes {

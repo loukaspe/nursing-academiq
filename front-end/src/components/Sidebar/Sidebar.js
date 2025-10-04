@@ -32,6 +32,7 @@ const Sidebar = () => {
                 if (response.status === 500) throw new Error(result.message || 'Server error');
                 if (!result.courses) throw new Error('Error getting courses list');
 
+                console.log(result.courses)
                 setCourses(result.courses);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -110,7 +111,7 @@ const Sidebar = () => {
                         ? courses.filter((course) => {
                             // If user is logged in, only show courses where tutor ID matches user's tutor ID
                             if (user && user.specificID) {
-                                return course.tutor_id === user.specificID;
+                                return course.tutorID === user.specificID;
                             }
                             return true; // Fallback if no user info
                         })

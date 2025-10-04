@@ -3,11 +3,12 @@ package repositories
 import (
 	"context"
 	"errors"
+	"net/http"
+	"strconv"
+
 	"github.com/loukaspe/nursing-academiq/internal/core/domain"
 	apierrors "github.com/loukaspe/nursing-academiq/pkg/errors"
 	"gorm.io/gorm"
-	"net/http"
-	"strconv"
 )
 
 type CourseRepository struct {
@@ -185,6 +186,7 @@ func (repo *CourseRepository) GetCourses(
 
 	err = repo.db.WithContext(ctx).
 		Preload("Questions").
+		Preload("Tutor").
 		Preload("Quizs.Questions").
 		Preload("Chapters").
 		Model(Course{}).
@@ -203,6 +205,7 @@ func (repo *CourseRepository) GetCourses(
 	var domainCourses []domain.Course
 	for _, modelCourse := range modelCourses {
 		domainTutor := domain.Tutor{
+			ID: modelCourse.TutorID,
 			User: domain.User{
 				FirstName: modelCourse.Tutor.User.FirstName,
 				LastName:  modelCourse.Tutor.User.LastName,
