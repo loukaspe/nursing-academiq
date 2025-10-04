@@ -114,11 +114,7 @@ const Sidebar = () => {
                             }
                             return true; // Fallback if no user info
                         })
-                        : courses.filter(
-                            (course) =>
-                                (Array.isArray(course.chapters) && course.chapters.length > 0) ||
-                                (Array.isArray(course.quizzes) && course.quizzes.length > 0)
-                        )
+                        : courses
                 ).map((course) => {
                     const coursePath = `/courses/${course.id}`;
                     const courseIsActive = isActivePrefix(coursePath);
