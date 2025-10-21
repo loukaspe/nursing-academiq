@@ -66,7 +66,7 @@ var tutor2 = repositories.Tutor{
 var course1 = repositories.Course{
 	Title:       "Βασικές Αρχές Νοσηλευτικής",
 	Description: "Εισαγωγή στις βασικές αρχές νοσηλευτικής, φροντίδα ασθενών και επαγγελματική πρακτική",
-	TutorID:     2,
+	TutorID:     1,
 }
 
 var chapter1 = repositories.Chapter{
@@ -90,19 +90,19 @@ var chapter3 = repositories.Chapter{
 var course2 = repositories.Course{
 	Title:       "Ιατρική-Χειρουργική Νοσηλευτική",
 	Description: "Προχωρημένη νοσηλευτική φροντίδα για ιατρικούς και χειρουργικούς ασθενείς",
-	TutorID:     2,
+	TutorID:     1,
 }
 
 var course3 = repositories.Course{
 	Title:       "Φαρμακολογία για Νοσηλευτές",
 	Description: "Κατανόηση φαρμάκων, φαρμακευτικών αλληλεπιδράσεων και ασφαλούς χορήγησης",
-	TutorID:     2,
+	TutorID:     1,
 }
 
 var course4 = repositories.Course{
 	Title:       "Παιδιατρική Νοσηλευτική",
 	Description: "Εξειδικευμένη φροντίδα για βρέφη, παιδιά και εφήβους",
-	TutorID:     2,
+	TutorID:     1,
 }
 
 var course5 = repositories.Course{
