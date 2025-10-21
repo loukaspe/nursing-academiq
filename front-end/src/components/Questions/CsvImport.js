@@ -67,8 +67,6 @@ const CsvImport = () => {
         formData.append("jsonData", JSON.stringify(jsonData));
         formData.append('file', file);
 
-        // TODO: take course ID for real
-        let courseID = 1;
         let apiUrl = `/courses/${courseID}/questions/import`
 
         try {
