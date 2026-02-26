@@ -345,11 +345,28 @@ func CreateAdminUser(db *gorm.DB) {
 		Email:     "loukas@email.com",
 	}
 
+	admin2 := repositories.User{
+		Username:  "korelli",
+		Password:  "korelli2025",
+		FirstName: "Alexandra",
+		LastName:  "Korelli",
+		Email:     "admin@email.com",
+	}
+
 	err = admin.BeforeSave()
 	if err != nil {
 		log.Fatalf("cannot hash in seed users table: %v", err)
 	}
 	err = db.Debug().Model(&repositories.User{}).Create(&admin).Error
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
+	}
+
+	err = admin2.BeforeSave()
+	if err != nil {
+		log.Fatalf("cannot hash in seed users table: %v", err)
+	}
+	err = db.Debug().Model(&repositories.User{}).Create(&admin2).Error
 	if err != nil {
 		log.Fatalf("cannot seed users table: %v", err)
 	}
