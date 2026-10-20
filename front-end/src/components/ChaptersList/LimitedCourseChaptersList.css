@@ -4,8 +4,6 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;
     justify-content: center;
-    padding-right: 10em;
-    padding-left: 10em;
 }
 
 .singleChapterContainer {

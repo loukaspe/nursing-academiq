@@ -2,11 +2,15 @@
 
 .breadcrumb {
     display: flex;
+    flex-wrap: wrap;
     list-style: none;
-    margin: 0.1em;
+    margin: 0 0 0.75rem;
+    padding: 0.35rem 0;
     border-bottom: 1px solid var(--grey-color);
-    color: var(--dark-grey-color);
-    font-weight: bold;
+    color: var(--text-grey-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    gap: 0.15rem;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {

@@ -1,44 +1,125 @@
 @import "../../styles/variables.css";
 
 .appHeader {
-    background-color: var(--brand-color);
-    display: flow-root;
+    position: sticky;
+    top: 0;
+    z-index: 800;
+    background: linear-gradient(135deg, var(--brand-color) 0%, var(--brand-dark-color) 100%);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: var(--header-height);
+    padding: 0.35rem clamp(0.75rem, 2vw, 1.25rem);
+    box-shadow: var(--shadow-md);
 }
 
-.appTitle {
-    color: var(--mid-white-color);
-    padding: 0.5em;
-    float: left;
-    width: 20%;
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.menu-toggle-bar {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--mid-white-color);
+    border-radius: 1px;
 }
 
 .ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.15rem;
 }
 
 .nav {
-    float: right;
-    width: 90%;
     display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
 }
 
 .menu {
-    width: 70%;
+    flex: 1;
+    justify-content: flex-start;
 }
 
 .myAccountMenu {
-    border-left: 0.1em solid var(--mid-white-color);
-    width: 30%;
+    flex-shrink: 0;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .link {
     color: var(--mid-white-color);
     text-decoration: none;
-    padding: 0.5em;
-    float: left;
+    padding: 0.45rem 0.65rem;
     display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: background-color var(--transition-fast);
 }
 
+.link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 1024px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .appHeader {
+        flex-wrap: wrap;
+    }
+
+    .nav {
+        flex-basis: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .menu,
+    .myAccountMenu {
+        justify-content: center;
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+        padding-top: 0.35rem;
+    }
+
+    .link {
+        text-align: center;
+        white-space: normal;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu,
+    .myAccountMenu {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .link {
+        width: 100%;
+    }
+}

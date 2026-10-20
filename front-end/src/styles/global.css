@@ -1,0 +1,70 @@
+@import "./variables.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    color: var(--dark-color);
+    background-color: var(--mid-white-color);
+    line-height: 1.5;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--brand-dark-color);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--opposite-color);
+    outline-offset: 2px;
+}
+
+button {
+    font-family: inherit;
+}
+
+.app-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.55rem 1.15rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--light-white-color);
+    background-color: var(--brand-dark-color);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.app-btn:hover {
+    background-color: var(--brand-color);
+}
+
+.app-btn:active {
+    transform: translateY(1px);
+}
+
+.app-btn--secondary {
+    background-color: var(--brand-color);
+}
+
+.app-btn--secondary:hover {
+    background-color: var(--opposite-color);
+}

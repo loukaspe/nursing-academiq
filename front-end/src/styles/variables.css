@@ -12,4 +12,22 @@
     --mid-white-color: #F9F9FC;
     --light-white-color: #ffffff;
     --error-color: #ff3333;
+
+    --sidebar-width: 260px;
+    --header-height: 3.25rem;
+    --content-max-width: 1280px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    --shadow-sm: 0 1px 3px rgba(34, 13, 106, 0.08);
+    --shadow-md: 0 4px 14px rgba(34, 13, 106, 0.1);
+    --shadow-lg: 0 12px 32px rgba(34, 13, 106, 0.12);
+
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s ease;
+
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
 }

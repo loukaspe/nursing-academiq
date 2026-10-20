@@ -3,25 +3,44 @@
 .loginPageContainer {
     width: 100%;
     display: flex;
-    padding-top: 5em;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 0 2rem;
 }
 
 .formContainer {
-    /*float: left;*/
-    /*width: 50%;*/
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-left: 0.1em solid var(--grey-color);
 }
 
 .logoContainer {
-    /*float: right;*/
-    /*width: 50%;*/
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: 0.1em solid var(--grey-color);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--grey-color);
+}
+
+@media (min-width: 768px) {
+    .loginPageContainer {
+        flex-direction: row;
+        align-items: center;
+        padding-top: 2rem;
+        gap: 0;
+    }
+
+    .logoContainer {
+        border-bottom: none;
+        border-right: 1px solid var(--grey-color);
+        padding-bottom: 0;
+        padding-right: 2rem;
+    }
+
+    .formContainer {
+        border-left: 1px solid var(--grey-color);
+        padding-left: 2rem;
+    }
 }

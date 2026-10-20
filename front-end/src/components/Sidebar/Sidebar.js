@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const Sidebar = () => {
+const Sidebar = ({isOpen = false, onNavigate}) => {
     const location = useLocation();
     const token = cookies.get("access_token");
     const user = cookies.get("user");
@@ -88,10 +88,16 @@ const Sidebar = () => {
     const courseCreatePath = `/courses/create`;
     const courseCreateIsActive = isActiveLink(courseCreatePath);
 
+    const handleNavClick = () => {
+        if (onNavigate) {
+            onNavigate();
+        }
+    };
+
     return (
-        <div className="sidebar">
+        <aside className={`sidebar ${isOpen ? 'sidebar-open' : ''}`} aria-label="Κύριο μενού">
             <div className="sidebar-header">
-                <Link to="/" className="sidebar-logo">
+                <Link to="/" className="sidebar-logo" onClick={handleNavClick}>
                     Nursing AcademIQ
                 </Link>
             </div>
@@ -101,7 +107,7 @@ const Sidebar = () => {
 
 
                 {token && (
-                    <Link to="/courses/create"
+                    <Link to="/courses/create" onClick={handleNavClick}
                           className={`btn-create  ${courseCreateIsActive ? 'active' : ''}`}>
                         Δημιουργία Μαθήματος
                     </Link>
@@ -133,19 +139,19 @@ const Sidebar = () => {
                             key={course.id}
                             className={`course-container ${courseIsActive ? 'active' : ''}`}
                         >
-                            <Link to={coursePath} className={`course-title ${courseIsActive ? 'active' : ''}`}>
+                            <Link to={coursePath} onClick={handleNavClick} className={`course-title ${courseIsActive ? 'active' : ''}`}>
                                 {course.title}
                             </Link>
 
                             {token && (
-                                <Link to={`/courses/${course.id}/edit`}
+                                <Link to={`/courses/${course.id}/edit`} onClick={handleNavClick}
                                       className={`edit-btn  ${courseEditIsActive ? 'active' : ''}`}>
                                     Επεξεργασία Μαθήματος
                                 </Link>
                             )}
 
                             {token && (
-                                <Link to={`/courses/${course.id}/questions/manage`}
+                                <Link to={`/courses/${course.id}/questions/manage`} onClick={handleNavClick}
                                       className={`edit-btn  ${courseQuestionsManageIsActive ? 'active' : ''}`}>
                                     Διαχείριση Ερωτήσεων
                                 </Link>
@@ -166,6 +172,7 @@ const Sidebar = () => {
                                         {token && (
                                             <Link
                                                 to={`/courses/${course.id}/chapters/create`}
+                                                onClick={handleNavClick}
                                                 className={`btn-create  ${chapterCreateIsActive ? 'active' : ''}`}
                                             >
                                                 Δημιουργία Ενότητας
@@ -183,12 +190,13 @@ const Sidebar = () => {
                                                         <li key={chapter.ID} className="sidebar-list-item">
                                                             <Link
                                                                 to={chapterPath}
+                                                                onClick={handleNavClick}
                                                                 className={`sidebar-link ${chapterIsActive ? 'active' : ''}`}
                                                             >
                                                                 {chapter.Title}
                                                             </Link>
                                                             {token && (
-                                                                <Link to={chapterEditPath}
+                                                                <Link to={chapterEditPath} onClick={handleNavClick}
                                                                       className={`edit-btn  ${chapterEditIsActive ? 'active' : ''}`}>
                                                                     Επεξεργασία
                                                                 </Link>
@@ -199,7 +207,7 @@ const Sidebar = () => {
 
                                                 {course.chapters.length > 2 && (
                                                     <li>
-                                                        <Link to={`/courses/${course.id}/chapters`}
+                                                        <Link to={`/courses/${course.id}/chapters`} onClick={handleNavClick}
                                                               className="see-more-link">
                                                             Δείτε Περισσότερα
                                                         </Link>
@@ -226,6 +234,7 @@ const Sidebar = () => {
                                         {token && (
                                             <Link
                                                 to={`/courses/${course.id}/quizzes/create`}
+                                                onClick={handleNavClick}
                                                 className="btn-create"
                                             >
                                                 Δημιουργία Quiz
@@ -251,12 +260,13 @@ const Sidebar = () => {
                                                         <li key={quiz.ID} className="sidebar-list-item">
                                                             <Link
                                                                 to={quizPath}
+                                                                onClick={handleNavClick}
                                                                 className={`sidebar-link ${quizIsActive ? 'active' : ''}`}
                                                             >
                                                                 {quiz.Title}
                                                             </Link>
                                                             {token && (
-                                                                <Link to={`${quizPath}/edit`} className="edit-btn">
+                                                                <Link to={`${quizPath}/edit`} onClick={handleNavClick} className="edit-btn">
                                                                     Επεξεργασία
                                                                 </Link>
                                                             )}
@@ -266,7 +276,7 @@ const Sidebar = () => {
 
                                                 {course.quizzes.length > 2 && (
                                                     <li>
-                                                        <Link to={`/courses/${course.id}/quizzes`}
+                                                        <Link to={`/courses/${course.id}/quizzes`} onClick={handleNavClick}
                                                               className="see-more-link">
                                                             Δείτε Περισσότερα
                                                         </Link>
@@ -281,7 +291,7 @@ const Sidebar = () => {
                     );
                 })}
             </div>
-        </div>
+        </aside>
     );
 };
 
