@@ -1,20 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./CreateQuizStepFour.css";
 import {useQuiz} from "../../context/QuizContext";
 import CreationProgressBar from "./CreationProgressBar";
 import api from "../Utilities/APICaller";
-import {Link} from "react-router-dom";
-import Cookies from "universal-cookie";
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
-const cookies = new Cookies();
 const CreateQuizStepFour = () => {
     const {quiz, setQuiz, resetQuiz} = useQuiz();
 
-    let userCookie = cookies.get("user");
-    let tutorID = userCookie.specificID;
     const handleSubsetSizeChange = (e) => {
         const value = e.target.value;
         const numValue = parseInt(value, 10);
@@ -49,8 +44,6 @@ const CreateQuizStepFour = () => {
 
 
             if (response.status === 201 && response.data.insertedID) {
-                const newQuizID = response.data.insertedID;
-
                 resetQuiz()
                 window.location.href = `/my-quizzes`;
             } else {

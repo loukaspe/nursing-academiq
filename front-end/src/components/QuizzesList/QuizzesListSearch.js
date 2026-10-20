@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./QuizzesList.css";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
 
 const QuizzesListSearch = () => {

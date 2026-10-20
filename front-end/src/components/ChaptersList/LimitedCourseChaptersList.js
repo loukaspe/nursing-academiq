@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "./LimitedCourseChaptersList.css";
 import Cookies from "universal-cookie";
 import {Link} from "react-router-dom";
@@ -9,7 +9,7 @@ import api from "../Utilities/APICaller";
 const cookies = new Cookies();
 
 const LimitedCourseChaptersList = (props) => {
-    const [visibleChapters, setVisibleChapters] = useState(2);
+    const visibleChapters = 2;
 
     const token = cookies.get("access_token");
 

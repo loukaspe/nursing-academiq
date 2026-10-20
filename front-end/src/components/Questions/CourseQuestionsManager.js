@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./CourseQuestionsManager.css";
 import Breadcrumb from "../Utilities/Breadcrumb";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileExport, faFileImport, faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -17,11 +17,37 @@ const CourseQuestionsManager = () => {
     const params = useParams();
     let courseID = params.courseID;
 
-    let navigate = useNavigate();
-
     useEffect(() => {
+        if (!courseID) {
+            return;
+        }
+
+        const fetchCourseChaptersQuestions = () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
+
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                },
+            })
+                .then(response => {
+                    if (response.data.course) {
+                        setCourse(response.data.course);
+                    }
+
+                    if (response.data.course?.Chapters) {
+                        const fetchedChapters = response.data.course.Chapters;
+                        setChapters(fetchedChapters);
+                        setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching course questions data', error);
+                });
+        };
+
         fetchCourseChaptersQuestions();
-    }, []);
+    }, [courseID]);
 
     useEffect(() => {
         const filteredQuestions = chapters
@@ -29,30 +55,6 @@ const CourseQuestionsManager = () => {
             .flatMap((chapter) => chapter.questions);
         setQuestions(filteredQuestions);
     }, [selectedChaptersIDs, chapters]);
-
-    const fetchCourseChaptersQuestions = () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
-
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            },
-        })
-            .then(response => {
-                if (response.data.course) {
-                    setCourse(response.data.course);
-                }
-
-                if (response.data.course.Chapters) {
-                    const fetchedChapters = response.data.course.Chapters;
-                    setChapters(fetchedChapters);
-                    setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching course questions data', error);
-            });
-    };
 
     const handleChapterCheckbox = (chapterId) => {
         if (selectedChaptersIDs.includes(chapterId)) {

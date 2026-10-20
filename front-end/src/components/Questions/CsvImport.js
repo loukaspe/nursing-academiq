@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import "./CsvImport.css";
 import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDownload, faPenToSquare, faUpload} from "@fortawesome/free-solid-svg-icons";
+import {faDownload, faUpload} from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "../Utilities/Breadcrumb";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import api from "../Utilities/APICaller";
 
 const CsvImport = () => {
@@ -14,8 +14,6 @@ const CsvImport = () => {
     const [fileName, setFileName] = useState("");
     const [createNewChaptersOption, setCreateNewChaptersOption] = useState(true);
     const [exportMistakesOption, setExportMistakesOption] = useState(false);
-
-    let navigate = useNavigate();
 
     const params = useParams();
     let courseID = params.id;
@@ -37,7 +35,7 @@ const CsvImport = () => {
         };
 
         fetchCourse();
-    }, []);
+    }, [courseID]);
 
     const onFileChange = (event) => {
         setFile(event.target.files[0]);

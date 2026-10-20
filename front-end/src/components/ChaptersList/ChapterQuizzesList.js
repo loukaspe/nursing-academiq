@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./ChapterQuizzesList.css";
 import Cookies from "universal-cookie";
-import {useParams, useNavigate, Link} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
@@ -26,13 +26,8 @@ const ChapterQuizzesList = (props) => {
         return !!token;
     }
 
-    let navigate = useNavigate();
-
     useEffect(() => {
-        fetchChapter();
-    }, []);
-
-    const fetchChapter = () => {
+        const fetchChapter = () => {
         let apiUrl = process.env.REACT_APP_API_URL + `/chapter/${chapterID}`
 
         axios.get(apiUrl, {
@@ -57,7 +52,10 @@ const ChapterQuizzesList = (props) => {
             .catch(error => {
                 console.error('Error fetching chapter quizzes data', error);
             });
-    };
+        };
+
+        fetchChapter();
+    }, [chapterID]);
 
     const deleteChapter = (id, title) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;

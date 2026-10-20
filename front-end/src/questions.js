@@ -1,5 +1,3 @@
-import React from "react"
-
 export const questions = [
     {
         questionText: "Ποιά η χημική ονομασία του φαρμάκου που είναι ευρέως γνωστό με την εμπορική ονομασία Ασπιρίνη (aspirin);",

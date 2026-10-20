@@ -14,7 +14,6 @@ export default function CreationProgressBar() {
     const { quiz } = useQuiz();
 
     const currentStepIndex = steps.findIndex((step) => step.path === location.pathname);
-    const currentStep = steps[currentStepIndex];
     const hasCourseSelected = quiz.course !== null;
 
     return (

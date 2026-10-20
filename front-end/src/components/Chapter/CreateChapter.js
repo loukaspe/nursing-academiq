@@ -7,7 +7,6 @@ import api from "../Utilities/APICaller";
 const CreateChapter = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [chapterID, setChapterID] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -38,7 +37,6 @@ const CreateChapter = () => {
                 courseID: parseInt(courseID),
             }).then((response) => {
                 console.log(response.data);
-                setChapterID(response.data.insertedID);
             }).then(() => {
                 window.location.href = `/courses/${courseID}/chapters`;
             });

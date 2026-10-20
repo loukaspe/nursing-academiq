@@ -10,7 +10,7 @@ const cookies = new Cookies();
 
 const LimitedMyCoursesList = () => {
     const [courses, setCourses] = useState([]);
-    const [visibleCourses, setVisibleCourses] = useState(2);
+    const visibleCourses = 2;
 
     useEffect(() => {
         const fetchUserCourses = async () => {

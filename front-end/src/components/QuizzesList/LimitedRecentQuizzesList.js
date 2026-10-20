@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const LimitedRecentQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
-    const [visibleQuizzes, setVisibleQuizzes] = useState(2);
+    const visibleQuizzes = 2;
 
     const fetchRecentQuizzes = async () => {
         let apiUrl = process.env.REACT_APP_API_URL + `/quizzes/recent`;

@@ -3,12 +3,9 @@ import './EditQuestion.css';
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
-import Cookies from "universal-cookie";
 import api from "../Utilities/APICaller";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
-
-const cookies = new Cookies();
 
 const EditQuestion = () => {
     const [chapters, setChapters] = useState([]);
@@ -126,7 +123,7 @@ const EditQuestion = () => {
 
         fetchQuestion();
         fetchCourseChapters();
-    }, []);
+    }, [courseID, questionID]);
 
     return (
         <div className="editQuestionPageContainer">

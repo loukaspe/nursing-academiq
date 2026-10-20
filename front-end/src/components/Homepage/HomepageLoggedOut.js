@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./Homepage.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import {Link, useNavigate} from "react-router-dom";
 import apiWithAPIKey from "../Utilities/APICallerAPIKey";
-import api from "../Utilities/APICaller";
 
 const Homepage = () => {
     const [courses, setCourses] = useState([]);
@@ -114,10 +111,10 @@ const Homepage = () => {
                         <section className="homepageCoursesSection">
                             <h2 className="homepageSectionTitle">Περιήγηση Μαθημάτων</h2>
                             <div className="homepageCoursesGrid">
-                                {courses.slice(0, 3).map((course) => (
+                                {filteredCourses.slice(0, 3).map((course) => (
                                     <Link key={course.id} to={`/courses/${course.id}`}>
-                                        <div className="homepageCoursesCard">
-                                            <img src="/images/courseThumbnail.png" alt="Course Image"
+                                        <div className="homepageCourseCard">
+                                            <img src="/images/courseThumbnail.png" alt={course.title}
                                                  className="homepageCourseImage"/>
                                             <div className="homepageCourseName">{course.title}</div>
                                         </div>

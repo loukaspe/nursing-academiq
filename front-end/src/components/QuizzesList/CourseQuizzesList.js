@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./CourseQuizzesList.css";
 import Cookies from "universal-cookie";
-import {Link, useParams, useNavigate} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
@@ -18,8 +18,6 @@ const CourseQuizzesList = (props) => {
     const params = useParams();
     let courseID = params.id;
 
-    let navigate = useNavigate();
-
     const token = cookies.get("access_token");
 
     const isTutorSignedIn = () => {
@@ -27,30 +25,30 @@ const CourseQuizzesList = (props) => {
     }
 
     useEffect(() => {
-        fetchCourse();
-    }, []);
+        const fetchCourse = () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
 
-    const fetchCourse = () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
-
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            },
-        })
-            .then(response => {
-                if (response.data) {
-                    setCourse(response.data);
-                }
-
-                if (response.data.quizzes) {
-                    setQuizzes(response.data.quizzes);
-                }
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                },
             })
-            .catch(error => {
-                console.error('Error fetching course quizzes data', error);
-            });
-    };
+                .then(response => {
+                    if (response.data) {
+                        setCourse(response.data);
+                    }
+
+                    if (response.data.quizzes) {
+                        setQuizzes(response.data.quizzes);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching course quizzes data', error);
+                });
+        };
+
+        fetchCourse();
+    }, [courseID]);
 
     const deleteQuiz = (id, title) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το quiz ${title};`;

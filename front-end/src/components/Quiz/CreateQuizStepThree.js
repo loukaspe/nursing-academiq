@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "./CreateQuizStepThree.css";
 import Breadcrumb from "../Utilities/Breadcrumb";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import Cookies from "universal-cookie";
 import api from "../Utilities/APICaller";
 import {useQuiz} from "../../context/QuizContext";
 import CreationProgressBar from "./CreationProgressBar";
@@ -18,15 +17,33 @@ const CreateQuizStepThree = () => {
     const [selectedChaptersIDs, setSelectedChaptersIDs] = useState([]);
     const [questions, setQuestions] = useState([]);
     // const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [course, setCourse] = useState({});
-    const [quizName, setQuizName] = useState("");
-    const [error, setError] = useState("");
-
-    let navigate = useNavigate();
-
     useEffect(() => {
+        if (!courseID) {
+            return;
+        }
+
+        const fetchCourseChaptersQuestions = () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
+
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                },
+            })
+                .then(response => {
+                    if (response.data.course?.Chapters) {
+                        const fetchedChapters = response.data.course.Chapters;
+                        setChapters(fetchedChapters);
+                        setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching course questions data', error);
+                });
+        };
+
         fetchCourseChaptersQuestions();
-    }, []);
+    }, [courseID]);
 
     useEffect(() => {
         const filteredQuestions = chapters
@@ -34,30 +51,6 @@ const CreateQuizStepThree = () => {
             .flatMap((chapter) => chapter.questions);
         setQuestions(filteredQuestions);
     }, [selectedChaptersIDs, chapters]);
-
-    const fetchCourseChaptersQuestions = () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
-
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            },
-        })
-            .then(response => {
-                if (response.data.course) {
-                    setCourse(response.data.course);
-                }
-
-                if (response.data.course.Chapters) {
-                    const fetchedChapters = response.data.course.Chapters;
-                    setChapters(fetchedChapters);
-                    setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching course questions data', error);
-            });
-    };
 
     const handleChapterCheckbox = (chapterId) => {
         if (selectedChaptersIDs.includes(chapterId)) {
@@ -119,7 +112,7 @@ const CreateQuizStepThree = () => {
                     </div>
                 </div>
                 <div className="questionsSelectSubtitle">
-                    <div>{quizName}</div>
+                    <div>{quiz.title}</div>
                 </div>
                 <div className="questionsSelectChaptersContainer">
                     <div className="chaptersSection">
@@ -181,7 +174,6 @@ const CreateQuizStepThree = () => {
                         </div>
                     </div>
                 </div>
-                {error && <div className="questionsSelectErrorRow">{error}</div>}
                 <div className="questionsSelectChaptersButtonContainer">
                     <div className="questionsSelectChaptersLeft questionsSelectPageTitle">
                         Τρέχων Αριθμός Ερωτήσεων : {quiz.questions.length}

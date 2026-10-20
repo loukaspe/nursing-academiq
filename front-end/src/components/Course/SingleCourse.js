@@ -29,10 +29,7 @@ const SingleCourse = () => {
     let courseID = params.id;
 
     useEffect(() => {
-        fetchCourse();
-    }, [courseID]);
-
-    const fetchCourse = () => {
+        const fetchCourse = () => {
         let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
 
         axios.get(apiUrl, {
@@ -57,7 +54,10 @@ const SingleCourse = () => {
             .catch(error => {
                 console.error('Error fetching course data', error);
             });
-    };
+        };
+
+        fetchCourse();
+    }, [courseID]);
 
     const deleteCourse = () => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε το μάθημα ${course.title};`;

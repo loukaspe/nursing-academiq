@@ -7,11 +7,12 @@ import api from "../Utilities/APICaller";
 import Cookies from "universal-cookie";
 import Breadcrumb from "../Utilities/Breadcrumb";
 
+const cookies = new Cookies();
+
 export default function CreateQuizStepOne() {
     const {quiz, setQuiz} = useQuiz();
     const [courses, setCourses] = useState([]);
 
-    const cookies = new Cookies();
     useEffect(() => {
         const fetchTutorCourses = async () => {
             let userCookie = cookies.get("user");

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./QuizStart.css";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Breadcrumb from "../Utilities/Breadcrumb";
 
 const QuizStart = () => {
@@ -10,8 +10,6 @@ const QuizStart = () => {
     const params = useParams();
     let quizID = params.quizID;
     let courseID = params.courseID;
-
-    let navigate = useNavigate();
 
     useEffect(() => {
         const fetchQuiz = async () => {
@@ -52,11 +50,7 @@ const QuizStart = () => {
         }
 
         fetchQuiz();
-    }, []);
-
-    const handleSubmit = () => {
-
-    };
+    }, [quizID]);
 
     return (
         <React.Fragment>

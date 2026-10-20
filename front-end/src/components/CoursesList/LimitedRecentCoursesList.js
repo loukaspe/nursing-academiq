@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 
 const LimitedRecentCoursesList = () => {
     const [courses, setCourses] = useState([]);
-    const [visibleCourses, setVisibleCourses] = useState(2);
+    const visibleCourses = 2;
 
     useEffect(() => {
         const fetchRecentCourses = async () => {

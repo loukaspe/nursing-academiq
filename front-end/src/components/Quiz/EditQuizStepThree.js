@@ -1,19 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./CreateQuizStepFour.css";
 import {useQuiz} from "../../context/QuizContext";
 import api from "../Utilities/APICaller";
-import Cookies from "universal-cookie";
 import EditProgressBar from "./EditProgressBar";
 import Breadcrumb from "../Utilities/Breadcrumb";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
 
-const cookies = new Cookies();
 const EditQuizStepThree = () => {
     const {quiz, setQuiz, resetQuiz} = useQuiz();
 
-    let userCookie = cookies.get("user");
-    let tutorID = userCookie.specificID;
     const handleSubsetSizeChange = (e) => {
         const value = e.target.value;
         const numValue = parseInt(value, 10);
@@ -36,7 +32,7 @@ const EditQuizStepThree = () => {
         try {
             let apiUrl = `/quiz/${quiz.id}`
 
-            const response = await api.put(apiUrl, {
+            await api.put(apiUrl, {
                 Title: quiz.title,
                 Description: quiz.description,
                 CourseID: parseInt(quiz.course.id),

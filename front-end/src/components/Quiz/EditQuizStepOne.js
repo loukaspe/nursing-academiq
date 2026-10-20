@@ -1,6 +1,5 @@
 import {useQuiz} from "../../context/QuizContext";
 import {Link, useParams} from "react-router-dom";
-import CreationProgressBar from "./CreationProgressBar";
 import React, {useEffect} from "react";
 import "./CreateQuizStepTwo.css";
 import axios from "axios";
@@ -41,7 +40,7 @@ export default function EditQuizStepOne() {
         };
 
         fetchQuiz();
-    }, [quizID]);
+    }, [quizID, setQuiz]);
 
     return (
         <div className="createQuizStepTwoContainer">

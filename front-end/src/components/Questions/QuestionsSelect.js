@@ -5,7 +5,6 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import Cookies from "universal-cookie";
 import api from "../Utilities/APICaller";
 
 const QuestionsSelect = () => {
@@ -24,8 +23,36 @@ const QuestionsSelect = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
+        if (!courseID) {
+            return;
+        }
+
+        const fetchCourseChaptersQuestions = () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
+
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                },
+            })
+                .then(response => {
+                    if (response.data.course) {
+                        setCourse(response.data.course);
+                    }
+
+                    if (response.data.course?.Chapters) {
+                        const fetchedChapters = response.data.course.Chapters;
+                        setChapters(fetchedChapters);
+                        setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching course questions data', error);
+                });
+        };
+
         fetchCourseChaptersQuestions();
-    }, []);
+    }, [courseID]);
 
     useEffect(() => {
         const filteredQuestions = chapters
@@ -35,53 +62,33 @@ const QuestionsSelect = () => {
     }, [selectedChaptersIDs, chapters]);
 
     useEffect(() => {
-        fetchQuiz();
-    }, [questions])
-
-    const fetchQuiz = async () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${quizID}`
-
-        try {
-            const response = await axios.get(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-                },
-            });
-            setQuizName(response.data.quiz.Title);
-
-            const quizQuestionIds = response.data.quiz.Questions.map(q => q.ID);
-
-            setSelectedQuestions(questions.filter(question =>
-                quizQuestionIds.includes(question.ID)
-            ));
-        } catch (error) {
-            console.error('Error fetching the quiz data', error);
+        if (!quizID) {
+            return;
         }
-    };
 
-    const fetchCourseChaptersQuestions = () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/courses/${courseID}/questions`
+        const fetchQuiz = async () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/quiz/${quizID}`
 
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            },
-        })
-            .then(response => {
-                if (response.data.course) {
-                    setCourse(response.data.course);
-                }
+            try {
+                const response = await axios.get(apiUrl, {
+                    headers: {
+                        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                    },
+                });
+                setQuizName(response.data.quiz.Title);
 
-                if (response.data.course.Chapters) {
-                    const fetchedChapters = response.data.course.Chapters;
-                    setChapters(fetchedChapters);
-                    setSelectedChaptersIDs(fetchedChapters.map((chapter) => chapter.id));
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching course questions data', error);
-            });
-    };
+                const quizQuestionIds = response.data.quiz.Questions.map(q => q.ID);
+
+                setSelectedQuestions(questions.filter(question =>
+                    quizQuestionIds.includes(question.ID)
+                ));
+            } catch (error) {
+                console.error('Error fetching the quiz data', error);
+            }
+        };
+
+        fetchQuiz();
+    }, [quizID, questions]);
 
     const handleChapterCheckbox = (chapterId) => {
         if (selectedChaptersIDs.includes(chapterId)) {

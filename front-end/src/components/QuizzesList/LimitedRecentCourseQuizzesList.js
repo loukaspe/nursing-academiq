@@ -1,16 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 import "./QuizzesList.css";
 import {Link} from "react-router-dom";
 import Cookies from "universal-cookie";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 import api from "../Utilities/APICaller";
 
 const cookies = new Cookies();
 
 const LimitedRecentCourseQuizzesList = (props) => {
-    const [visibleQuizzes, setVisibleQuizzes] = useState(2);
+    const visibleQuizzes = 2;
 
     const token = cookies.get("access_token");
 

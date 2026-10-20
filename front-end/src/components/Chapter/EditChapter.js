@@ -3,16 +3,14 @@ import axios from 'axios';
 import {useNavigate, useParams} from "react-router-dom";
 import "./EditChapter.css";
 
-import Cookies from "universal-cookie";
 import api from "../Utilities/APICaller";
 
 
-const EditChapter = ({}) => {
+const EditChapter = () => {
     let navigate = useNavigate();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [courseID, setCourseID] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,7 +29,6 @@ const EditChapter = ({}) => {
                 });
                 setTitle(response.data.chapter.title);
                 setDescription(response.data.chapter.description);
-                setCourseID(response.data.chapter.course.ID);
             } catch (error) {
                 console.error('Error fetching the chapter data', error);
             }

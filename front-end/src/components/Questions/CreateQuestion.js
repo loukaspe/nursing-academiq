@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './EditQuestion.css';
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios from "axios";
 
 import api from "../Utilities/APICaller";
@@ -14,8 +14,6 @@ const CreateQuestion = () => {
     const [source, setSource] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    let navigate = useNavigate();
 
     const params = useParams();
 
@@ -92,7 +90,7 @@ const CreateQuestion = () => {
         };
 
         fetchCourseChapters();
-    }, []);
+    }, [courseID]);
 
     return (
         <div className="editQuestionPageContainer">

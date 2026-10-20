@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./CourseChaptersList.css";
 import Cookies from "universal-cookie";
-import {Link, useParams, useNavigate} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 import SectionTitle from "../Utilities/SectionTitle";
 import Breadcrumb from "../Utilities/Breadcrumb";
@@ -18,17 +18,11 @@ const CourseChaptersList = (props) => {
     const params = useParams();
     let courseID = params.id;
 
-    let navigate = useNavigate();
-
     const token = cookies.get("access_token");
 
     const isTutorSignedIn = () => {
         return !!token;
     }
-
-    useEffect(() => {
-        fetchCourse();
-    }, []);
 
     const deleteChapter = (id, title) => {
         const confirmMessage = `Είστε σίγουρος ότι θέλετε να διαγράψετε την ενότητα ${title};`;
@@ -46,27 +40,31 @@ const CourseChaptersList = (props) => {
         }
     };
 
-    const fetchCourse = () => {
-        let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
+    useEffect(() => {
+        const fetchCourse = () => {
+            let apiUrl = process.env.REACT_APP_API_URL + `/course/${courseID}/extended`
 
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            },
-        })
-            .then(response => {
-                if (response.data) {
-                    setCourse(response.data);
-                }
-
-                if (response.data.chapters) {
-                    setChapters(response.data.chapters);
-                }
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+                },
             })
-            .catch(error => {
-                console.error('Error fetching course chapters data', error);
-            });
-    };
+                .then(response => {
+                    if (response.data) {
+                        setCourse(response.data);
+                    }
+
+                    if (response.data.chapters) {
+                        setChapters(response.data.chapters);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching course chapters data', error);
+                });
+        };
+
+        fetchCourse();
+    }, [courseID]);
 
     return (
         <React.Fragment>

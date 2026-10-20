@@ -10,7 +10,7 @@ const cookies = new Cookies();
 
 const LimitedMyQuizzesList = () => {
     const [quizzes, setQuizzes] = useState([]);
-    const [visibleQuizzes, setVisibleQuizzes] = useState(2);
+    const visibleQuizzes = 2;
 
     const fetchUserQuizzes = async () => {
         let userCookie = cookies.get("user");
