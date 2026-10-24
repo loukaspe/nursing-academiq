@@ -162,15 +162,25 @@
         grid-row: 1;
         justify-content: flex-end;
         flex: none;
+        gap: 0.25rem;
     }
 
-    .nav--logged-out .menu--desktop {
-        display: none;
+    .nav--logged-out .menu {
+        flex: none;
+        justify-content: flex-end;
+        padding-right: 0.35rem;
+        margin-right: 0.15rem;
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .nav--logged-out .myAccountMenu {
         border-left: none;
         padding-left: 0;
+    }
+
+    .nav--logged-out .link {
+        padding: 0.4rem 0.45rem;
+        font-size: 0.82rem;
     }
 
     .nav--logged-in {
@@ -242,11 +252,15 @@
 
 @media (max-width: 480px) {
     .appHeader-brand {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    .nav--logged-out .link {
+        padding: 0.35rem 0.35rem;
+        font-size: 0.78rem;
     }
 
     .link--accent {
-        padding: 0.45rem 0.5rem;
-        font-size: 0.85rem;
+        font-weight: 600;
     }
 }

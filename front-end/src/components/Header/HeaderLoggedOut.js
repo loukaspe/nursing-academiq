@@ -23,7 +23,7 @@ const HeaderLoggedOut = ({onMenuToggle, sidebarOpen}) => {
             </Link>
 
             <nav className="nav nav--logged-out" aria-label="Κύρια πλοήγηση">
-                <ul className="ul menu menu--desktop">
+                <ul className="ul menu">
                     <li>
                         <Link className="link" to="/quizzes">Quizzes</Link>
                     </li>

@@ -77,8 +77,6 @@ const Homepage = () => {
     return (
         <>
             <div className="homepageLoggedOutContainer">
-                <div className="homepageLoggedOutContainer">
-                    {/* Search Section */}
                     <section className="homepageSearchSection">
                         <h1 className="homepageSectionTitle">Αναζήτηση Quiz</h1>
                         <div className="homepageSearchControls">
@@ -129,8 +127,6 @@ const Homepage = () => {
                             </div>
                         </section>
                     }
-
-                </div>
             </div>
             <div style={{clear: 'both'}}></div>
         </>
