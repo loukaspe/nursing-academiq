@@ -11,21 +11,26 @@ const HeaderLoggedOut = ({onMenuToggle, sidebarOpen}) => {
                 className="menu-toggle"
                 onClick={onMenuToggle}
                 aria-expanded={sidebarOpen ? 'true' : 'false'}
-                aria-label={sidebarOpen ? 'Κλείσιμο μενού' : 'Άνοιγμα μενού'}
+                aria-label={sidebarOpen ? 'Κλείσιμο μενού μαθημάτων' : 'Άνοιγμα μενού μαθημάτων'}
             >
                 <span className="menu-toggle-bar"/>
                 <span className="menu-toggle-bar"/>
                 <span className="menu-toggle-bar"/>
             </button>
-            <nav className="nav" aria-label="Κύρια πλοήγηση">
-                <ul className="ul menu">
+
+            <Link to="/" className="appHeader-brand">
+                Nursing AcademIQ
+            </Link>
+
+            <nav className="nav nav--logged-out" aria-label="Κύρια πλοήγηση">
+                <ul className="ul menu menu--desktop">
                     <li>
                         <Link className="link" to="/quizzes">Quizzes</Link>
                     </li>
                 </ul>
                 <ul className="ul myAccountMenu">
                     <li>
-                        <Link className="link" to="/login">Σύνδεση</Link>
+                        <Link className="link link--accent" to="/login">Σύνδεση</Link>
                     </li>
                 </ul>
             </nav>
