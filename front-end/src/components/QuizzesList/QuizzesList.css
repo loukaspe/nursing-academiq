@@ -38,11 +38,21 @@
 
 .singleQuizTitle {
     color: var(--dark-color);
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-    font-size: 1.5rem;
+    padding: 0.35em 0;
+    font-size: clamp(1rem, 3.5vw, 1.35rem);
     margin: 0;
     font-weight: bold;
+    word-break: break-word;
+    text-decoration: none;
+    display: block;
+}
+
+.recentQuizzesList {
+    width: 100%;
+    min-width: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .singleQuizDetails {

@@ -83,7 +83,7 @@ const CreateQuestion = () => {
                         Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
                     },
                 });
-                setChapters(response.data.chapters)
+                setChapters(response.data.chapters ?? [])
             } catch (error) {
                 console.error('Error fetching the course chapters', error);
             }
@@ -107,7 +107,7 @@ const CreateQuestion = () => {
                     onChange={handleChapterChange}
                 >
                     <option value="">Επιλέξτε Ενότητα</option>
-                    {chapters.map((chapter, index) => (
+                    {(chapters ?? []).map((chapter, index) => (
                         <option key={index} value={chapter.Title}>{chapter.Title}</option>
                     ))}
                 </select>

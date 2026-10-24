@@ -1,9 +1,11 @@
 @import "../../styles/variables.css";
 
 .chaptersList {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    list-style-type: none;
-    justify-content: center;
+    list-style: none;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .singleChapterContainer {
@@ -16,16 +18,13 @@
 }
 
 .singleChapterRowContainer {
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    margin-left: 0.5rem;
-    padding-bottom: 1em;
-    /*justify-content: space-between;*/
-    /*align-items: center;*/
-    /*border-bottom: 1px solid var(--grey-color);*/
+    margin-left: 0;
+    padding-bottom: 0.75em;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 0.5rem;
 }
 
 .chapterContent {
@@ -53,11 +52,14 @@
 
 .singleChapterTitle {
     color: var(--dark-color);
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-    font-size: 1.5rem;
+    padding: 0.35em 0;
+    font-size: clamp(1rem, 3.5vw, 1.35rem);
     margin: 0;
     font-weight: bold;
+    flex: 1 1 12rem;
+    min-width: 0;
+    word-break: break-word;
+    text-decoration: none;
 }
 
 .singleChapterDetails {
@@ -68,14 +70,27 @@
     /*margin-left: 1rem;*/
 }
 
-.moreButton {
+.moreButton,
+.myCoursesListButton {
     color: var(--light-color);
     background-color: var(--dark-color);
-    font-size: 1rem;
-    margin: 5rem 1rem 1rem;
+    font-size: 0.95rem;
+    margin: 1rem 0 0;
     border-radius: 50px;
-    padding: 1rem;
+    padding: 0.75rem 1.15rem;
     border: none;
     font-weight: bold;
     display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    white-space: normal;
+}
+
+.quizzesButtonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
 }

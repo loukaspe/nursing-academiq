@@ -248,9 +248,39 @@
 
 .editQuestionPageChapterSection input,
 .editQuestionPageChapterSection select,
+.editQuestionPageQuestionSection input,
 .editQuestionPageQuestionSection textarea {
     width: 100%;
     max-width: 100%;
+}
+
+.editQuestionPageAnswersMetadataSection {
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.editQuestionPageAnswersSection {
+    border-right: none;
+    border-bottom: 1px solid var(--brand-color);
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.editQuestionPageMetadataSection {
+    width: 100%;
+    padding: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .editQuestionPageAnswersMetadataSection {
+        flex-direction: row;
+    }
+
+    .editQuestionPageAnswersSection {
+        border-right: 1px solid var(--brand-color);
+        border-bottom: none;
+        padding: 2em;
+    }
 }
 
 /* —— Course questions manager —— */
