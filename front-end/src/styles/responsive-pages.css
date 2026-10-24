@@ -283,34 +283,6 @@
     }
 }
 
-/* —— Course questions manager —— */
-.questionsChaptersContainer {
-    flex-direction: column;
-    height: auto;
-    min-height: 0;
-}
-
-.questionsSection,
-.chaptersSection {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--grey-color);
-}
-
-.chaptersSection {
-    border-bottom: none;
-}
-
-.questionText {
-    float: none;
-    min-width: 0;
-}
-
-.questionRow {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
 .questionsSelectPageHeader,
 .createQuizStepThreeContainer .questionsSelectPageHeader {
     flex-wrap: wrap;

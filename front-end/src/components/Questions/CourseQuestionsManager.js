@@ -186,7 +186,7 @@ const CourseQuestionsManager = () => {
                     {chapters.length > 0 ? (
                         chapters.map((chapter) => (
                             <div key={chapter.id} className="chapterRow">
-                                <span>{chapter.title}</span>
+                                <span>{chapter.title ?? chapter.Title}</span>
                                 <input
                                     type="checkbox"
                                     onChange={() => handleChapterCheckbox(chapter.id)}
