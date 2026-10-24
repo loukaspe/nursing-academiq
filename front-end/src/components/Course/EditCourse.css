@@ -1,13 +1,12 @@
 .edit-course-center {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
 }
 
 .edit-course-container {
-    width: 40%;
-    padding: 2em;
+    width: min(100%, 34rem);
+    padding: clamp(1rem, 4vw, 2em);
     border: 1px solid #ccc;
     border-radius: 8px;
     align-items: center;

@@ -1,9 +1,8 @@
 @import "../../styles/variables.css";
 
 .quiz-container {
-    width: 80%;
+    width: min(100%, 48rem);
     margin: 0 auto;
-    font-family: Arial, sans-serif;
 }
 
 .quiz-title {
@@ -15,10 +14,12 @@
 }
 
 .questionCard {
-    max-width: 80%;
-    border-radius: 15px;
+    max-width: 100%;
+    border-radius: var(--radius-lg);
     margin: 0 auto;
-    padding: 2rem;
+    padding: clamp(1rem, 4vw, 2rem);
+    box-shadow: var(--shadow-sm);
+    background: var(--light-white-color);
 }
 
 .progress-line {

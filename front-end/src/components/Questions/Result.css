@@ -5,7 +5,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: min(70vh, 100%);
     text-align: center;
     background-color: var(--mid-white-color);
     padding: 2rem;
@@ -13,7 +13,7 @@
 }
 
 .finalScore {
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
     color: var(--brand-color);
     font-weight: bold;
     margin-bottom: 2rem;

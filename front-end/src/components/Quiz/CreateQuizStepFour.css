@@ -1,11 +1,3 @@
-body, html {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    /*overflow: hidden;*/
-}
-
 .createQuizStepFourPageTitle {
     color: var(--dark-color);
     font-size: 1.5rem;
@@ -16,10 +8,10 @@ body, html {
 }
 
 .createQuizStepFourContainer {
-    height: 100vh;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent overflow within the container */
+    padding-bottom: 2rem;
 }
 
 .createQuizStepFourHeader {
@@ -205,13 +197,4 @@ body, html {
 
 .createQuizStepFourButtonDelete .fa-trash-can {
     color: var(--error-color);
-}
-
-.createQuizStepFourContainer {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Prevent overflow within the container */
-    margin-left: 1em;
-
 }

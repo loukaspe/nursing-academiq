@@ -1,16 +1,5 @@
 @import "../../styles/variables.css";
 
-html, body {
-    margin: 0;
-    height: 100%; /* Ensure full height for the viewport */
-}
-
-#root {
-    height: 100%; /* Assuming your app is rendered here */
-    display: flex;
-    flex-direction: column; /* Allow vertical stacking of components */
-}
-
 .courseQuizzesList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     list-style-type: none;

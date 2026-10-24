@@ -141,9 +141,9 @@
 }
 
 .createQuizStepThreeContainer {
-    height: 100vh;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent overflow within the container */
-    margin-left: 1em;
+    margin-left: 0;
+    padding-bottom: 2rem;
 }
